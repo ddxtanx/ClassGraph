@@ -1,0 +1,18 @@
+﻿Project Proposal (davidm12-gcredi2-lzefran2)
+1. Leading Question: Given a class in the UIUC CS, ECE, Physics, and Mathematics departments, we would like to find the shortest possible sequence of classes to satisfy the class’ prerequisites. 
+2. Dataset Acquisition and Processing: 
+3. Graph Algorithms
+
+Timeline
+
+April 8 - sync to complete project proposal and team contract
+April 9 - submit project proposal and team contract
+April 12 - set up initial repository and Makefile
+April 15 - finish reading in data into array format and write simple tests to verify correctness
+April 19 - convert array format into graph format and pass simple tests
+April 22 - write BFS iterator and verify with tests
+April 29 - write Dijikstra's and verify with tests
+May 5 - write graph projection onto World Map and verify with tests
+May 7 - finish report
+May 9 - sync to record final presentation
+May 11 - finish editing presentation and submit
