@@ -17,4 +17,4 @@
 3. **Conflict Resolution** For 3 way splits, decisions will be made via a random number generator (random.org) with each member having their decision designated a given number.
 
 ### Signatures
-gcredi2, davidm12
+gcredi2, davidm12, lzefran2
