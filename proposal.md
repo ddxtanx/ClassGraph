@@ -9,25 +9,25 @@ We will be implementing BFS, Dijkstra (a variant), and layered graph drawing. Th
 
 4. **Timeline**
 
-  April 8 - sync to complete project proposal and team contract
+  April 8 - complete project proposal and team contract
 
   April 9 - submit project proposal and team contract
 
   April 12 - set up initial repository and Makefile
 
-  April 15 - finish parsing class data from CIS API to usable form.
+  April 15 - finish parsing class data from CIS API to usable form. Begin BFS iterators and test writing.
 
-  April 19 - convert CIS Data into graph format and pass simple tests
+  April 19 - convert CIS Data into graph format and pass simple tests. Finish BFS Iterators
 
-  April 22 - write BFS iterator and verify with tests
+  April 22 - Begin work on Dijkstra and Graph drawing, and writing relevant tests
 
-  April 29 - write Dijikstra's and verify with tests
+  April 29 - (Hopefully) finish writing Dijkstra, all work on graph output.
 
   May 5 - write layered graph drawing algorithm and verify with tests
 
   May 7 - finish report
 
-  May 9 - sync to record final presentation
+  May 9 - record final presentation
 
   May 11 - finish editing presentation and submit
 

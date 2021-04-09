@@ -10,9 +10,7 @@
 
 
 ### Collaboration
-1. **Work Distribution** Each week, the necessary deliverables for the week will be determined by the full team
-   and each member will volunteer to work on one or more deliverables. When no one volunteers, two team members
-   will be randomly assigned the task.
+1. **Work Distribution** The work will be split up as follows: David will work on the BFS implementation, Garrett and Luca will work on the data gathering and parsing, Garrett will work on the Dijkstra's Algorithm implementation, and Luca and David will work on the Graph layer output algorithm. If for whatever reason, a given person/pair has trouble on part of their task for the week, they will discuss it in the weekly meeting or in the discord and one of the project members will assist them.
 2. **Time Commitment** Each member is expected to work no less than 2 and no more than 6 hours per week on the 
    project. If a deliverable ends up taking more time, the rest of the team should be pulled in to assist with 
    the unforeseen complication.
