@@ -1,10 +1,11 @@
 ## Project Proposal (davidm12, gcredi2, lzefran2)
 
-1. **Leading Question** Given a class in the UIUC CS, ECE, Physics, and Mathematics departments, we would like to find the shortest possible sequence of classes to satisfy the class’ prerequisites. 
+1. **Leading Question** Given a class in the UIUC CS, ECE, Physics, and Mathematics departments, we would like to find the shortest possible sequence of classes to satisfy the class’ prerequisites and we would like student's to be able to visualize how different classes interact and lead to other classes by printing out the prerec chains in the departments.
 
-2. **Data Acquisition & Processing**
+2. **Data Acquisition & Processing** We will use data from the CIS API to get data for all the courses offered in the various departments in Fall of 2021. From that, we will parse the descriptions to get the class prerequisites for all of the relevant courses. 
 
 3. **Algorithms**
+We will be implementing BFS, Dijkstra, and layered graph drawing.
 
 4. **Timeline**
 
@@ -14,15 +15,15 @@
 
   April 12 - set up initial repository and Makefile
 
-  April 15 - finish reading in data into array format and write simple tests to verify correctness
+  April 15 - finish parsing class data from CIS API to usable form.
 
-  April 19 - convert array format into graph format and pass simple tests
+  April 19 - convert CIS Data into graph format and pass simple tests
 
   April 22 - write BFS iterator and verify with tests
 
   April 29 - write Dijikstra's and verify with tests
 
-  May 5 - write graph projection onto World Map and verify with tests
+  May 5 - write layered graph drawing algorithm and verify with tests
 
   May 7 - finish report
 
