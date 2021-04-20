@@ -5,43 +5,31 @@
 #include "department.h"
 
 
+//////////////////////////////////////////////////////////
+/*  A class that holds our Graph and related functions
+*/
+//////////////////////////////////////////////////////////
+
 class College 
 {
     public:
         College();  //default constructor
-        College(const char* departmentFileName); //constructor given department
+        College(std::vector<Course> courses); //constructor given department
+        size();
+        insertCourse(/* key */);
+        insertPrereq(/* course1, course2, key*/)
+        removeCourse(/*asdf*/);
+        incidentEdges(/* course */):
+        areAdjacent(/* course1, course2 */):
+
+        origin(/* prereq (edge) */); //do we need these?
+        destination(/* prereq (edge) */); 
+
         BFS(); //maybe iterator?
-
-        class Iterator : std::iterator<std::forward_iterator_tag, Point> 
-        {
-            public:
-                Iterator();
-                //Iterator(ImageTraversal * traversal, Point startPoint, const PNG * png, double tolerance);
-                Iterator(Node startPoint);
-                Iterator & operator++();
-                Point operator*();
-                bool operator!=(const Iterator &other);
-                bool isDone() const;
-            private:
-                ImageTraversal * _traversal;
-                Point _current;
-                std::vector<bool> temp;
-                std::vector< std::vector<bool> > _visited;
-                const PNG * _png;
-                HSLAPixel _startPxl;
-                double _tol;
-                bool _done;
-        }
+        find(/*asdf*/); //use iterator to locate certain course??
+        
     private:
-        virtual Iterator begin() = 0;
 
-        virtual Iterator end() = 0;
-
-        virtual void add(const Point & t) = 0;
-
-        virtual Point pop() = 0;
-
-        virtual Point peek() const = 0;
-
-        virtual bool empty() const = 0;
+        std::vector<Course> _courses;   //holds VERTS (classes)
+        std::vector<Course> _prereqs;   //holds EDGES (prerequisits)
 }
