@@ -18,7 +18,7 @@ class Vertex{
         size_t getId();
 
 
-
+        bool operator==(Vertex v);
     private:
         std::vector<Vertex*> adjacentVertices_;      //contains all verticies *this points to
         std::string name_;                                  //course data
