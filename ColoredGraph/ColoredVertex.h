@@ -17,12 +17,11 @@ class ColoredVertex{
         std::vector<ColoredVertex*> getVerticesPointedTo();             //returns all vertecies that *this points to
 
 
-        
+
     private:
         size_t numEdgeSets;                                 //self explanatory
         std::vector<ColoredEdgeSet> edgeSets_;              //contains all edgeSets from *this
         std::vector<ColoredVertex*> adjacentVertices_;      //contains all verticies *this points to
-
         std::string name_;                                  //course data
         size_t id_;
 };

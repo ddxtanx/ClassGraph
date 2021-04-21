@@ -17,15 +17,15 @@ class ColoredGraph{
         double getWeightBetweenVector(ColoredEdge edge);
 
         ColoredGraph* minimalPrerecChainBetween(ColoredVertex from, ColoredVertex to);          //main function to use for output
-
-
+        size_t getVerticiesSize();
+        size_t getEdgesSize();
         //iterator for BFS?
 
 
     private:
         std::vector<ColoredVertex> vertices_;
         std::vector<ColoredEdge> edges_;
-        ColoredVertex* start_;
+        //ColoredVertex* start_;                //not necessary except for traversals
         
         std::vector<std::vector<double>> adjacencyMatrix_;
 };

@@ -14,24 +14,30 @@
 class BFS
 {
 public:
-  class Iterator : std::iterator<std::forward_iterator_tag, ColoredVertex> 
+  class Iterator 
+  : std::iterator<std::forward_iterator_tag, ColoredVertex> 
   {
     public:
       Iterator();
-      Iterator(const ColoredGraph * graph, ColoredVertex startPoint, BFS * traversal);
+      Iterator(const ColoredGraph * graph, ColoredVertex * startPoint, BFS * traversal);
 
       Iterator & operator++();
       ColoredVertex & operator*();
       bool operator!=(const Iterator &other);
       bool isDone() const;
+
     private:
       //pointer to BFS? i dont think necessary because not virtual
       //current vertex copy
       //std::vector<bool> temp;
-      //bool _done;
+      BFS * traversal_;
+      ColoredVertex * curr_;
+      std::vector<bool> visited_;
+      ColoredGraph * graph_;
+      bool done_;
   };
 
-    BFS(const ColoredGraph * graph, ColoredVertex startPoint);    //traversal constructor
+    BFS(const ColoredGraph & graph, ColoredVertex & startPoint);    //traversal constructor
 
     Iterator begin();                                             //return iterator
     Iterator end();
@@ -43,10 +49,10 @@ public:
 
 private:
   //vars used for iterator
-  ColoredGraph * _graph;              //pointer to const graph data
-  ColoredVertex * _root;              //start point
-  ColoredVertex * _curr;
-  std::queue<ColoredVertex *> _q;     //queue for nodes to visit
+  ColoredGraph & graph_;              //pointer to const graph data
+  ColoredVertex * root_;              //start point
+  
+  std::queue<ColoredVertex *> q_;     //queue for nodes to visit
   //  +++++++++++++++                 //visited node graph
 
 }
