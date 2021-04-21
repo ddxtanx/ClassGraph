@@ -21,6 +21,10 @@ class Graph{
         size_t getEdgesSize();
         //iterator for BFS?
 
+        void addVertex(Vertex* vert);
+        void addEdge(Vertex* from, Vertex* to, double weight);
+        void addEdge(Edge* e);
+
 
     private:
         std::vector<Vertex*> vertices_;
