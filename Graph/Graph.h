@@ -5,16 +5,21 @@
 class Graph{
     public:     
         Graph();                                                                         //constructors
-        Graph(std::vector<Vertex> vertices);
+        Graph(std::vector<Vertex*> vertices);
         //ColoredGraph(std::vector<ColoredEdge> edges);                                         //cannot have edges without vertexes...
-        Graph(std::vector<Vertex> vertices, std::vector<Edge> edges);
+        Graph(std::vector<Vertex*> vertices, std::vector<Edge*> edges);
 
+<<<<<<< HEAD
         std::vector<Vertex> & getVertices();   //used for printing and whole graph representation
         std::vector<Edge> & getEdges();
+=======
+        std::vector<Vertex*> getVertices();   //used for printing and whole graph representation
+        std::vector<Edge*> getEdges();
+>>>>>>> 0d05876366565760e60bd28580161d1be4a7aed1
 
 
-        double getWeightBetweenVector(Vertex from, Vertex to);                    //used in algorithms
-        double getWeightBetweenVector(Edge edge);
+        double getWeightBetweenVector(Vertex* from, Vertex* to);                    //used in algorithms
+        double getWeightBetweenVector(Edge* edge);
 
         //ColoredGraph* minimalPrerecChainBetween(ColoredVertex from, ColoredVertex to);          //main function to use for output
         size_t getVerticiesSize();
@@ -23,9 +28,9 @@ class Graph{
 
 
     private:
-        std::vector<Vertex> vertices_;
-        std::vector<Edge> edges_;
-        //ColoredVertex* start_;                //not necessary except for traversals
+        std::vector<Vertex*> vertices_;
+        std::vector<Edge*> edges_;
+        Vertex* start_;                
         
         std::vector<std::vector<double>> adjacencyMatrix_;
 };

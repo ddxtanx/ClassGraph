@@ -9,9 +9,9 @@ class Edge{
         Vertex* getFrom();           //getter and setter functions
         Vertex* getTo();
         double getWeight();
-        void setFrom();
-        void setTo();
-        void setWeight();
+        void setFrom(Vertex* newFrom);
+        void setTo(Vertex* newTo);
+        void setWeight(double newWeight);
 
     private:
         Vertex* from_;       //edge data
