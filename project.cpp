@@ -11,7 +11,6 @@ int main()
   std::vector<std::vector<std::string>> ECE_data=getData("Courses-and-prereqs/ECE_courses.dat");
   std::vector<std::vector<std::string>> MATH_data=getData("Courses-and-prereqs/MATH_courses.dat");
   std::vector<std::vector<std::string>> PHYS_data=getData("Courses-and-prereqs/PHYS_courses.dat");
-  Graph g;
   std::vector<Vertex> ECE_Vertices;
   std::vector<Vertex> CS_Vertices;
   std::vector<Vertex> PHYS_Vertices;
@@ -36,6 +35,9 @@ int main()
     std::vector<std::string> firstTok=PHYS_data[i];
     PHYS_Vertices.push_back(Vertex(firstTok[0]));
   }
-  std::cout<<CS_Vertices.size()<<" "<<ECE_Vertices.size()<<" "<<PHYS_Vertices.size()<<" "<<MATH_Vertices.size()<<std::endl;
+  Graph ECE_Graph(ECE_Vertices);
+  Graph CS_Graph(CS_Vertices);
+  Graph PHYS_Graph(PHYS_Vertices);
+  Graph MATH_Graph(MATH_Vertices);
   return 0;
 }
