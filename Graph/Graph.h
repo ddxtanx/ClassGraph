@@ -9,14 +9,9 @@ class Graph{
         //ColoredGraph(std::vector<ColoredEdge> edges);                                         //cannot have edges without vertexes...
         Graph(std::vector<Vertex*> vertices, std::vector<Edge*> edges);
 
-<<<<<<< HEAD
+
         std::vector<Vertex> & getVertices();   //used for printing and whole graph representation
         std::vector<Edge> & getEdges();
-=======
-        std::vector<Vertex*> getVertices();   //used for printing and whole graph representation
-        std::vector<Edge*> getEdges();
->>>>>>> 0d05876366565760e60bd28580161d1be4a7aed1
-
 
         double getWeightBetweenVector(Vertex* from, Vertex* to);                    //used in algorithms
         double getWeightBetweenVector(Edge* edge);
