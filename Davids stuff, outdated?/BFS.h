@@ -1,47 +1,52 @@
 #pragma once
 
-#include "course.h"
+#include "../ColoredGraph/ColoredGraph.h"
+#include <iterator>
 #include <vector>
+#include <list>
+#include <queue>
 
 //////////////////////////////////////////////////////////
 /*  Iterator class to traverse the graph?? idk yet WIP
 */
 //////////////////////////////////////////////////////////
 
-
-class Iterator : std::iterator<std::forward_iterator_tag, Point> 
+class BFS
 {
-  public:
-    Iterator();
-    Iterator(ImageTraversal * traversal, Point startPoint, const PNG * png, double tolerance);
+public:
+  class Iterator : std::iterator<std::forward_iterator_tag, ColoredVertex> 
+  {
+    public:
+      Iterator();
+      Iterator(const ColoredGraph * graph, ColoredVertex startPoint, BFS * traversal);
 
-    Iterator & operator++();
-    Point operator*();
-    bool operator!=(const Iterator &other);
+      Iterator & operator++();
+      ColoredVertex & operator*();
+      bool operator!=(const Iterator &other);
+      bool isDone() const;
+    private:
+      //pointer to BFS? i dont think necessary because not virtual
+      //current vertex copy
+      //std::vector<bool> temp;
+      //bool _done;
+  };
 
-    //bool isDone() const;
-  private:
-    //ImageTraversal * _traversal;
-    //Point _current;
-    //std::vector<bool> temp;
-    //std::vector< std::vector<bool> > _visited;
-    //const PNG * _png;
-    //HSLAPixel _startPxl;
-    //double _tol;
-    //bool _done;
-};
+    BFS(const ColoredGraph * graph, ColoredVertex startPoint);    //traversal constructor
 
+    Iterator begin();                                             //return iterator
+    Iterator end();
 
-  virtual Iterator begin() = 0;
-
-  virtual Iterator end() = 0;
-
-  virtual void add(const Point & t) = 0;
-
-  virtual Point pop() = 0;
-
-  virtual Point peek() const = 0;
-
-  virtual bool empty() const = 0;
+    void add(const ColoredVertex & vert);                         //iterator helpers
+    ColoredVertex pop();
+    ColoredVertex peek() const;
+    bool empty() const;
 
 private:
+  //vars used for iterator
+  ColoredGraph * _graph;              //pointer to const graph data
+  ColoredVertex * _root;              //start point
+  ColoredVertex * _curr;
+  std::queue<ColoredVertex *> _q;     //queue for nodes to visit
+  //  +++++++++++++++                 //visited node graph
+
+}
