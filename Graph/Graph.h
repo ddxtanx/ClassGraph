@@ -5,7 +5,7 @@
 class Graph{
     public:     
         Graph();                                                                         //constructors
-        Graph(std::vector<Vertex*> vertices);
+        Graph(std::vector<Vertex> vertices);
         Graph(std::vector<Vertex*> vertices, std::vector<Edge*> edges);
 
         std::vector<Vertex*> & getVertices();   //used for printing and whole graph representation
