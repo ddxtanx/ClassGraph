@@ -1,5 +1,6 @@
 #include "Graph.h"
 #include <iostream>
 Graph::Graph(){
-    std::cout << "Hi" << std::endl;
+    start_ = new Vertex("Start");
 }
+
