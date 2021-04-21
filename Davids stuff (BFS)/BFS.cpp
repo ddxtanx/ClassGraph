@@ -22,23 +22,23 @@ BFS::Iterator::Iterator(const Graph * graph, Vertex * startPoint, BFS * traversa
 BFS::Iterator & BFS::Iterator::operator++() //used mp_traversals as structure                                   //done?
 {                                                                                                       
     visited_[curr_->getID()] = 1;                                                            
-    traversal_->add(curr_);             //push current and neighbors(current)
+    add(curr_);             //push current and neighbors(current)
     for (auto it = curr_->adjacentVertecies.begin(); it != curr_->adjacentVertecies.end(); ++it)
     {
         //if vert is unvisited, add(*it)
         if (visited[*it->getID()])
             continue;
         else
-            traversal_->add(*it);
+            add(*it);
   }
 
   do {                                  //Until q_ is empty or vert is not visited, point = q_.pop()
-    if (traversal_->empty())            //Until S is empty
+    if (empty())            //Until S is empty
         break;                          //end of traversal
-    curr_ = traversal_->pop();          //point = q_.pop()  
+    curr_ = pop();          //point = q_.pop()  
   } while(visited_[curr_->getID()]);                  //loop if point is not visited and valid    
 
-    if (traversal_->empty())
+    if (empty())
         done_ = true;
     return *this;
 
@@ -73,41 +73,45 @@ bool BFS::Iterator::isDone() const                                              
     return done_;
 }
 
-
-
-
-
-
 /////////////////////////////////// Traversal /////////////////////////////////////////////
 
 BFS::BFS(const Graph * graph, Vertex * startPoint)                                                //done
 : graph_(graph), root_(startPoint)
 {}
 
-Iterator BFS::begin()                                                                                           //done?
+Iterator BFS::Iterator::begin()                                                                                           //done?
 {
     return Iterator::Iterator(graph_, root_, this);
 }
-Iterator BFS::end()                                                                                             //done
+Iterator BFS::Iterator::end()                                                                                             //done
 {
     return Iterator::Iterator();
 }
 
-void BFS::add(const Vertex & vert)                                                                       //done
+void BFS::Iterator::add(const Vertex & vert)                                                                       //done
 {
     q_.push(vert); 
 }
-Vertex BFS::pop()                                                                                        //done
+Vertex BFS::Iterator::pop()                                                                                        //done
 {
     Vertex temp = q_.front();
     q_.pop();
     return temp;
 }
-Vertex BFS::peek() const                                                                                 //done
+Vertex BFS::Iterator::peek() const                                                                                 //done
 {
     return q_.front();
 }
-bool BFS::empty() const                                                                                         //done
+bool BFS::Iterator::empty() const                                                                                         //done
 {
     return q_.empty();
 }
+
+ /////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
