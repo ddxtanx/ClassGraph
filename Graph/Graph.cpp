@@ -33,3 +33,21 @@ Graph::Graph(std::vector<Vertex*> vertices, std::vector<Edge*> edges){
         adjacencyMatrix_[fromIndex][toIndex] = weight;
     }
 }
+
+std::vector<Vertex*> & Graph::getVertices()
+{
+    return vertices_;
+}
+std::vector<Edge*> & Graph::getEdges()
+{
+    return edges_;
+}
+
+size_t Graph::getVerticiesSize()
+{
+    return vertices_.size();
+}
+size_t Graph::getEdgesSize()
+{
+    return edges_.size();
+}
