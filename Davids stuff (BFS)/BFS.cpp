@@ -9,7 +9,7 @@ BFS::Iterator::Iterator()                                                       
 {
     //nothing
 }
-BFS::Iterator::Iterator(const ColoredGraph * graph, ColoredVertex * startPoint, BFS * traversal)                //done
+BFS::Iterator::Iterator(const Graph * graph, Vertex * startPoint, BFS * traversal)                //done
 : traversal_(traversal), curr_(startPoint), graph_(graph), _done(false)
 {
     int size = graph->getVerticiesSize();
@@ -19,7 +19,7 @@ BFS::Iterator::Iterator(const ColoredGraph * graph, ColoredVertex * startPoint, 
     }
 }
 
-FBS::Iterator & BFS::Iterator::operator++() //used mp_traversals as structure                                   //done?
+BFS::Iterator & BFS::Iterator::operator++() //used mp_traversals as structure                                   //done?
 {                                                                                                       
     visited_[curr_->getID()] = 1;                                                            
     traversal_->add(curr_);             //push current and neighbors(current)
@@ -43,7 +43,7 @@ FBS::Iterator & BFS::Iterator::operator++() //used mp_traversals as structure   
     return *this;
 
 }
-ColoredVertex & BFS::Iterator::operator*()                                                                      //done
+Vertex & BFS::Iterator::operator*()                                                                      //done
 {
     return curr_;
 }
@@ -80,7 +80,7 @@ bool BFS::Iterator::isDone() const                                              
 
 /////////////////////////////////// Traversal /////////////////////////////////////////////
 
-BFS::BFS(const ColoredGraph * graph, ColoredVertex * startPoint)                                                //done
+BFS::BFS(const Graph * graph, Vertex * startPoint)                                                //done
 : graph_(graph), root_(startPoint)
 {}
 
@@ -93,17 +93,17 @@ Iterator BFS::end()                                                             
     return Iterator::Iterator();
 }
 
-void BFS::add(const ColoredVertex & vert)                                                                       //done
+void BFS::add(const Vertex & vert)                                                                       //done
 {
     q_.push(vert); 
 }
-ColoredVertex BFS::pop()                                                                                        //done
+Vertex BFS::pop()                                                                                        //done
 {
-    ColoredVertex temp = q_.front();
+    Vertex temp = q_.front();
     q_.pop();
     return temp;
 }
-ColoredVertex BFS::peek() const                                                                                 //done
+Vertex BFS::peek() const                                                                                 //done
 {
     return q_.front();
 }
