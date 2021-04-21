@@ -13,6 +13,8 @@ class Edge{
         void setTo(Vertex* newTo);
         void setWeight(double newWeight);
 
+        bool isValidEdge(); //checks to see if from and too point places
+
     private:
         Vertex* from_;       //edge data
         Vertex* to_;

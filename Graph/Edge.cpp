@@ -41,3 +41,7 @@ void Edge::setWeight(double newWeight){
     weight_ = newWeight;
 }
 
+bool Edge::isValidEdge(){
+    return from_ != nullptr && to_ != nullptr;
+}
+

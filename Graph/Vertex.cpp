@@ -25,3 +25,7 @@ std::vector<Vertex*> Vertex::getVerticesPointedTo(){
 size_t Vertex::getId(){
     return id_;
 }
+
+bool Vertex::operator==(Vertex v){
+    return (name_ == v.name_);
+}
