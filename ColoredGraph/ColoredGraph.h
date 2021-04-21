@@ -16,6 +16,7 @@ class ColoredGraph{
     private:
         std::vector<ColoredVertex> vertices_;
         std::vector<ColoredEdge> edges_;
+        ColoredVertex* start_;
         
         std::vector<std::vector<double>> adjacencyMatrix_;
 };
