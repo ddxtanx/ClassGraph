@@ -31,37 +31,17 @@ class Iterator : std::iterator<std::forward_iterator_tag, Point>
     //bool _done;
 };
 
-  /**
-   * The begining of an iterator
-   * Virtual function. Derived class need to implement this
-   */
+
   virtual Iterator begin() = 0;
 
-  /**
-   * The end of an iterator
-   * Virtual function. Derived class need to implement this
-   */
   virtual Iterator end() = 0;
 
-  /**
-   * Add new point to the traversal
-   * Virtual function. Derived class need to implement this
-   */
   virtual void add(const Point & t) = 0;
-  /**
-   * Remove and return the next point of the traversal
-   * Virtual function. Derived class need to implement this
-   */
+
   virtual Point pop() = 0;
-  /**
-   * Return but not remove the next point of the traversal
-   * Virtual function. Derived class need to implement this
-   */
+
   virtual Point peek() const = 0;
-  /**
-   * To see if the traversal has no points left
-   * Virtual function. Derived class need to implement this
-   */
+
   virtual bool empty() const = 0;
 
 private:

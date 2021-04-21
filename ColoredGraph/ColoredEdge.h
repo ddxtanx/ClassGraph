@@ -3,19 +3,19 @@
 #include "ColoredVertex.h"
 class ColoredEdge{
     public:
-        ColoredEdge();
-
+        ColoredEdge();                                                      //constructors
         ColoredEdge(ColoredVertex* from, ColoredVertex* to);
-
         ColoredEdge(ColoredVertex* from, ColoredVertex* to, double weight);
 
-        ColoredVertex* getFrom();
-
+        ColoredVertex* getFrom();           //getter and setter functions
         ColoredVertex* getTo();
-        
         double getWeight();
+        void setFrom();
+        void setTo();
+        void setWeight();
+
     private:
-        ColoredVertex* from_;
+        ColoredVertex* from_;       //edge data
         ColoredVertex* to_;
         double weight_;
 };
