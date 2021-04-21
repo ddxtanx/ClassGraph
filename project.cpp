@@ -1,6 +1,7 @@
 #include <iostream>
 #include "dataConvert.cpp"
 #include "Davids stuff (BFS)/BFS.h"
+#include "Graph/Graph.h"
 using namespace std;
 
 int main()
@@ -14,6 +15,7 @@ int main()
   Departments.push_back(MATH_data);
   std::vector<std::vector<std::string>> PHYS_data=getData("Courses-and-prereqs/PHYS_courses.dat");
   Departments.push_back(PHYS_data);
+  Graph g;
   for(unsigned i=0;i<ECE_data.size();i++)
   {std::vector<std::string> firstTok=ECE_data[i];
   for (unsigned i = 0; i < firstTok.size(); i++)

@@ -2,7 +2,6 @@ CXX = clang++
 LD = clang++
 GRAPH_DIR = Graph
 GRAPH_OBJS_DIR = .objs/$(GRAPH_DIR)
-OBJS_DIR += $(GRAPH_OBJS_DIR)
 
 DEPFILE_FLAGS = -MMD -MP
 DEPS = $(GraphDir)/Vertex.h $(GraphDir)/Edge.h $(GraphDir)/Graph.h

@@ -1,17 +1,16 @@
 .objs/project.o: project.cpp dataConvert.cpp Davids\ stuff\ (BFS)/BFS.h \
-  Davids\ stuff\ (BFS)/../ColoredGraph/ColoredGraph.h \
-  Davids\ stuff\ (BFS)/../ColoredGraph/ColoredVertex.h \
-  Davids\ stuff\ (BFS)/../ColoredGraph/ColoredEdgeSet.h \
-  Davids\ stuff\ (BFS)/../ColoredGraph/ColoredEdge.h
+  Davids\ stuff\ (BFS)/../Graph/Graph.h \
+  Davids\ stuff\ (BFS)/../Graph/Vertex.h \
+  Davids\ stuff\ (BFS)/../Graph/Edge.h Graph/Graph.h
 
 dataConvert.cpp:
 
 Davids\ stuff\ (BFS)/BFS.h:
 
-Davids\ stuff\ (BFS)/../ColoredGraph/ColoredGraph.h:
+Davids\ stuff\ (BFS)/../Graph/Graph.h:
 
-Davids\ stuff\ (BFS)/../ColoredGraph/ColoredVertex.h:
+Davids\ stuff\ (BFS)/../Graph/Vertex.h:
 
-Davids\ stuff\ (BFS)/../ColoredGraph/ColoredEdgeSet.h:
+Davids\ stuff\ (BFS)/../Graph/Edge.h:
 
-Davids\ stuff\ (BFS)/../ColoredGraph/ColoredEdge.h:
+Graph/Graph.h:
