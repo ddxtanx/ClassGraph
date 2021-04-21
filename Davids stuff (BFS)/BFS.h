@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../ColoredGraph/ColoredGraph.h"
+#include "../Graph/Graph.h"
 #include <iterator>
 #include <vector>
 #include <list>
 #include <queue>
 
 //////////////////////////////////////////////////////////
-/*  Iterator class to traverse the graph?? idk yet WIP
+/*  Iterator container for traversing graphs
 */
 //////////////////////////////////////////////////////////
 
@@ -15,14 +15,14 @@ class BFS
 {
 public:
   class Iterator 
-  : std::iterator<std::forward_iterator_tag, ColoredVertex> 
+  : std::iterator<std::forward_iterator_tag, Vertex> 
   {
     public:
       Iterator();
-      Iterator(const ColoredGraph * graph, ColoredVertex * startPoint, BFS * traversal);
+      Iterator(const Graph * graph, Vertex * startPoint, BFS * traversal);
 
       Iterator & operator++();
-      ColoredVertex & operator*();
+      Vertex & operator*();
       bool operator!=(const Iterator &other);
       bool isDone() const;
 
@@ -31,28 +31,28 @@ public:
       //current vertex copy
       //std::vector<bool> temp;
       BFS * traversal_;
-      ColoredVertex * curr_;
+      Vertex * curr_;
       std::vector<bool> visited_;
-      ColoredGraph * graph_;
+      Graph * graph_;
       bool done_;
   };
 
-    BFS(const ColoredGraph & graph, ColoredVertex & startPoint);    //traversal constructor
+    BFS(const Graph & graph, Vertex & startPoint);    //traversal constructor
 
     Iterator begin();                                             //return iterator
     Iterator end();
 
-    void add(const ColoredVertex & vert);                         //iterator helpers
-    ColoredVertex pop();
-    ColoredVertex peek() const;
+    void add(const Vertex & vert);                         //iterator helpers
+    Vertex pop();
+    Vertex peek() const;
     bool empty() const;
 
 private:
   //vars used for iterator
-  ColoredGraph & graph_;              //pointer to const graph data
-  ColoredVertex * root_;              //start point
+  Graph & graph_;              //pointer to const graph data
+  Vertex * root_;              //start point
   
-  std::queue<ColoredVertex *> q_;     //queue for nodes to visit
+  std::queue<Vertex *> q_;     //queue for nodes to visit
   //  +++++++++++++++                 //visited node graph
 
 }
