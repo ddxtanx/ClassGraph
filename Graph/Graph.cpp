@@ -1,15 +1,44 @@
 #include "Graph.h"
 #include <iostream>
-Graph::Graph()
-{
+#include <vector>
+Graph::Graph(){
     start_ = new Vertex("Start");
 }
 
-std::vector<Vertex> & Graph::getVertices()
+Graph::Graph(std::vector<Vertex*> vertices){
+    vertices_.assign(vertices.begin(), vertices.end());
+    size_t numVerts = vertices_.size();
+    adjacencyMatrix_.resize(vertices_.size());
+    for(size_t i = 0; i<numVerts; i++){
+        adjacencyMatrix_[i].resize(numVerts);
+    }
+}
+
+Graph::Graph(std::vector<Vertex*> vertices, std::vector<Edge*> edges){
+    vertices_.assign(vertices.begin(), vertices.end());
+    edges_.assign(edges.begin(), edges.end());
+    size_t numVerts = vertices_.size();
+    adjacencyMatrix_.resize(vertices_.size());
+    for(size_t i = 0; i<numVerts; i++){
+        adjacencyMatrix_[i].resize(numVerts);
+    }
+    for(Edge* e : edges_){
+        Vertex* from = e -> getFrom();
+        Vertex* to = e -> getTo();
+        double weight = e -> getWeight();
+
+        size_t fromIndex = from -> getId();
+        size_t toIndex = to -> getId();
+
+        adjacencyMatrix_[fromIndex][toIndex] = weight;
+    }
+}
+
+std::vector<Vertex*> & Graph::getVertices()
 {
     return vertices_;
 }
-std::vector<Edge> & Graph::getEdges()
+std::vector<Edge*> & Graph::getEdges()
 {
     return edges_;
 }
@@ -20,5 +49,5 @@ size_t Graph::getVerticiesSize()
 }
 size_t Graph::getEdgesSize()
 {
-    retrurn edges_.size();
+    return edges_.size();
 }
