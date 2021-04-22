@@ -67,6 +67,6 @@ int main()
 
   for (BFS::Iterator it = traversal.begin(); it != traversal.end(); ++it)
   {
-    std::cout << **it << std::endl;
+    std::cout << *it << std::endl;
   }
 }
