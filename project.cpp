@@ -1,6 +1,6 @@
 #include <iostream>
 #include "dataConvert.cpp"
-#include "Davids stuff (BFS)/BFS.h"
+#include "Davids_Work/BFS.h"
 #include "Graph/Graph.h"
 using namespace std;
 
@@ -58,7 +58,6 @@ int main()
   }
   Graph g(Vertices);
   std::cout<<Vertices.size()<<std::endl;
-  return 0;
 
 
   std::vector<Vertex> & verts = g.getVertices();  //get reference to vertices
@@ -69,4 +68,5 @@ int main()
   {
     std::cout << *it << std::endl;
   }
+  return 0;
 }

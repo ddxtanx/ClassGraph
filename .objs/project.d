@@ -1,14 +1,15 @@
-.objs/project.o: project.cpp dataConvert.cpp Davids\ stuff\ (BFS)/BFS.h \
-  Davids\ stuff\ (BFS)/../Graph/Graph.h \
-  Davids\ stuff\ (BFS)/../Graph/Vertex.h \
-  Davids\ stuff\ (BFS)/../Graph/Edge.h
+.objs/project.o: project.cpp dataConvert.cpp Davids_Work/BFS.h \
+  Davids_Work/../Graph/Graph.h Davids_Work/../Graph/Vertex.h \
+  Davids_Work/../Graph/Edge.h Graph/Graph.h
 
 dataConvert.cpp:
 
-Davids\ stuff\ (BFS)/BFS.h:
+Davids_Work/BFS.h:
 
-Davids\ stuff\ (BFS)/../Graph/Graph.h:
+Davids_Work/../Graph/Graph.h:
 
-Davids\ stuff\ (BFS)/../Graph/Vertex.h:
+Davids_Work/../Graph/Vertex.h:
 
-Davids\ stuff\ (BFS)/../Graph/Edge.h:
+Davids_Work/../Graph/Edge.h:
+
+Graph/Graph.h:

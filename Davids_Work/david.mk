@@ -1,0 +1,6 @@
+DAVID_DIR = Davids_Work
+DAVID_OBJS_DIR = .objs/$(DAVID_DIR)
+
+DAVID_OBJS = BFS
+DAVID_DIR_OBJS = $(patsubst %, $(DAVID_DIR)/%.o, $(DAVID_OBJS))
+OBJS += $(DAVID_DIR_OBJS)
