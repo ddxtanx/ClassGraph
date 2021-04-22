@@ -10,6 +10,7 @@ class Graph{
 
         std::vector<Vertex> & getVertices();   //used for printing and whole graph representation
         std::vector<Edge> & getEdges();
+        Vertex& getStart();
 
         bool vertexInGraph(Vertex v);
         

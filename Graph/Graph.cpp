@@ -39,6 +39,10 @@ std::vector<Edge> & Graph::getEdges()
     return edges_;
 }
 
+Vertex& Graph::getStart(){
+    return start_;
+}
+
 size_t Graph::getVerticiesSize()
 {
     return vertices_.size();

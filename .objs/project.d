@@ -1,7 +1,7 @@
 .objs/project.o: project.cpp dataConvert.cpp Davids\ stuff\ (BFS)/BFS.h \
   Davids\ stuff\ (BFS)/../Graph/Graph.h \
   Davids\ stuff\ (BFS)/../Graph/Vertex.h \
-  Davids\ stuff\ (BFS)/../Graph/Edge.h
+  Davids\ stuff\ (BFS)/../Graph/Edge.h Graph/Graph.h
 
 dataConvert.cpp:
 
@@ -12,3 +12,5 @@ Davids\ stuff\ (BFS)/../Graph/Graph.h:
 Davids\ stuff\ (BFS)/../Graph/Vertex.h:
 
 Davids\ stuff\ (BFS)/../Graph/Edge.h:
+
+Graph/Graph.h:
