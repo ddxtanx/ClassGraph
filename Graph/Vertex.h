@@ -22,7 +22,7 @@ class Vertex{
         bool operator==(Vertex v);
 
         std::ostream& operator<<(std::ostream& os){
-            os << name_;
+            os << "Vertex: "<< name_;
             return os;
         }
     private:
