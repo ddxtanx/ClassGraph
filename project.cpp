@@ -15,22 +15,46 @@ int main()
   for(unsigned i=0;i<ECE_data.size();i++)
   {
     std::vector<std::string> firstTok=ECE_data[i];
-    Vertices.push_back(Vertex(firstTok[0]));
+    Vertex currVertex=Vertex(firstTok[0]);
+    for(unsigned i=1;i<firstTok.size();i++)
+    {
+      Vertex toVer(firstTok[i]);
+      currVertex.connectTo(&toVer);
+    }
+    Vertices.push_back(currVertex);
   }
   for(unsigned i=0;i<CS_data.size();i++)
   {
     std::vector<std::string> firstTok=CS_data[i];
-    Vertices.push_back(Vertex(firstTok[0]));
+    Vertex currVertex=Vertex(firstTok[0]);
+    for(unsigned i=1;i<firstTok.size();i++)
+    {
+      Vertex toVer(firstTok[i]);
+      currVertex.connectTo(&toVer);
+    }
+    Vertices.push_back(currVertex);
   }
   for(unsigned i=0;i<MATH_data.size();i++)
   {
     std::vector<std::string> firstTok=MATH_data[i];
-    Vertices.push_back(Vertex(firstTok[0]));
+    Vertex currVertex=Vertex(firstTok[0]);
+    for(unsigned i=1;i<firstTok.size();i++)
+    {
+      Vertex toVer(firstTok[i]);
+      currVertex.connectTo(&toVer);
+    }
+    Vertices.push_back(currVertex);
   }
   for(unsigned i=0;i<PHYS_data.size();i++)
   {
     std::vector<std::string> firstTok=PHYS_data[i];
-    Vertices.push_back(Vertex(firstTok[0]));
+    Vertex currVertex=Vertex(firstTok[0]);
+    for(unsigned i=1;i<firstTok.size();i++)
+    {
+      Vertex toVer(firstTok[i]);
+      currVertex.connectTo(&toVer);
+    }
+    Vertices.push_back(currVertex);
   }
   Graph g(Vertices);
   std::cout<<Vertices.size()<<std::endl;

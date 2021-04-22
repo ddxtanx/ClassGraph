@@ -15,7 +15,7 @@ class Vertex{
 
 
         std::vector<Vertex*> getVerticesPointedTo();             //returns all vertecies that *this points to
-
+        std::string getName();
         size_t getId();
 
 
