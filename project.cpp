@@ -62,7 +62,7 @@ int main()
 
 
   std::vector<Vertex> & verts = g.getVertices();  //get reference to vertices
-  BFS traversal(&g, &(verts[0]));                    //create traversal, start at vert 0
+  BFS traversal(g, verts[0]);                    //create traversal, start at vert 0
 
 
   for (BFS::Iterator it = traversal.begin(); it != traversal.end(); ++it)
