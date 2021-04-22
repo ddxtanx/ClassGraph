@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <iostream>
 class Vertex{
     public:
         static size_t count;
@@ -19,6 +20,11 @@ class Vertex{
 
 
         bool operator==(Vertex v);
+
+        std::ostream& operator<<(std::ostream& os){
+            os << name_;
+            return os;
+        }
     private:
         std::vector<Vertex*> adjacentVertices_;      //contains all verticies *this points to
         std::string name_;                                  //course data
