@@ -59,4 +59,14 @@ int main()
   Graph g(Vertices);
   std::cout<<Vertices.size()<<std::endl;
   return 0;
+
+
+  std::vector<Vertex> & verts = g.getVertices();  //get reference to vertices
+  BFS traversal(g, &(verts[0]));                    //create traversal, start at vert 0
+
+
+  for (BFS::Iterator it = traversak.begin(); it != traversal.end(); ++it)
+  {
+    std::cout << **it << std::endl;
+  }
 }
