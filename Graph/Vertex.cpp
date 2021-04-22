@@ -22,11 +22,11 @@ std::vector<Vertex*> Vertex::getVerticesPointedTo(){
     return adjacentVertices_;
 }
 
-std::string Vertex::getName(){
+std::string Vertex::getName() const{
     return name_;
 }
 
-size_t Vertex::getId(){
+size_t Vertex::getId() const{
     return id_;
 }
 

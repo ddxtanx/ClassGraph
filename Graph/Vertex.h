@@ -15,14 +15,14 @@ class Vertex{
 
 
         std::vector<Vertex*> getVerticesPointedTo();             //returns all vertecies that *this points to
-        std::string getName();
-        size_t getId();
+        std::string getName() const;
+        size_t getId() const;
 
 
         bool operator==(Vertex v);
 
-        std::ostream& operator<<(std::ostream& os){
-            os << "Vertex: "<< name_;
+        friend std::ostream& operator<<(std::ostream& os, const Vertex& v){
+            os << "Vertex: "<< v.getName();
             return os;
         }
     private:
