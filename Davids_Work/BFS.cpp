@@ -5,15 +5,16 @@
 
 
 BFS::Iterator::Iterator()                                                                                       //done
-: graph_(NULL), curr_(NULL), done_(true)
+: curr_(NULL), graph_(NULL), done_(true)
 {
     //nothing
 }
 BFS::Iterator::Iterator(const Graph * graph, Vertex * startPoint, BFS * traversal)                //done
-: traversal_(traversal), curr_(startPoint), graph_(graph), _done(false)
+: traversal_(traversal), curr_(startPoint), graph_(graph)
 {
+    done_ = false;
     int size = graph->getVerticiesSize();
-    for ( int i = 0; i < size, ++i)
+    for ( int i = 0; i < size; ++i)
     {
         visited_.push_back(0);  //init visited list
     }
@@ -21,12 +22,13 @@ BFS::Iterator::Iterator(const Graph * graph, Vertex * startPoint, BFS * traversa
 
 BFS::Iterator & BFS::Iterator::operator++() //used mp_traversals as structure                                   //done?
 {                                                                                                       
-    visited_[curr_->getID()] = 1;                                                            
+    visited_[curr_->getId()] = 1;                                                            
     add(curr_);             //push current and neighbors(current)
-    for (auto it = curr_->adjacentVertecies.begin(); it != curr_->adjacentVertecies.end(); ++it)
+    auto neighbors = curr_->getVerticesPointedTo();
+    for (auto it = neighbors.begin(); it != neighbors.end(); ++it)
     {
         //if vert is unvisited, add(*it)
-        if (visited[*it->getID()])
+        if (visited_[(*it) -> getId()])
             continue;
         else
             add(*it);
@@ -36,18 +38,18 @@ BFS::Iterator & BFS::Iterator::operator++() //used mp_traversals as structure   
     if (empty())            //Until S is empty
         break;                          //end of traversal
     curr_ = pop();          //point = q_.pop()  
-  } while(visited_[curr_->getID()]);                  //loop if point is not visited and valid    
+  } while(visited_[curr_->getId()]);                  //loop if point is not visited and valid    
 
     if (empty())
         done_ = true;
     return *this;
 
 }
-Vertex & BFS::Iterator::operator*()                                                                      //done
+Vertex *& BFS::Iterator::operator*()                                                                      //done
 {
     return curr_;
 }
-bool BFS::Iterator::operator!=(const Iterator &other)                                                           //done
+bool BFS::Iterator::operator!=(const BFS::Iterator &other)                                                           //done
 {
     //if empty, return false (aka if at end/Null, return false)
     bool thisEmpty = false; 
@@ -59,7 +61,8 @@ bool BFS::Iterator::operator!=(const Iterator &other)                           
     //else if ((!thisEmpty)&&(!otherEmpty)) return (traversal != other.traversal); //both not empty then compare the traversals
     else if (!thisEmpty && !otherEmpty)
     {
-        if (curr_->id_ == *other->id_)
+        Vertex* otherCurr = other.peek();
+        if (curr_->getId() == otherCurr->getId())
             return false;               //values equal
         else
             return true;                //values present but unequal

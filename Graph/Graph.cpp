@@ -30,7 +30,7 @@ Graph::Graph(std::vector<Vertex> vertices, std::vector<Edge> edges){
     }
 }
 
-std::vector<Vertex> & Graph::getVertices()
+std::vector<Vertex> & Graph::getVertices() 
 {
     return vertices_;
 }
@@ -43,20 +43,20 @@ Vertex& Graph::getStart(){
     return start_;
 }
 
-size_t Graph::getVerticiesSize()
+size_t Graph::getVerticiesSize() const
 {
     return vertices_.size();
 }
-size_t Graph::getEdgesSize()
+size_t Graph::getEdgesSize() const
 {
     return edges_.size();
 }
 
-bool Graph::vertexInGraph(Vertex v){
+bool Graph::vertexInGraph(Vertex v) const{
     return std::count(vertices_.begin(), vertices_.end(), v);
 }
 
-double Graph::getWeightBetweenVertices(Vertex from, Vertex to){
+double Graph::getWeightBetweenVertices(Vertex from, Vertex to) const{
     if(!vertexInGraph(from) || !vertexInGraph(to)){
         return -1;
     }
@@ -65,7 +65,7 @@ double Graph::getWeightBetweenVertices(Vertex from, Vertex to){
     return adjacencyMatrix_[fromIndex][toIndex];    
 }
 
-double Graph::getWeightBetweenVertices(Edge e){
+double Graph::getWeightBetweenVertices(Edge e) const{
     if(!e.isValidEdge()){
         return -1;
     }

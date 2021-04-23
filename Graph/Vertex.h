@@ -19,7 +19,7 @@ class Vertex{
         size_t getId() const;
 
 
-        bool operator==(Vertex v);
+        bool operator==(const Vertex v) const;
 
         friend std::ostream& operator<<(std::ostream& os, const Vertex& v){
             os << "Vertex: "<< v.getName();

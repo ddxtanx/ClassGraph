@@ -30,6 +30,6 @@ size_t Vertex::getId() const{
     return id_;
 }
 
-bool Vertex::operator==(Vertex v){
+bool Vertex::operator==(const Vertex v) const{
     return (name_ == v.name_);
 }

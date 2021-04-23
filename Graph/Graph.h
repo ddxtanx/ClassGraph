@@ -12,14 +12,14 @@ class Graph{
         std::vector<Edge> & getEdges();
         Vertex& getStart();
 
-        bool vertexInGraph(Vertex v);
+        bool vertexInGraph(Vertex v) const;
         
-        double getWeightBetweenVertices(Vertex from, Vertex to);                    //used in algorithms
-        double getWeightBetweenVertices(Edge edge);
+        double getWeightBetweenVertices(Vertex from, Vertex to) const;                    //used in algorithms
+        double getWeightBetweenVertices(Edge edge) const;
 
         //ColoredGraph minimalPrerecChainBetween(ColoredVertex from, ColoredVertex to);          //main function to use for output
-        size_t getVerticiesSize();
-        size_t getEdgesSize();
+        size_t getVerticiesSize() const;
+        size_t getEdgesSize() const;
         //iterator for BFS?
 
         void addVertex(Vertex vert);

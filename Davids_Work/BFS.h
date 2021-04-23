@@ -22,13 +22,13 @@ public:
       Iterator(const Graph * graph, Vertex * startPoint, BFS * traversal);
 
       Iterator & operator++();
-      Vertex & operator*();
+      Vertex*& operator*();
       bool operator!=(const Iterator &other);
       bool isDone() const;
 
-      void add(const Vertex & vert);                         //iterator helpers
-      Vertex pop();
-      Vertex peek() const;
+      void add(const Vertex * vert);                         //iterator helpers
+      Vertex* pop();
+      Vertex* peek() const;
       bool empty() const;
 
 
@@ -39,7 +39,7 @@ public:
       BFS * traversal_;
       Vertex * curr_;
       std::vector<bool> visited_;
-      Graph * graph_;
+      const Graph * graph_;
       bool done_;
       std::queue<Vertex *> q_;     //queue for nodes to visit
   };
