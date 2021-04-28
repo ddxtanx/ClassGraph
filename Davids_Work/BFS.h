@@ -9,7 +9,7 @@
 class BFS
 {
   public:
-  class iterator : std::Iterator<std::forward_iterator_tag, Vertex>
+  class iterator : std::iterator<std::forward_iterator_tag, Vertex>
   {
     public:
     iterator();
@@ -17,7 +17,7 @@ class BFS
 
     iterator & operator++();
     Vertex * operator*();
-    bool operator!=(const Iterator &other);
+    bool operator!=(const iterator &other);
 
     private:
     std::vector<bool> visited;
