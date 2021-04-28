@@ -9,7 +9,7 @@
 class BFS
 {
   public:
-  class iterator : std::iterator<std::forward_iterator_tag, Vertex>
+  class iterator : std::Iterator<std::forward_iterator_tag, Vertex>
   {
     public:
     iterator();
