@@ -6,7 +6,41 @@
 #include <list>
 #include <queue>
 
+class BFS
+{
+  public:
+  class iterator : std::iterator<std::forward_iterator_tag, Vertex>
+  {
+    public:
+    iterator();
+    iterator(Vertex * start);
 
+    iterator & operator++();
+    Vertex * operator*();
+    bool operator!=(const Iterator &other);
+
+    private:
+    std::vector<bool> visited;
+    std::queue<* Vertex> q;
+    Vertex * current;             //is NULL when finished
+  }
+
+  BFS();  //constructors
+  BFS(Graph & g, Vertex & v);   //pass in by reference for easy use
+  BFS(Graph * g, Vertex * v);   //pass in by pointer for flexibility
+
+  BFS::iterator begin();
+  BFS::iterator end();
+  
+
+
+  private:
+  Graph * graph_;
+  Vertex * root_;
+  std::vector<Vertex> * verts_;  //private data from graph
+  std::vector<Edge> * edges_;
+
+}
 
 
 

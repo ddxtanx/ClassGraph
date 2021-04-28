@@ -3,14 +3,102 @@
 
 
 
+//iterator stuff
+  //std::vector<bool> visited;
+  //std::queue<* Vertex> q;
+  //Vertex * current;
+
+BFS::iterator::iterator()
+: current(NULL)
+{
+    //nothing
+}
+BFS::iterator::iterator(Vertex * start)
+: current(start)
+{
+    visited.resize(graph_->getVerticiesSize()); //init visited to size of graph
+    q.push(start);                              //start q
+}
+BFS::iterator & BFS::iterator::operator++()
+{
+    
+//set root as visited
+//push root to q
+
+//while (!q.empty())
+//      v = q.dequeue()
+//      if (v == target)
+//          return
+//      push all valid surrounding cells (aka if edge is valid and not visited)
+//          mark visited
+//          q.enque(node)
+
+}
+Vertex * BFS::iterator::operator*()
+{
+    return current;   //returns reference to vertex in graph
+}
+bool BFS::iterator::operator!=(const iterator &other)
+{
+    return current != other;       //compares current vertexes, returns results
+}
 
 
+//traversal container stuff
+  //Graph * graph_;
+  //Vertex * root_;
+  //std::vector<Vertex> * verts_;  //private data from graph
+  //std::vector<Edge> * edges_;
 
+BFS::BFS()  //null
+: graph_(NULL), root_(NULL),verts_(NULL),edges_(NULL)
+{
+    //nothing
+}
+BFS::BFS(Graph & g, Vertex & v) //reference
+: graph_(&g), root_(&v)
+{
+    verts_ = &(g.getVertices());
+    edges_ = &(g.getEdges());
+}
+BFS::BFS(Graph * g, Vertex * v) //pointer
+: graph_(g), root_(v)
+{
+    verts_ = &(g->getVertices());
+    edges_ = &(g->getEdges());
+}
+BFS::iterator BFS::begin()
+{
+    return BFS::iterator(   &(graph_->getStart())   );
+}
+BFS::iterator BFS::end()
+{
+    return BFS::iterator(); //null
+}
 
+/*
+Graph();                                                                         //constructors
+        Graph(std::vector<Vertex> vertices);
+        Graph(std::vector<Vertex> vertices, std::vector<Edge> edges);
 
+        std::vector<Vertex> & getVertices();   //used for printing and whole graph representation
+        std::vector<Edge> & getEdges();
+        Vertex& getStart();
 
+        bool vertexInGraph(Vertex v) const;
+        
+        double getWeightBetweenVertices(Vertex from, Vertex to) const;                    //used in algorithms
+        double getWeightBetweenVertices(Edge edge) const;
 
+        //ColoredGraph minimalPrerecChainBetween(ColoredVertex from, ColoredVertex to);          //main function to use for output
+        size_t getVerticiesSize() const;
+        size_t getEdgesSize() const;
+        //iterator for BFS?
 
+        void addVertex(Vertex vert);
+        void addEdge(Vertex from, Vertex to, double weight);
+        void addEdge(Edge e);
+*/
 
 
 
