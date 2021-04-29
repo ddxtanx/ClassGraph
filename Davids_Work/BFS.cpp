@@ -3,45 +3,69 @@
 
 
 
-//iterator stuff
+//Iterator stuff
   //std::vector<bool> visited;
   //std::queue<* Vertex> q;
   //Vertex * current;
 
-BFS::iterator::iterator()
+BFS::Iterator::Iterator()
 : current(NULL)
 {
     //nothing
 }
-BFS::iterator::iterator(Vertex * start)
+
+BFS::Iterator::Iterator(Vertex * start, Graph * g)
 : current(start)
 {
-    visited.resize(graph_->getVerticiesSize()); //init visited to size of graph
-    q.push(start);                              //start q
+    visited.resize(g->getVerticiesSize()); //init visited to size of graph
+    //q.push(current);
 }
-BFS::iterator & BFS::iterator::operator++()
+
+BFS::Iterator & BFS::Iterator::operator++()
 {
-    
-//set root as visited
-//push root to q
 
-//while (!q.empty())
-//      v = q.dequeue()
-//      if (v == target)
-//          return
-//      push all valid surrounding cells (aka if edge is valid and not visited)
-//          mark visited
-//          q.enque(node)
+    visited[current->getId()] = 1;      //mark current as visited
 
+    std::vector<Vertex*> adj = current->getVerticesPointedTo();                     //returns all vertecies that current points to
+    for (std::vector<Vertex*>::iterator it = adj.begin(); it != adj.end(); ++it)    //push all valid adjacent verts
+    {
+        q.push(*it);
+    }
+
+    while(!q.empty())       //Until q is empty or point is not visited
+    {
+        current = q.front();
+        q.pop();
+
+        if (!visited[current->getId()]) //if current has not been visited
+            break;                      //  return current basically
+    }
+
+    if (q.empty())      //check if end of traversal
+        current = NULL;
+
+    return *this;
 }
-Vertex * BFS::iterator::operator*()
+
+Vertex * BFS::Iterator::operator*()
 {
     return current;   //returns reference to vertex in graph
 }
-bool BFS::iterator::operator!=(const iterator &other)
+bool BFS::Iterator::operator!=(const BFS::Iterator &other)
 {
-    return current != other;       //compares current vertexes, returns results
+    return isDone() != other.isDone();       //compares current vertexes, returns results
 }
+
+
+bool BFS::Iterator::isDone() const
+{
+    if(current != NULL)
+        return false;
+    else
+        return true;
+}
+
+
 
 
 //traversal container stuff
@@ -67,13 +91,13 @@ BFS::BFS(Graph * g, Vertex * v) //pointer
     verts_ = &(g->getVertices());
     edges_ = &(g->getEdges());
 }
-BFS::iterator BFS::begin()
+BFS::Iterator BFS::begin()
 {
-    return BFS::iterator(   &(graph_->getStart())   );
+    return BFS::Iterator(&(graph_->getStart()), graph_);
 }
-BFS::iterator BFS::end()
+BFS::Iterator BFS::end()
 {
-    return BFS::iterator(); //null
+    return BFS::Iterator(); //null
 }
 
 /*
