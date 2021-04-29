@@ -1,14 +1,18 @@
+#include "dataConvert.h"
+#include <iostream>
 #include <fstream>
 using std::ifstream;
 
 #include <cstring>
 #include <vector>
+#include <regex>
+#include "utils.h"
 
 const int MAX_CHARS_PER_LINE = 512;
 const int MAX_TOKENS_PER_LINE = 20;
 const char* const DELIMITER = ",";
 
-std::vector<std::vector<std::string>> getData(const char* fileName)
+std::vector<std::vector<std::string>> DataConvert::getData(const char* fileName)
 {
   std::vector<std::vector<std::string>> tokens;
   ifstream fin;
@@ -22,16 +26,24 @@ std::vector<std::vector<std::string>> getData(const char* fileName)
   while (!fin.eof())
   {
     // read an entire line into memory
-    char buf[MAX_CHARS_PER_LINE];
-    fin.getline(buf, MAX_CHARS_PER_LINE);
+    std::string line;
+    std::getline(fin, line);
+    Utils::trim(line);
 
     // parse the line into blank-delimited tokens
     int n = 0; // a for-loop index
 
     // Vector to store memory addresses of the tokens in buf
     std::vector<std::string> token;
+    std::regex lineRegex("(([A-Z]{2,5} [0-9]{3})(,|$){1})");
+    std::smatch matches;
+    while(std::regex_search(line, matches, lineRegex)){
+      std::string courseName = matches[2].str(); // matches goes {"Course Name," "Course Name,", "Coursename", ","}
+      token.push_back(courseName);
+      line = matches.suffix().str();
+    }
     //Parse the line.
-    char* first=strtok(buf, DELIMITER);//Get first token
+    /*char* first=strtok(buf, DELIMITER);//Get first token
     token.push_back(std::string(first));
     if(first)
     {
@@ -41,7 +53,7 @@ std::vector<std::vector<std::string>> getData(const char* fileName)
         if (!currTok) break; // no more tokens
         token.push_back(std::string(currTok));//If token is not null, add it to the token vector
       }
-    }
+    }*/
     tokens.push_back(token); //Push the current token to the vector of tokens.
   }
   return tokens;

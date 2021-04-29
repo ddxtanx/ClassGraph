@@ -1,7 +1,8 @@
 #include "Vertex.h"
+#include "../utils.h"
 #include <string>
 #include <vector>
-size_t Vertex::count = 0;
+int Vertex::count = 0;
 Vertex::Vertex(){
     name_ = "";
     id_ = count;
@@ -32,4 +33,8 @@ size_t Vertex::getId() const{
 
 bool Vertex::operator==(const Vertex v) const{
     return (name_ == v.name_);
+}
+
+void Vertex::setId(int id){
+    id_ = id;
 }

@@ -4,7 +4,7 @@
 #include <iostream>
 class Vertex{
     public:
-        static size_t count;
+        static int count;
         Vertex();
         Vertex(std::string name);    //constructor
         
@@ -17,6 +17,8 @@ class Vertex{
         std::vector<Vertex*> getVerticesPointedTo();             //returns all vertecies that *this points to
         std::string getName() const;
         size_t getId() const;
+
+        void setId(int id);
 
 
         bool operator==(const Vertex v) const;

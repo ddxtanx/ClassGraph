@@ -23,16 +23,34 @@ class Graph{
         //iterator for BFS?
 
         void addVertex(Vertex vert);
-        void addEdge(Vertex from, Vertex to, double weight);
+        void addEdge(Vertex& from, Vertex& to, double weight);
         void addEdge(Edge e);
 
-
     private:
+        template <typename T>
+        class Matrix{
+            public:
+                Matrix();
+                Matrix(int rows, int cols);
+
+                T getVal(int row, int col) const;
+                void setVal(int row, int col, T val);
+
+                void resizeMatrix(int rows, int cols);
+                
+                std::pair<int, int> getDims() const;
+            private:
+                int getCoordinate(int row, int col) const;
+                std::vector<T> matrix_;
+                int rows_;
+                int cols_;
+        };
         std::vector<Vertex> vertices_;
         std::vector<Edge> edges_;
         Vertex start_;                
         
-        std::vector<std::vector<double>> adjacencyMatrix_;
+        Matrix<double> adjacencyMatrix_;
 
+    protected:
         void resizeAdjMatrix(size_t size);
 };
