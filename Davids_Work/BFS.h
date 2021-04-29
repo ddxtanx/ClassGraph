@@ -1,16 +1,78 @@
 #pragma once
 
 #include "../Graph/Graph.h"
-#include <iterator>
+//#include <iterator>
 #include <vector>
 #include <list>
 #include <queue>
 
-//////////////////////////////////////////////////////////
-/*  Iterator container for traversing graphs
-*/
-//////////////////////////////////////////////////////////
+class BFS
+{
+  public:
+  class iterator : std::iterator<std::forward_iterator_tag, Vertex>
+  {
+    public:
+    iterator();
+    iterator(Vertex * start);
 
+    iterator & operator++();
+    Vertex * operator*();
+    bool operator!=(const iterator &other);
+
+    private:
+    std::vector<bool> visited;
+    std::queue<* Vertex> q;
+    Vertex * current;             //is NULL when finished
+  }
+
+  BFS();  //constructors
+  BFS(Graph & g, Vertex & v);   //pass in by reference for easy use
+  BFS(Graph * g, Vertex * v);   //pass in by pointer for flexibility
+
+  BFS::iterator begin();
+  BFS::iterator end();
+  
+
+
+  private:
+  Graph * graph_;
+  Vertex * root_;
+  std::vector<Vertex> * verts_;  //private data from graph
+  std::vector<Edge> * edges_;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//old code
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/*
 class BFS
 {
 public:
@@ -41,10 +103,10 @@ public:
       std::vector<bool> visited_;
       const Graph * graph_;
       bool done_;
-      std::queue<Vertex *> q_;     //queue for nodes to visit
+      std::queue<const Vertex *> q_;     //queue for nodes to visit
   };
 
-    BFS(const Graph & graph, Vertex & startPoint);    //traversal constructor
+    BFS(const Graph * graph, Vertex * startPoint);    //traversal constructor
 
     Iterator begin();                                             //return iterator
     Iterator end();
@@ -52,7 +114,7 @@ public:
 
 private:
   //vars used for iterator
-  Graph & graph_;              //pointer to const graph data
+  const Graph * graph_;              //pointer to const graph data
   Vertex * root_;              //start point
   
   
@@ -67,3 +129,4 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 
 };
+*/

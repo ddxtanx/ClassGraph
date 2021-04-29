@@ -1,6 +1,134 @@
 #include "BFS.h"
+#include <queue>
 
 
+
+//iterator stuff
+  //std::vector<bool> visited;
+  //std::queue<* Vertex> q;
+  //Vertex * current;
+
+BFS::iterator::iterator()
+: current(NULL)
+{
+    //nothing
+}
+BFS::iterator::iterator(Vertex * start)
+: current(start)
+{
+    visited.resize(graph_->getVerticiesSize()); //init visited to size of graph
+    q.push(start);                              //start q
+}
+BFS::iterator & BFS::iterator::operator++()
+{
+    
+//set root as visited
+//push root to q
+
+//while (!q.empty())
+//      v = q.dequeue()
+//      if (v == target)
+//          return
+//      push all valid surrounding cells (aka if edge is valid and not visited)
+//          mark visited
+//          q.enque(node)
+
+}
+Vertex * BFS::iterator::operator*()
+{
+    return current;   //returns reference to vertex in graph
+}
+bool BFS::iterator::operator!=(const iterator &other)
+{
+    return current != other;       //compares current vertexes, returns results
+}
+
+
+//traversal container stuff
+  //Graph * graph_;
+  //Vertex * root_;
+  //std::vector<Vertex> * verts_;  //private data from graph
+  //std::vector<Edge> * edges_;
+
+BFS::BFS()  //null
+: graph_(NULL), root_(NULL),verts_(NULL),edges_(NULL)
+{
+    //nothing
+}
+BFS::BFS(Graph & g, Vertex & v) //reference
+: graph_(&g), root_(&v)
+{
+    verts_ = &(g.getVertices());
+    edges_ = &(g.getEdges());
+}
+BFS::BFS(Graph * g, Vertex * v) //pointer
+: graph_(g), root_(v)
+{
+    verts_ = &(g->getVertices());
+    edges_ = &(g->getEdges());
+}
+BFS::iterator BFS::begin()
+{
+    return BFS::iterator(   &(graph_->getStart())   );
+}
+BFS::iterator BFS::end()
+{
+    return BFS::iterator(); //null
+}
+
+/*
+Graph();                                                                         //constructors
+        Graph(std::vector<Vertex> vertices);
+        Graph(std::vector<Vertex> vertices, std::vector<Edge> edges);
+
+        std::vector<Vertex> & getVertices();   //used for printing and whole graph representation
+        std::vector<Edge> & getEdges();
+        Vertex& getStart();
+
+        bool vertexInGraph(Vertex v) const;
+        
+        double getWeightBetweenVertices(Vertex from, Vertex to) const;                    //used in algorithms
+        double getWeightBetweenVertices(Edge edge) const;
+
+        //ColoredGraph minimalPrerecChainBetween(ColoredVertex from, ColoredVertex to);          //main function to use for output
+        size_t getVerticiesSize() const;
+        size_t getEdgesSize() const;
+        //iterator for BFS?
+
+        void addVertex(Vertex vert);
+        void addEdge(Vertex from, Vertex to, double weight);
+        void addEdge(Edge e);
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//old code
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/*
 //////////////////////////////////// Iterator /////////////////////////////////////////////
 
 
@@ -82,26 +210,27 @@ BFS::BFS(const Graph * graph, Vertex * startPoint)                              
 : graph_(graph), root_(startPoint)
 {}
 
-Iterator BFS::Iterator::begin()                                                                                           //done?
+BFS::Iterator BFS::begin()                                                                                           //done?
 {
-    return Iterator::Iterator(graph_, root_, this);
+    //Iterator(const Graph * graph, Vertex * startPoint, BFS * traversal)
+    return BFS::Iterator(graph_, root_, this);
 }
-Iterator BFS::Iterator::end()                                                                                             //done
+BFS::Iterator BFS::end()                                                                                             //done
 {
-    return Iterator::Iterator();
+    return BFS::Iterator();
 }
 
-void BFS::Iterator::add(const Vertex & vert)                                                                       //done
+void BFS::Iterator::add(const Vertex * vert)                                                                       //done
 {
     q_.push(vert); 
 }
-Vertex BFS::Iterator::pop()                                                                                        //done
+Vertex* BFS::Iterator::pop()                                                                                        //done
 {
     Vertex temp = q_.front();
     q_.pop();
     return temp;
 }
-Vertex BFS::Iterator::peek() const                                                                                 //done
+Vertex* BFS::Iterator::peek() const                                                                                 //done
 {
     return q_.front();
 }
@@ -110,11 +239,4 @@ bool BFS::Iterator::empty() const                                               
     return q_.empty();
 }
 
- /////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
+*/
