@@ -17,8 +17,8 @@ class BFS
     Iterator(Vertex * start, Graph * g);
 
     Iterator & operator++();
-    Vertex * operator*();
-    bool operator!=(const iterator &other);
+    Vertex * operator*() const;
+    bool operator!=(const Iterator &other) const;
 
     bool isDone() const;
 
@@ -38,8 +38,8 @@ class BFS
 
 
   private:
-  const Graph * graph_;
-  const Vertex * root_;
+  Graph * graph_;
+  Vertex * root_;
   std::vector<Vertex> * verts_;  //private data from graph
   std::vector<Edge> * edges_;
 

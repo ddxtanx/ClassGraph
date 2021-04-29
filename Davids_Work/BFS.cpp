@@ -47,11 +47,11 @@ BFS::Iterator & BFS::Iterator::operator++()
     return *this;
 }
 
-Vertex * BFS::Iterator::operator*()
+Vertex * BFS::Iterator::operator*() const
 {
     return current;   //returns reference to vertex in graph
 }
-bool BFS::Iterator::operator!=(const BFS::Iterator &other)
+bool BFS::Iterator::operator!=(const BFS::Iterator &other) const
 {
     return isDone() != other.isDone();       //compares current vertexes, returns results
 }
@@ -93,7 +93,7 @@ BFS::BFS(Graph * g, Vertex * v) //pointer
 }
 BFS::Iterator BFS::begin()
 {
-    return BFS::Iterator(&(graph_->getStart()), graph_);
+    return BFS::Iterator(root_, graph_);
 }
 BFS::Iterator BFS::end()
 {
