@@ -1,4 +1,8 @@
 .vscode
+.objs
 .objs/
 .objs/*
-./project
+project
+allDepts.txt
+*.dSYM
+*objs
