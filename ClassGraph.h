@@ -10,9 +10,9 @@ class ClassGraph : public Graph{
         ClassGraph();
         ~ClassGraph();
 
-        Vertex& getStart();
+        Vertex*& getStart();
     private:
         std::vector<Vertex*> vertexMap_;
-        Vertex getOrCreateVertex(std::string courseName);
-        Vertex start_;
+        Vertex* getOrCreateVertex(std::string courseName);
+        Vertex* start_;
 };

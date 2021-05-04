@@ -5,13 +5,13 @@
 class Graph{
     public:     
         Graph();                                                                         //constructors
-        Graph(std::vector<Vertex> vertices);
-        Graph(std::vector<Vertex> vertices, std::vector<Edge> edges);
+        Graph(std::vector<Vertex*> vertices);
+        Graph(std::vector<Vertex*> vertices, std::vector<Edge> edges);
 
-        std::vector<Vertex> & getVertices();   //used for printing and whole graph representation
+        std::vector<Vertex*> & getVertices();   //used for printing and whole graph representation
         std::vector<Edge> & getEdges();
 
-        bool vertexInGraph(Vertex v) const;
+        bool vertexInGraph(Vertex* v) const;
         
         double getWeightBetweenVertices(Vertex from, Vertex to) const;                    //used in algorithms
         double getWeightBetweenVertices(Edge edge) const;
@@ -21,8 +21,8 @@ class Graph{
         size_t getEdgesSize() const;
         //iterator for BFS?
 
-        void addVertex(Vertex vert);
-        void addEdge(Vertex& from, Vertex& to, double weight);
+        void addVertex(Vertex* vert);
+        void addEdge(Vertex* from, Vertex* to, double weight);
         void addEdge(Edge e);
 
     private:
@@ -44,7 +44,7 @@ class Graph{
                 int rows_;
                 int cols_;
         };
-        std::vector<Vertex> vertices_;
+        std::vector<Vertex*> vertices_;
         std::vector<Edge> edges_;               
         
         Matrix<double> adjacencyMatrix_;

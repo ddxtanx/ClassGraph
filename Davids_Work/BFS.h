@@ -40,7 +40,7 @@ class BFS
   private:
   Graph * graph_;
   Vertex * root_;
-  std::vector<Vertex> * verts_;  //private data from graph
+  std::vector<Vertex*> * verts_;  //private data from graph
   std::vector<Edge> * edges_;
 
 };
