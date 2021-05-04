@@ -42,7 +42,7 @@ class BFS
   Vertex * root_;
   std::vector<Vertex*> * verts_;  //private data from graph
   std::vector<Edge> * edges_;
-
+  
 };
 
 
