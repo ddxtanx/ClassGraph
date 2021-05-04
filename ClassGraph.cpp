@@ -37,6 +37,7 @@ ClassGraph::ClassGraph(){
     Vertex startVertex("START");
     startVertex.setId(numEntries - 1); 
     addVertex(startVertex);
+    start_ = startVertex;
     for(unsigned i=0;i<ALL_COURSE_data.size();i++)
     {
         std::vector<std::string> firstTok=ALL_COURSE_data[i];
@@ -59,6 +60,9 @@ ClassGraph::ClassGraph(){
     }
 }
 
+Vertex& ClassGraph::getStart(){
+    return start_;
+}
 ClassGraph::~ClassGraph(){
     for(Vertex* vert: vertexMap_){
         if(vert != nullptr){

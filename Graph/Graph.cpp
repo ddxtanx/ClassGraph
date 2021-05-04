@@ -61,26 +61,17 @@ std::pair<int, int> Graph::Matrix<T>::getDims() const{
     return {rows_, cols_};
 }
 Graph::Graph(){
-    Vertex start("Start");
-    start_ = start;
-    vertices_.insert(vertices_.end(), start_);
 }
 
 Graph::Graph(std::vector<Vertex> vertices){
-    Vertex start("Start");
-    start_ = start;
     vertices_.assign(vertices.begin(), vertices.end());
-    vertices_.insert(vertices_.begin(), start_);
 
     size_t numVerts = vertices_.size();
     resizeAdjMatrix(numVerts);
 }
 
 Graph::Graph(std::vector<Vertex> vertices, std::vector<Edge> edges){
-    Vertex start("Start");
-    start_ = start;
     vertices_.assign(vertices.begin(), vertices.end());
-    vertices_.insert(vertices_.begin(), start_);
     size_t numVerts = vertices_.size();
     resizeAdjMatrix(numVerts);
     for(Edge e : edges_){
@@ -95,10 +86,6 @@ std::vector<Vertex> & Graph::getVertices()
 std::vector<Edge> & Graph::getEdges()
 {
     return edges_;
-}
-
-Vertex& Graph::getStart(){
-    return start_;
 }
 
 size_t Graph::getVerticiesSize() const
