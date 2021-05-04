@@ -14,7 +14,7 @@ int main()
   std::cout<< "# of verts in graph: " << g.getVertices().size()<<std::endl;
 
   std::vector<Vertex> & verts = g.getVertices();  //get reference to vertices
-  Vertex start = verts[0];
+  /*
   std::cout << "Printing First 10 vertexes in graph obj: " << std::endl;
 
   int count = 0;
@@ -26,10 +26,10 @@ int main()
       break;
 
   }
+  */
 
 
-
-  BFS traversal(&g, &verts[2]);                    //create traversal, start at vert 0
+  BFS traversal(&g, &verts[9]);                    //create traversal, start at vert 0
 
   for (BFS::Iterator it = traversal.begin(); it != traversal.end(); ++it)
   {
