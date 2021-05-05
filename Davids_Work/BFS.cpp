@@ -27,9 +27,9 @@ BFS::Iterator & BFS::Iterator::operator++()
     visited[current->getId()] = 1;      //mark current as visited
 
     std::vector<Vertex*> adj = current->getVerticesPointedTo();                     //returns all vertecies that current points to
-    std::cout << "Vert name = " << current->getName() << std::endl;
-    std::cout << "Vert ID = " << current->getId() << std::endl;
-    std::cout << "adj size() = "<< adj.size() << std::endl;
+    //std::cout << "Vert name = " << current->getName() << std::endl;
+    //std::cout << "Vert ID = " << current->getId() << std::endl;
+    //std::cout << "adj size() = "<< adj.size() << std::endl;
     for (std::vector<Vertex*>::iterator it = adj.begin(); it != adj.end(); ++it)    //push all valid adjacent verts
     {
         q.push(*it);
