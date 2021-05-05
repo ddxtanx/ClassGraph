@@ -29,7 +29,9 @@ ClassGraph::ClassGraph(const std::string fileName){
     //std::vector<std::vector<std::string>> ECE_data=DataConvert::getData("Courses-and-prereqs/ECE_courses.dat");
     //std::vector<std::vector<std::string>> MATH_data=DataConvert::getData("Courses-and-prereqs/MATH_courses.dat");
     //std::vector<std::vector<std::string>> PHYS_data=DataConvert::getData("Courses-and-prereqs/PHYS_courses.dat");
+
     std::vector<std::vector<std::string>> ALL_COURSE_data = DataConvert::getData(fileName);
+
     int numEntries = ALL_COURSE_data.size() + 1;
     int numClassIDs = 800*Utils::numDepts;
     vertexMap_.resize(numClassIDs);
