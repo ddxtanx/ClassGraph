@@ -7,6 +7,8 @@ class Graph{
         Graph();                                                                         //constructors
         Graph(std::vector<Vertex*> vertices);
         Graph(std::vector<Vertex*> vertices, std::vector<Edge> edges);
+        Graph(const Graph& ot);
+        ~Graph();
 
         std::vector<Vertex*> & getVertices();   //used for printing and whole graph representation
         std::vector<Edge> & getEdges();
@@ -24,6 +26,9 @@ class Graph{
         void addVertex(Vertex* vert);
         void addEdge(Vertex* from, Vertex* to, double weight);
         void addEdge(Edge e);
+        void makeAcyclic(Vertex* source);
+
+        Graph& operator=(const Graph& other);
 
     private:
         template <typename T>
@@ -48,6 +53,9 @@ class Graph{
         std::vector<Edge> edges_;               
         
         Matrix<double> adjacencyMatrix_;
+
+        void copy(const Graph& other);
+        void clear();
 
     protected:
         void resizeAdjMatrix(size_t size);

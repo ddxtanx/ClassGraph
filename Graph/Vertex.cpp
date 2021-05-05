@@ -2,6 +2,7 @@
 #include "../utils.h"
 #include <string>
 #include <vector>
+#include <algorithm>
 int Vertex::count = 0;
 Vertex::Vertex(){
     name_ = "";
@@ -17,6 +18,10 @@ Vertex::Vertex(std::string name){
 
 void Vertex::connectTo(Vertex* to){
     adjacentVertices_.insert(adjacentVertices_.end(), to);
+}
+
+void Vertex::disconnectTo(Vertex* to){
+    adjacentVertices_.erase(std::find(adjacentVertices_.begin(), adjacentVertices_.end(), to));
 }
 
 std::vector<Vertex*> Vertex::getVerticesPointedTo(){
