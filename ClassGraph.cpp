@@ -43,6 +43,9 @@ ClassGraph::ClassGraph(const std::string fileName){
     for(unsigned i=0;i<ALL_COURSE_data.size();i++)
     {
         std::vector<std::string> firstTok=ALL_COURSE_data[i];
+        if(firstTok.empty()){
+            continue;
+        }
         std::string baseCourseName = firstTok[0];
         Vertex* currVertex = getOrCreateVertex(baseCourseName);
         bool hasNoPrereq = true;
