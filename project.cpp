@@ -3,11 +3,13 @@
 #include "Davids_Work/BFS.h"
 #include "Graph/Graph.h"
 #include "ClassGraph.h"
+#include "utils.h"
 using namespace std;
-
+std::string filename = "./Courses-and-prereqs/AllPrereqs.dat";
 int main()
 {
-  ClassGraph g;
+  Utils::initializeDepts(filename);
+  ClassGraph g(filename);
   std::cout << std::endl;
   std::cout << std::endl;
   std::cout << "#####################################   Welcome to the danger zone  --  (Start of main)   ######################################" << std::endl;

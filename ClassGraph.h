@@ -7,7 +7,7 @@
 
 class ClassGraph : public Graph{
     public:
-        ClassGraph();
+        ClassGraph(const std::string fileName);
         ~ClassGraph();
 
         Vertex*& getStart();
