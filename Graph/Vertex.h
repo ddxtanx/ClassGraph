@@ -24,7 +24,7 @@ class Vertex{
         bool operator==(const Vertex v) const;
 
         friend std::ostream& operator<<(std::ostream& os, const Vertex& v){
-            os << "Vertex: "<< v.getName();
+            os << v.getName();
             return os;
         }
     private:
