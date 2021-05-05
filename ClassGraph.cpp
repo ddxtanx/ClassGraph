@@ -66,9 +66,10 @@ Vertex*& ClassGraph::getStart(){
     return start_;
 }
 ClassGraph::~ClassGraph(){
-    for(Vertex* vert: vertexMap_){
+    for(Vertex*& vert: vertexMap_){
         if(vert != nullptr){
             delete vert;
+            vert = nullptr;
         }
     }
 }

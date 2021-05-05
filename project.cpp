@@ -40,6 +40,9 @@ int main()
   BFS::Iterator it = traversal.begin();
   for (; it != traversal.end(); ++it)
   {
+    if(*it == nullptr){
+      continue;
+    }
     Vertex v = **it;
     std::cout << "Classes that require " << v << ": ";
     for(Vertex* vp : v.getVerticesPointedTo()){
