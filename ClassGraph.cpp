@@ -27,10 +27,9 @@ Vertex* ClassGraph::getOrCreateVertex(std::string courseName){
 ClassGraph::ClassGraph(const std::string fileName){
     //std::vector<std::vector<std::string>> CS_data=DataConvert::getData("Courses-and-prereqs/CS_courses.dat");
     //std::vector<std::vector<std::string>> ECE_data=DataConvert::getData("Courses-and-prereqs/ECE_courses.dat");
-    std::vector<std::vector<std::string>> ALL_COURSE_data=DataConvert::getData("Courses-and-prereqs/ECE_courses.dat");
     //std::vector<std::vector<std::string>> MATH_data=DataConvert::getData("Courses-and-prereqs/MATH_courses.dat");
     //std::vector<std::vector<std::string>> PHYS_data=DataConvert::getData("Courses-and-prereqs/PHYS_courses.dat");
-    //std::vector<std::vector<std::string>> ALL_COURSE_data = DataConvert::getData("Courses-and-prereqs/AllPrereqs.dat");
+
     std::vector<std::vector<std::string>> ALL_COURSE_data = DataConvert::getData(fileName);
 
     int numEntries = ALL_COURSE_data.size() + 1;
