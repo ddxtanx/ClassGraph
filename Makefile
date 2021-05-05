@@ -11,5 +11,5 @@ include cs225/make/cs225.mk
 
 clean:
 	find .objs -type f -name "*.[d|o]" -exec rm {} \;
-	rm project
-	rm test
+	rm -f project
+	rm -f test
