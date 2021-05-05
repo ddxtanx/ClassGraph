@@ -170,7 +170,10 @@ void Graph::makeAcyclic(Vertex* source){
     if(!vertexInGraph(source)){
         return;
     }
-
+    std::vector<Edge> edges;
+    std::vector<bool> vertexInMST;
+    vertexInMST.resize(getVerticiesSize());
+    
 }
 
 void Graph::clear(){
