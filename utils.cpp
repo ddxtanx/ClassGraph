@@ -8,7 +8,7 @@
 #include "dataConvert.h"
 
 std::unordered_map<std::string, int> Utils::deptNumMap;
-std::string Utils::courseRegexStr;
+std::string Utils::courseRegexStr = "";
 bool Utils::mapInitialized = false;
 bool Utils::deptsInitialized = false;
 std::vector<std::string> Utils::depts;

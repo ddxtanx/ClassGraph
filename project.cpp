@@ -5,7 +5,7 @@
 #include "ClassGraph.h"
 #include "utils.h"
 using namespace std;
-std::string filename = "./Courses-and-prereqs/AllPrereqs.dat";
+std::string filename = "./Courses-and-prereqs/TestData.dat";
 int main()
 {
   Utils::initializeDepts(filename);
@@ -37,9 +37,7 @@ int main()
   Vertex* start = g.getStart();
 
   BFS traversal(&g, start);                    //create traversal, start at vert 0
-  std::cout << "Classes that require " << start->getName() << ":" << std::endl;
   BFS::Iterator it = traversal.begin();
-  ++it;
   for (; it != traversal.end(); ++it)
   {
     Vertex v = **it;

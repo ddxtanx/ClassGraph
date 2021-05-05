@@ -30,9 +30,9 @@ BFS::Iterator & BFS::Iterator::operator++()
     //std::cout << "Vert name = " << current->getName() << std::endl;
     //std::cout << "Vert ID = " << current->getId() << std::endl;
     //std::cout << "adj size() = "<< adj.size() << std::endl;
-    for (std::vector<Vertex*>::iterator it = adj.begin(); it != adj.end(); ++it)    //push all valid adjacent verts
+    for (Vertex* v : adj)    //push all valid adjacent verts
     {
-        q.push(*it);
+        q.push(v);
     }
 
     while(!q.empty())       //Until q is empty or point is not visited
@@ -44,7 +44,7 @@ BFS::Iterator & BFS::Iterator::operator++()
             break;                      //  return current basically
     }
 
-    if (q.empty())      //check if end of traversal
+    if (q.empty() && current != nullptr && visited[current->getId()])      //check if end of traversal
         current = NULL;
 
     return *this;

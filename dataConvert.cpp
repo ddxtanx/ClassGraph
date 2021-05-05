@@ -26,7 +26,7 @@ std::vector<std::vector<std::string>> DataConvert::getData(const std::string fil
   while (!fin.eof())
   {
     // read an entire line into memory
-    std::string line;
+    std::string line = "";
     std::getline(fin, line);
     Utils::trim(line);
 
@@ -34,7 +34,7 @@ std::vector<std::vector<std::string>> DataConvert::getData(const std::string fil
 
     // Vector to store memory addresses of the tokens in buf
     std::vector<std::string> token;
-    std::regex lineRegex("(([A-Z]{2,5} [0-9]{3})(,|$){1})");
+    std::regex lineRegex("(([A-Z]{2,9} [0-9]{3})(,|$){1})");
     std::smatch matches;
     while(std::regex_search(line, matches, lineRegex)){
       std::string courseName = matches[2].str(); // matches goes {"Course Name," "Course Name,", "Coursename", ","}
@@ -71,7 +71,7 @@ std::vector<std::string> DataConvert::getDepartments(const std::string filename)
     std::getline(fin, line);
     Utils::trim(line);
 
-    std::regex courseRegex("[A-Z]{2,5}");
+    std::regex courseRegex("[A-Z]{2,9}");
     std::smatch matches;
     if(std::regex_search(line, matches, courseRegex)){
       std::string courseName = matches[0].str();
