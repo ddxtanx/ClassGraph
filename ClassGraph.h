@@ -8,11 +8,15 @@
 class ClassGraph : public Graph{
     public:
         ClassGraph(const std::string fileName);
-        ~ClassGraph();
+        ClassGraph(const ClassGraph& ot);
 
         Vertex*& getStart();
+        
+        void makeAcyclic();
+        ClassGraph& operator=(const ClassGraph& ot);
     private:
         std::vector<Vertex*> vertexMap_;
         Vertex* getOrCreateVertex(std::string courseName);
+
         Vertex* start_;
 };

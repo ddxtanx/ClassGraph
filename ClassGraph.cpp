@@ -65,15 +65,18 @@ ClassGraph::ClassGraph(const std::string fileName){
 Vertex*& ClassGraph::getStart(){
     return start_;
 }
-ClassGraph::~ClassGraph(){
-    for(Vertex*& vert: vertexMap_){
-        if(vert != nullptr){
-            delete vert;
-            vert = nullptr;
-        }
+
+ClassGraph& ClassGraph::operator=(const ClassGraph& ot){
+    std::cout << "assigning a class graph" << std::endl;
+    if(&ot != this){
+        this -> ~ClassGraph();
     }
-    if(start_ != nullptr){
-        delete start_;
-        start_ = nullptr;
-    }
+    Graph::operator=(ot);
+    start_ = new Vertex(*ot.start_);
+    return *this;
+}
+
+ClassGraph::ClassGraph(const ClassGraph& ot) : Graph(ot){
+    std::cout << "Copy constructing a class graph" << std::endl;
+    start_ = new Vertex(*ot.start_);
 }

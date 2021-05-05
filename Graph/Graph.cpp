@@ -165,3 +165,68 @@ void Graph::addEdge(Vertex* from, Vertex* to, double weight){
     Edge e(from, to, weight);
     edges_.push_back(e);
 }
+
+void Graph::makeAcyclic(Vertex* source){
+    if(!vertexInGraph(source)){
+        return;
+    }
+
+}
+
+void Graph::clear(){
+    for(Vertex* v : vertices_){
+        if(v != nullptr){
+            delete v;
+            v = nullptr;
+        }
+    }
+}
+
+Graph::~Graph(){
+    clear();
+}
+
+void Graph::copy(const Graph& other){
+    std::vector<Edge> newEdges;
+    std::vector<Vertex*> newVertices;
+    newVertices.resize(other.getVerticiesSize());
+    adjacencyMatrix_ = other.adjacencyMatrix_;
+
+    for(Vertex* v : other.vertices_){
+        size_t id = v -> getId();
+        Vertex* newVertex;
+        if(newVertices[id] == nullptr){
+            newVertex = new Vertex(*v);
+            newVertices[id] = newVertex;
+        } else{
+            newVertex = newVertices[id];
+        }
+        for(Vertex* vn : v->getVerticesPointedTo()){
+            size_t idn = vn -> getId();
+            Vertex* newVertexN;
+            if(newVertices[idn] == nullptr){
+                newVertexN = new Vertex(*vn);
+                newVertices[idn] = newVertexN; 
+            } else{
+                newVertexN = newVertices[idn];
+            }
+            double weight = other.getWeightBetweenVertices(*v, *vn);
+            Edge e(newVertex, newVertexN, weight);
+            newEdges.push_back(e);
+        }
+    }
+    vertices_ = newVertices;
+    edges_ = newEdges;
+}
+
+Graph& Graph::operator=(const Graph& ot){
+    if(&ot != this){
+        clear();
+    }
+    copy(ot);
+    return *this;
+}
+
+Graph::Graph(const Graph& ot){
+    copy(ot);
+}

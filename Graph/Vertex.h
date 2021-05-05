@@ -9,6 +9,7 @@ class Vertex{
         Vertex(std::string name);    //constructor
         
         void connectTo(Vertex* to);  //place vertex in group of edges (courses that have OR implementation)
+        void disconnectTo(Vertex* to);
 
         //Edge edgePointingToVertex(Vertex* to);            //returns edge that goes from *this to target vertex
         bool pointsTo(Vertex* to);                               //does this vertex point to an other (directional edge checking)
