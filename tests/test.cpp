@@ -36,11 +36,11 @@ TEST_CASE("BFS iterator small test")
 
 }
 */
+std::string filename = "./Courses-and-prereqs/TestData.dat";
+ClassGraph g(filename);
+
 TEST_CASE("BFS iterator starts at the start point", "[weight=2][part=1]") {
 
-    std::string filename = "../Courses-and-prereqs/TestData.dat";    //load data into graph
-    Utils::initializeDepts(filename);
-    ClassGraph g(filename);
     std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
     Vertex* start = verts[4];                        //pick out 4th vertice
   
@@ -50,9 +50,6 @@ TEST_CASE("BFS iterator starts at the start point", "[weight=2][part=1]") {
 
 TEST_CASE("BFS visits the correct vertex first", "[weight=2][part=1]") {
 
-    std::string filename = "../Courses-and-prereqs/TestData.dat";    //load data into graph
-    Utils::initializeDepts(filename);
-    ClassGraph g(filename);
     std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
 
 
@@ -70,7 +67,7 @@ TEST_CASE("BFS visits the correct vertex first", "[weight=2][part=1]") {
 
 
 
-    
+
     Vertex* start = verts[4];                        //pick out 4th vertice   (CSE 300)
     
     std::cout << *start << std::endl;
@@ -84,9 +81,6 @@ TEST_CASE("BFS visits the correct vertex first", "[weight=2][part=1]") {
 
 TEST_CASE("BFS visits all courses with start as a prereq", "[weight=1][part=1]") {
 
-    std::string filename = "../Courses-and-prereqs/TestData.dat";    //load data into graph
-    Utils::initializeDepts(filename);
-    ClassGraph g(filename);
     std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
     Vertex* start = verts[4];                        //pick out 4th vertice   (CSE 300)
   
@@ -109,9 +103,6 @@ TEST_CASE("BFS visits all courses with start as a prereq", "[weight=1][part=1]")
 
 TEST_CASE("BFS visits only single vertex in disconnected vertex", "[weight=1][part=1]") {
 
-    std::string filename = "../Courses-and-prereqs/TestData.dat";    //load data into graph
-    Utils::initializeDepts(filename);
-    ClassGraph g(filename);
     std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
     Vertex* start = verts[9];                        //pick out 4th vertice   (CSE 300)
   
