@@ -24,13 +24,17 @@ Vertex* ClassGraph::getOrCreateVertex(std::string courseName){
         return vertexMap_[index];
     }
 }
-ClassGraph::ClassGraph(){
+ClassGraph::ClassGraph(const std::string fileName){
     //std::vector<std::vector<std::string>> CS_data=DataConvert::getData("Courses-and-prereqs/CS_courses.dat");
     //std::vector<std::vector<std::string>> ECE_data=DataConvert::getData("Courses-and-prereqs/ECE_courses.dat");
     std::vector<std::vector<std::string>> ALL_COURSE_data=DataConvert::getData("Courses-and-prereqs/ECE_courses.dat");
     //std::vector<std::vector<std::string>> MATH_data=DataConvert::getData("Courses-and-prereqs/MATH_courses.dat");
     //std::vector<std::vector<std::string>> PHYS_data=DataConvert::getData("Courses-and-prereqs/PHYS_courses.dat");
+<<<<<<< HEAD
     //std::vector<std::vector<std::string>> ALL_COURSE_data = DataConvert::getData("Courses-and-prereqs/AllPrereqs.dat");
+=======
+    std::vector<std::vector<std::string>> ALL_COURSE_data = DataConvert::getData(fileName);
+>>>>>>> f5cba85784cca1847b144d0c369c8d5071a12353
     int numEntries = ALL_COURSE_data.size() + 1;
     int numClassIDs = 800*Utils::numDepts;
     vertexMap_.resize(numClassIDs);

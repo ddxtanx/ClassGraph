@@ -12,7 +12,7 @@ const int MAX_CHARS_PER_LINE = 512;
 const int MAX_TOKENS_PER_LINE = 20;
 const char* const DELIMITER = ",";
 
-std::vector<std::vector<std::string>> DataConvert::getData(const char* fileName)
+std::vector<std::vector<std::string>> DataConvert::getData(const std::string fileName)
 {
   std::vector<std::vector<std::string>> tokens;
   ifstream fin;
@@ -31,7 +31,6 @@ std::vector<std::vector<std::string>> DataConvert::getData(const char* fileName)
     Utils::trim(line);
 
     // parse the line into blank-delimited tokens
-    int n = 0; // a for-loop index
 
     // Vector to store memory addresses of the tokens in buf
     std::vector<std::string> token;
@@ -57,4 +56,33 @@ std::vector<std::vector<std::string>> DataConvert::getData(const char* fileName)
     tokens.push_back(token); //Push the current token to the vector of tokens.
   }
   return tokens;
+}
+
+std::vector<std::string> DataConvert::getDepartments(const std::string filename){
+  std::vector<std::string> deptNames;
+  ifstream fin;
+  fin.open(filename);
+  if(!fin.good()){
+    return deptNames;
+  }
+  std::string currentCourse = "";
+  while(!fin.eof()){
+    std::string line;
+    std::getline(fin, line);
+    Utils::trim(line);
+
+    std::regex courseRegex("[A-Z]{2,5}");
+    std::smatch matches;
+    if(std::regex_search(line, matches, courseRegex)){
+      std::string courseName = matches[0].str();
+      if(courseName.empty()){
+        continue;
+      }
+      if(courseName != currentCourse){
+        deptNames.push_back(courseName); 
+        currentCourse = courseName;
+      }
+    }
+  }
+  return deptNames;
 }

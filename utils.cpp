@@ -5,13 +5,35 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
+#include "dataConvert.h"
 
-const std::vector<std::string> depts = {"AAS","ABE","ACCY","ACE","ACES","ADV","AE","AFAS","AFRO","AFST","AGCM","AGED","AHS","AIS","ANSC","ANTH","ARAB","ARCH","ART","ARTD","ARTE","ARTF","ARTH","ARTS","ASRM","ASST","ASTR","ATMS","BADM","BASQ","BCOG","BCS","BIOC","BIOE","BIOP","BSE","BTW","BUS","CB","CDB","CEE","CHBE","CHEM","CHIN","CHLH","CHP","CI","CIC","CLCV","CLE","CMN","CPSC","CS","CSE","CW","CWL","CZCH","DANC","EALC","ECE","ECON","EDPR","EDUC","EIL","ENG","ENGH","ENGL","ENSU","ENVS","EOL","EPOL","EPS","EPSY","ESE","ESL","EURO","FAA","FIN","FLTE","FR","FSHN","GC","GCL","GEOG","GEOL","GER","GLBL","GMC","GRK","GRKM","GS","GWS","HDFS","HEBR","HIST","HNDI","HORT","HRD","HUM","IB","IE","IHLT","INFO","IS","ITAL","JAPN","JOUR","JS","KIN","KOR","LA","LAS","LAST","LAT","LAW","LER","LING","LLS","MACS","MATH","MBA","MCB","MDIA","MDVL","ME","MICR","MILS","MIP","MSE","MUS","MUSE","NEUR","NPRE","NRES","NS","NUTR","PATH","PERS","PHIL","PHYS","PLPA","POL","PORT","PS","PSM","PSYC","REES","REHB","REL","RHET","RSOC","RST","RUSS","SAME","SBC","SCAN","SE","SHS","SLAV","SLS","SOC","SOCW","SPAN","SPED","STAT","SWAH","TAM","TE","THEA","TMGT","TRST","TSM","TURK","UKR","UP","VCM","VM","WLOF","WRIT","YDSH","ZULU"};
-int Utils::numDepts = depts.size();
-std::unordered_map<std::string, int> deptNumMap;
-bool mapInitialized = false;
+std::unordered_map<std::string, int> Utils::deptNumMap;
+std::string Utils::courseRegexStr;
+bool Utils::mapInitialized = false;
+bool Utils::deptsInitialized = false;
+std::vector<std::string> Utils::depts;
+int Utils::numDepts = -1;
 
-int getDeptNum(std::string department){
+void Utils::initializeDepts(std::string fileName){
+    deptsInitialized = true;
+    depts = DataConvert::getDepartments(fileName);
+    numDepts = depts.size();
+    courseRegexStr = "(";
+    int n = 0;
+    for(std::string deptName : depts){
+        courseRegexStr += deptName;
+        if(n != numDepts - 1){
+            courseRegexStr += "|";
+        }
+        n++;
+    }
+    courseRegexStr += ")";
+}
+int Utils::getDeptNum(std::string department){
+    if(!deptsInitialized){
+        std::cout << "Need to initialize depts first!" << std::endl;
+        return -1;
+    }
     if(!mapInitialized){
         int i = 0;
         for(std::string dept: depts){
@@ -23,7 +45,11 @@ int getDeptNum(std::string department){
     return deptNumMap[department];
 }
 int Utils::hashCourseName(std::string courseName){
-    std::regex classRegex("(AAS|ABE|ACCY|ACE|ACES|ADV|AE|AFAS|AFRO|AFST|AGCM|AGED|AHS|AIS|ANSC|ANTH|ARAB|ARCH|ART|ARTD|ARTE|ARTF|ARTH|ARTS|ASRM|ASST|ASTR|ATMS|BADM|BASQ|BCOG|BCS|BIOC|BIOE|BIOP|BSE|BTW|BUS|CB|CDB|CEE|CHBE|CHEM|CHIN|CHLH|CHP|CI|CIC|CLCV|CLE|CMN|CPSC|CS|CSE|CW|CWL|CZCH|DANC|EALC|ECE|ECON|EDPR|EDUC|EIL|ENG|ENGH|ENGL|ENSU|ENVS|EOL|EPOL|EPS|EPSY|ESE|ESL|EURO|FAA|FIN|FLTE|FR|FSHN|GC|GCL|GEOG|GEOL|GER|GLBL|GMC|GRK|GRKM|GS|GWS|HDFS|HEBR|HIST|HNDI|HORT|HRD|HUM|IB|IE|IHLT|INFO|IS|ITAL|JAPN|JOUR|JS|KIN|KOR|LA|LAS|LAST|LAT|LAW|LER|LING|LLS|MACS|MATH|MBA|MCB|MDIA|MDVL|ME|MICR|MILS|MIP|MSE|MUS|MUSE|NEUR|NPRE|NRES|NS|NUTR|PATH|PERS|PHIL|PHYS|PLPA|POL|PORT|PS|PSM|PSYC|REES|REHB|REL|RHET|RSOC|RST|RUSS|SAME|SBC|SCAN|SE|SHS|SLAV|SLS|SOC|SOCW|SPAN|SPED|STAT|SWAH|TAM|TE|THEA|TMGT|TRST|TSM|TURK|UKR|UP|VCM|VM|WLOF|WRIT|YDSH|ZULU) ([0-7][0-9]{2})");
+    if(!deptsInitialized){
+        std::cout << "Need to initialize depts first!" << std::endl;
+        return -1;
+    }
+    std::regex classRegex(courseRegexStr + " ([0-7][0-9]{2})");
     std::smatch matches;
     if(std::regex_match(courseName, matches, classRegex)){
         std::string dept = matches[1].str();

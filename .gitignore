@@ -6,3 +6,4 @@ project
 allDepts.txt
 *.dSYM
 *objs
+test
