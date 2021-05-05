@@ -8,7 +8,6 @@ using namespace std;
 std::string filename = "./Courses-and-prereqs/TestData.dat";
 int main()
 {
-  Utils::initializeDepts(filename);
   ClassGraph g(filename);
   std::cout << std::endl;
   std::cout << std::endl;
