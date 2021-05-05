@@ -72,4 +72,8 @@ ClassGraph::~ClassGraph(){
             vert = nullptr;
         }
     }
+    if(start_ != nullptr){
+        delete start_;
+        start_ = nullptr;
+    }
 }
