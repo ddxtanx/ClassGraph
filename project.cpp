@@ -34,8 +34,7 @@ int main()
     }
   */
 
-  //Vertex* start = g.getStart();
-  Vertex* start = verts[0];
+  Vertex* start = g.getStart();
 
   BFS traversal(&g, start);                    //create traversal, start at vert 0
   std::cout << "Classes that require " << start->getName() << ":" << std::endl;
