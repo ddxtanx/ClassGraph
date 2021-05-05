@@ -42,7 +42,12 @@ int main()
   ++it;
   for (; it != traversal.end(); ++it)
   {
-    std::cout << **it << std::endl; 
+    Vertex v = **it;
+    std::cout << "Classes that require " << v << ": ";
+    for(Vertex* vp : v.getVerticesPointedTo()){
+      std::cout << *vp << ", ";
+    } 
+    std::cout << std::endl;
   }
   return 0;
 
