@@ -39,15 +39,10 @@ int main()
   BFS traversal(&g, start);                    //create traversal, start at vert 0
   for (auto it = traversal.begin(); it != traversal.end(); ++it)
   {
-    if(*it == nullptr){
-      continue;
-    }
     Vertex v = **it;
     std::cout << "Classes that require " << v << ": ";
     for(Vertex* vp : v.getVerticesPointedTo()){
-      if(vp != nullptr){
-        std::cout << *vp << ", ";
-      }
+      std::cout << *vp << ", ";
     } 
     std::cout << std::endl;
   }

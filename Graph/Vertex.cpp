@@ -39,7 +39,13 @@ void Vertex::disconnectTo(Vertex* to){
 }
 
 std::vector<Vertex*> Vertex::getVerticesPointedTo(){
-    return adjacencies_;
+    std::vector<Vertex*> nonNulls;
+    for(Vertex* vp : adjacencies_){
+        if(vp != nullptr){
+            nonNulls.push_back(vp);
+        }
+    }
+    return nonNulls;
 }
 
 std::string Vertex::getName() const{
