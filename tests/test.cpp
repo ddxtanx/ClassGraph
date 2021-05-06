@@ -39,72 +39,67 @@ TEST_CASE("BFS iterator small test")
 std::string filename = "./Courses-and-prereqs/TestData.dat";
 ClassGraph g(filename);
 
+
+//test1
 TEST_CASE("BFS iterator starts at the start point", "[weight=2][part=1]") {
 
     std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
     Vertex* start = verts[4];                        //pick out 4th vertice
-  
+
     BFS traversal(&g, start); 
     REQUIRE( *(traversal.begin()) == start );
 }
-
+//test2
 TEST_CASE("BFS visits the correct vertex first", "[weight=2][part=1]") {
 
     std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
-
-
-
-    std::cout << "Printing First 15 vertexes in graph obj: " << std::endl;
-    int count = 0;
-    for (std::vector<Vertex*>::iterator it = verts.begin(); it != verts.end(); ++it)
-    {
-      std::cout << count << " " << **it << std::endl;
-      ++count;
-      if (count == 15)
-        break;
-
-    }
-
-
-
-
-    Vertex* start = verts[4];                        //pick out 4th vertice   (CSE 300)
+    Vertex* start = verts[3];                        //pick out 4th vertice   (CSE 300)
     
-    std::cout << *start << std::endl;
-  
     BFS traversal(&g, start); 
     BFS::Iterator it = traversal.begin();
     ++it;
-    //std::vector<Vertex*> temp = start->getVerticesPointedTo();
-    REQUIRE( *(it) == (start->getVerticesPointedTo())[0]);
+    std::vector<Vertex*> vert2 = start->getVerticesPointedTo();
+    REQUIRE( *(it) == vert2[0]);
 }
 
+
+//test3
 TEST_CASE("BFS visits all courses with start as a prereq", "[weight=1][part=1]") {
 
     std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
-    Vertex* start = verts[4];                        //pick out 4th vertice   (CSE 300)
+    Vertex* start = verts[1];                        //pick out 2nd vertice   (CSE 100)
   
     BFS traversal(&g, start); 
     unsigned count = 0;
     for (BFS::Iterator it = traversal.begin(); it != traversal.end(); ++it)
-    {
+    {           
         count++;
     }
-    REQUIRE( count == 3 );
+    //should traverse cse100->cse200->cse300->adv101
+        //i.e. 4 cycles
+    REQUIRE( count == 4 );
 
-    start = verts[5];                        //pick out 4th vertice   (CSE 300)
+    std::cout << std::endl;
+
+
+    
+    start = verts[5];                        //pick out 6th vertice   (ANTH 101)
+    BFS traversal2(&g, start); 
     count = 0;
-    for (BFS::Iterator it = traversal.begin(); it != traversal.end(); ++it)
+    for (BFS::Iterator it = traversal2.begin(); it != traversal2.end(); ++it)
     {
         count++;
     }
-    REQUIRE( count == 5 );
+    //should go ANTH101->STE115->ANTH201->STE215(skip ste215 repeat edge)->ANTH301->STE315
+    //ie 6 cycles
+    REQUIRE( count == 6 );
 }
 
+//test4
 TEST_CASE("BFS visits only single vertex in disconnected vertex", "[weight=1][part=1]") {
 
     std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
-    Vertex* start = verts[9];                        //pick out 4th vertice   (CSE 300)
+    Vertex* start = verts[9];                        //pick out 9th vertice   (ANTH 107)
   
     BFS traversal(&g, start); 
     unsigned count = 0;
@@ -115,36 +110,69 @@ TEST_CASE("BFS visits only single vertex in disconnected vertex", "[weight=1][pa
     REQUIRE( count == 1 );
 }
 
-/*
-TEST_CASE("BFS iterator visits all points in the correct order", "[weight=1][part=1]") {
-  PNG png = getTestPNG();
-  Point startPoint(0, 0);
+//test 5
+TEST_CASE("BFS iterator visits anth101 points in the correct order", "[weight=1][part=1]") {
+    std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
+    Vertex* start = verts[5];                        //pick out 14th vertice   (math213)
   
-  BFS t(png, startPoint, 0.2);
-  ImageTraversal::Iterator it = t.begin();
+    BFS traversal(&g, start); 
+    BFS::Iterator it = traversal.begin();
 
-  REQUIRE( *it == Point(0, 0) ); ++it;
+  REQUIRE( *it == verts[5] ); ++it;
 
-  REQUIRE( *it == Point(1, 0) ); ++it;  
-  REQUIRE( *it == Point(0, 1) ); ++it;
+  REQUIRE( *it == verts[7] ); ++it;  
+  REQUIRE( *it == verts[8] ); ++it;
 
-  REQUIRE( *it == Point(2, 0) ); ++it;  
-  REQUIRE( *it == Point(0, 2) ); ++it;
+  REQUIRE( *it == verts[11] ); ++it;  
+  REQUIRE( *it == verts[10] ); ++it;
 
-  REQUIRE( *it == Point(3, 0) ); ++it;
-  REQUIRE( *it == Point(0, 3) ); ++it;
-
-  REQUIRE( *it == Point(3, 1) ); ++it;
-  REQUIRE( *it == Point(1, 3) ); ++it;
+  REQUIRE( *it == verts[12] );
   
-  REQUIRE( *it == Point(3, 2) ); ++it;
-  REQUIRE( *it == Point(2, 3) ); ++it;
-
-  REQUIRE( *it == Point(3, 3) ); ++it;
 }
 
-*/
+//test6
+TEST_CASE("BFS iterator visits all (start) points in the correct order", "[weight=1][part=1]") {
+    std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
+    Vertex* start = verts[0];                        //pick out 14th vertice   (math213)
+  
+    BFS traversal(&g, start); 
+    BFS::Iterator it = traversal.begin();
+    /*
+    std::cout << "Printing vertexes in graph obj: " << std::endl;
+    int count = 0;
+    for (BFS::Iterator it = traversal.begin(); it != traversal.end(); ++it)
+    {
+      std::cout << count << " " << **it << std::endl;
+      ++count;
 
+    }
+    */
+
+
+   //should visit all vertecies with NO prereqs first
+  REQUIRE( *it == verts[0] ); ++it;
+  REQUIRE( *it == verts[1] ); ++it;  //cse100
+  REQUIRE( *it == verts[5] ); ++it; //anth101
+  REQUIRE( *it == verts[6] ); ++it;  //ste100
+  REQUIRE( *it == verts[9] ); ++it;     //anth107
+  REQUIRE( *it == verts[13] ); ++it;    //math231
+  REQUIRE( *it == verts[14] ); ++it;    //math213
+  //then visit next level in each individual prereq chain
+  REQUIRE( *it == verts[2] ); ++it;  //cse200
+  REQUIRE( *it == verts[7] ); ++it;  //etc
+  REQUIRE( *it == verts[8] ); ++it; 
+  REQUIRE( *it == verts[10] ); ++it;
+  REQUIRE( *it == verts[15] ); ++it;
+  REQUIRE( *it == verts[16] ); ++it;
+  //3rd level
+  REQUIRE( *it == verts[3] ); ++it; 
+  REQUIRE( *it == verts[11] ); ++it;
+  REQUIRE( *it == verts[17] ); ++it; 
+  REQUIRE( *it == verts[18] ); ++it;
+  //4th level
+  REQUIRE( *it == verts[4] ); ++it;
+  REQUIRE( *it == verts[12] ); ++it;
+}
 
 TEST_CASE("test")
 {
