@@ -34,7 +34,7 @@ std::vector<std::vector<std::string>> DataConvert::getData(const std::string fil
 
     // Vector to store memory addresses of the tokens in buf
     std::vector<std::string> token;
-    std::regex lineRegex("(([A-Z]{2,9} [0-9]{3})(,|$){1})");
+    std::regex lineRegex("(([A-Z]{2,9} [0-9]{3})(,|$|\n){1})");
     std::smatch matches;
     while(std::regex_search(line, matches, lineRegex)){
       std::string courseName = matches[2].str(); // matches goes {"Course Name," "Course Name,", "Coursename", ","}

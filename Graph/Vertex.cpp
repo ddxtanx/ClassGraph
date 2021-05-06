@@ -43,3 +43,11 @@ bool Vertex::operator==(const Vertex v) const{
 void Vertex::setId(int id){
     id_ = id;
 }
+
+void Vertex::setCountNum(int c){
+    count = c;
+}
+
+int Vertex::getCountNum(){
+    return count;
+}

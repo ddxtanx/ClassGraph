@@ -50,6 +50,12 @@ BFS::Iterator & BFS::Iterator::operator++()
     return *this;
 }
 
+BFS::Iterator& BFS::Iterator::operator++(int){
+    auto cur = this;
+    operator++();
+    return *cur;
+}
+
 Vertex * BFS::Iterator::operator*() const
 {
     return current;   //returns reference to vertex in graph

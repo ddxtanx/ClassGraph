@@ -17,6 +17,7 @@ class BFS
     Iterator(Vertex * start, Graph * g);
 
     Iterator & operator++();
+    Iterator & operator++(int);
     Vertex * operator*() const;
     bool operator!=(const Iterator &other) const;
 

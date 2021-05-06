@@ -5,11 +5,11 @@
 #include "ClassGraph.h"
 #include "utils.h"
 using namespace std;
-std::string filename = "./Courses-and-prereqs/CycleTestComplicated.dat";
+std::string filename = "./Courses-and-prereqs/AllPrereqs.dat";
 int main()
 {
   ClassGraph g(filename);
-  g.makeAcyclic();
+  //g.makeAcyclic();
   std::cout << std::endl;
   std::cout << std::endl;
   std::cout << "#####################################   Welcome to the danger zone  --  (Start of main)   ######################################" << std::endl;
@@ -37,8 +37,7 @@ int main()
   Vertex* start = g.getStart();
 
   BFS traversal(&g, start);                    //create traversal, start at vert 0
-  BFS::Iterator it = traversal.begin();
-  for (; it != traversal.end(); ++it)
+  for (auto it = traversal.begin(); it != traversal.end(); ++it)
   {
     if(*it == nullptr){
       continue;

@@ -30,10 +30,11 @@ ClassGraph::ClassGraph(const std::string fileName){
     //std::vector<std::vector<std::string>> MATH_data=DataConvert::getData("Courses-and-prereqs/MATH_courses.dat");
     //std::vector<std::vector<std::string>> PHYS_data=DataConvert::getData("Courses-and-prereqs/PHYS_courses.dat");
     Utils::initializeDepts(fileName);
+    Vertex::setCountNum(0);
     std::vector<std::vector<std::string>> ALL_COURSE_data = DataConvert::getData(fileName);
 
     int numEntries = ALL_COURSE_data.size() + 1;
-    int numClassIDs = 800*Utils::numDepts;
+    int numClassIDs = 1000*Utils::numDepts;
     vertexMap_.resize(numClassIDs);
     resizeAdjMatrix(numEntries);
     Vertex* startVertex = new Vertex("START");
@@ -43,6 +44,7 @@ ClassGraph::ClassGraph(const std::string fileName){
     {
         std::vector<std::string> firstTok=ALL_COURSE_data[i];
         if(firstTok.empty()){
+            std::cout << "Empty tok at line " << i << std::endl;
             continue;
         }
         std::string baseCourseName = firstTok[0];

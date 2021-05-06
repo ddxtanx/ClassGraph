@@ -18,4 +18,5 @@ class Utils{
         static std::vector<std::string> depts;
         static std::string courseRegexStr;
         static std::unordered_map<std::string, int> deptNumMap;
+        static std::string currentInitializedFilename;
 };

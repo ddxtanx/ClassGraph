@@ -4,7 +4,6 @@
 #include <iostream>
 class Vertex{
     public:
-        static int count;
         Vertex();
         Vertex(std::string name);    //constructor
         
@@ -28,7 +27,11 @@ class Vertex{
             os << v.getName();
             return os;
         }
+
+        static void setCountNum(int c);
+        static int getCountNum();
     private:
+        static int count;
         std::vector<Vertex*> adjacentVertices_;      //contains all verticies *this points to
         std::string name_;                                  //course data
         size_t id_;                                 //id used for the adjacency graph
