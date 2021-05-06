@@ -133,22 +133,11 @@ TEST_CASE("BFS iterator visits anth101 points in the correct order", "[weight=1]
 //test6
 TEST_CASE("BFS iterator visits all (start) points in the correct order", "[weight=1][part=1]") {
     std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
-    Vertex* start = verts[0];                        //pick out 14th vertice   (math213)
+    Vertex* start = verts[0];                        //pick out 0th vertice   (start)
   
     BFS traversal(&g, start); 
     BFS::Iterator it = traversal.begin();
-    /*
-    std::cout << "Printing vertexes in graph obj: " << std::endl;
-    int count = 0;
-    for (BFS::Iterator it = traversal.begin(); it != traversal.end(); ++it)
-    {
-      std::cout << count << " " << **it << std::endl;
-      ++count;
-
-    }
-    */
-
-
+   
    //should visit all vertecies with NO prereqs first
   REQUIRE( *it == verts[0] ); ++it;
   REQUIRE( *it == verts[1] ); ++it;  //cse100
@@ -174,9 +163,24 @@ TEST_CASE("BFS iterator visits all (start) points in the correct order", "[weigh
   REQUIRE( *it == verts[12] ); ++it;
 }
 
-TEST_CASE("test")
-{
-    int i=5;
-    i++;
-    REQUIRE(i==6);
+//test7
+TEST_CASE("BFS iterator visits all points in large data set", "[weight=5][part=1]") {
+
+    std::string filename2 = "./Courses-and-prereqs/AllPrereqs.dat";
+    ClassGraph h(filename2);
+    std::vector<Vertex*> & verts = h.getVertices();  //get reference to vertices
+    Vertex* start = verts[0];                        //pick out 0th vertice   (start)
+  
+    BFS traversal(&h, start); 
+    BFS::Iterator it = traversal.begin();
+    unsigned count = 0;
+    std::cout << "# of verts in graph: " << verts.size()  << std::endl;
+    std::cout << "# of verts pointed to by start (how many disjoint sets): " << start->getVerticesPointedTo().size()  << std::endl;
+    for (BFS::Iterator it = traversal.begin(); it != traversal.end(); ++it)
+    {
+        count++;
+    }
+    REQUIRE( count == 8589 );
+
 }
+
