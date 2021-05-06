@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "../FibonacciHeap/fiboqueue.h"
+#include "../FibonacciHeap/fiboheap.h"
 
 template <typename T>
 Graph::Matrix<T>::Matrix(){
@@ -95,6 +95,9 @@ std::vector<Edge> Graph::getEdgesFrom(Vertex* v) const{
     }
     std::vector<Edge> edges;
     for(Vertex* vp : v -> getVerticesPointedTo()){
+        if(vp == nullptr){
+            continue;
+        }
         double weight = getWeightBetweenVertices(*v, *vp);
         Edge e(v, vp, weight);
         edges.push_back(e);
@@ -188,28 +191,33 @@ void Graph::makeAcyclic(Vertex* source){
     std::vector<bool> vertexInMST;
     vertexInMST.resize(getVerticiesSize());
     Edge e(source, source, 0);
-    FibQueue<Edge, std::less<Edge>> fq;
-    fq.push(e);
-    while(!fq.empty()){
-        Edge e = fq.top();
-        Vertex* end = e.getTo();
-        vertexInMST[e.getFrom() -> getId()] = true;
-        if(end != source){
-            edges.push_back(e);
+    FibHeap<Edge, std::less<Edge>> st;
+    st.push(e);
+    while(!st.empty()){
+        Edge ep = st.top();
+        st.pop();
+        Vertex* from = ep.getFrom();
+        Vertex* end = ep.getTo();
+        vertexInMST[from -> getId()] = true;
+        vertexInMST[end -> getId()] = true;
+        if(end != from && end != nullptr && from != nullptr){
+            edges.push_back(ep);
         }
-        std::vector<Edge> pointedEdges = getEdgesFrom(end);
-        for(Edge edge : pointedEdges){
-            Vertex* from = edge.getFrom();
-            Vertex* to = edge.getTo();
-            if(vertexInMST[to -> getId()]){
-                from->disconnectTo(to);
-                adjacencyMatrix_.setVal(from -> getId(), to -> getId(), 0);
+        std::vector<Vertex*> adjacentVertices = end -> getVerticesPointedTo();
+        for(Vertex* vp : adjacentVertices){
+            if(vp == nullptr){
                 continue;
             }
-            fq.push(edge);
+            if(vertexInMST[vp -> getId()]){
+                end->disconnectTo(vp);
+                adjacencyMatrix_.setVal(end -> getId(), vp -> getId(), 0);
+                continue;
+            }
+            Edge edge(end, vp, getWeightBetweenVertices(*end, *vp));
+            st.push(edge);
         }
-        fq.pop();
     }
+    edges_ = edges;
 }
 
 void Graph::clear(){

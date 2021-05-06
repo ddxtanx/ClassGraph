@@ -32,7 +32,9 @@ BFS::Iterator & BFS::Iterator::operator++()
     //std::cout << "adj size() = "<< adj.size() << std::endl;
     for (Vertex* v : adj)    //push all valid adjacent verts
     {
-        q.push(v);
+        if(v != nullptr){
+            q.push(v);
+        }
     }
 
     while(!q.empty())       //Until q is empty or point is not visited

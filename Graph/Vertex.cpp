@@ -17,15 +17,29 @@ Vertex::Vertex(std::string name){
 }
 
 void Vertex::connectTo(Vertex* to){
-    adjacentVertices_.insert(adjacentVertices_.end(), to);
+    if(to == nullptr){
+        return;
+    }
+    size_t id = to -> getId();
+    if(id >= adjacencies_.size()){
+        adjacencies_.resize(2*id);
+    }
+    adjacencies_[id] = to;
 }
 
 void Vertex::disconnectTo(Vertex* to){
-    adjacentVertices_.erase(std::find(adjacentVertices_.begin(), adjacentVertices_.end(), to));
+    if(to == nullptr){
+        return;
+    }
+    size_t id = to -> getId();
+    if(id >= adjacencies_.size()){
+        adjacencies_.resize(2*id);
+    }
+    adjacencies_[id] = nullptr;
 }
 
 std::vector<Vertex*> Vertex::getVerticesPointedTo(){
-    return adjacentVertices_;
+    return adjacencies_;
 }
 
 std::string Vertex::getName() const{

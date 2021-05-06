@@ -9,7 +9,7 @@ std::string filename = "./Courses-and-prereqs/AllPrereqs.dat";
 int main()
 {
   ClassGraph g(filename);
-  //g.makeAcyclic();
+  g.makeAcyclic();
   std::cout << std::endl;
   std::cout << std::endl;
   std::cout << "#####################################   Welcome to the danger zone  --  (Start of main)   ######################################" << std::endl;
@@ -45,7 +45,9 @@ int main()
     Vertex v = **it;
     std::cout << "Classes that require " << v << ": ";
     for(Vertex* vp : v.getVerticesPointedTo()){
-      std::cout << *vp << ", ";
+      if(vp != nullptr){
+        std::cout << *vp << ", ";
+      }
     } 
     std::cout << std::endl;
   }
