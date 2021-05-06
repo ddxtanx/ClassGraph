@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include "../FibonacciHeap/fiboqueue.h"
 
 template <typename T>
 Graph::Matrix<T>::Matrix(){
@@ -88,6 +89,19 @@ std::vector<Edge> & Graph::getEdges()
     return edges_;
 }
 
+std::vector<Edge> Graph::getEdgesFrom(Vertex* v) const{
+    if(!vertexInGraph(v)){
+        return {};
+    }
+    std::vector<Edge> edges;
+    for(Vertex* vp : v -> getVerticesPointedTo()){
+        double weight = getWeightBetweenVertices(*v, *vp);
+        Edge e(v, vp, weight);
+        edges.push_back(e);
+    }
+    return edges;
+}
+
 size_t Graph::getVerticiesSize() const
 {
     return vertices_.size();
@@ -98,7 +112,7 @@ size_t Graph::getEdgesSize() const
 }
 
 bool Graph::vertexInGraph(Vertex* v) const{
-    return std::count(vertices_.begin(), vertices_.end(), v);
+    return v -> getId() < getVerticiesSize();
 }
 
 double Graph::getWeightBetweenVertices(Vertex from, Vertex to) const{
@@ -173,7 +187,29 @@ void Graph::makeAcyclic(Vertex* source){
     std::vector<Edge> edges;
     std::vector<bool> vertexInMST;
     vertexInMST.resize(getVerticiesSize());
-    
+    Edge e(source, source, 0);
+    FibQueue<Edge, std::less<Edge>> fq;
+    fq.push(e);
+    while(!fq.empty()){
+        Edge e = fq.top();
+        Vertex* end = e.getTo();
+        vertexInMST[e.getFrom() -> getId()] = true;
+        if(end != source){
+            edges.push_back(e);
+        }
+        std::vector<Edge> pointedEdges = getEdgesFrom(end);
+        for(Edge edge : pointedEdges){
+            Vertex* from = edge.getFrom();
+            Vertex* to = edge.getTo();
+            if(vertexInMST[to -> getId()]){
+                from->disconnectTo(to);
+                adjacencyMatrix_.setVal(from -> getId(), to -> getId(), 0);
+                continue;
+            }
+            fq.push(edge);
+        }
+        fq.pop();
+    }
 }
 
 void Graph::clear(){

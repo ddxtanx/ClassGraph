@@ -37,7 +37,6 @@ ClassGraph::ClassGraph(const std::string fileName){
     vertexMap_.resize(numClassIDs);
     resizeAdjMatrix(numEntries);
     Vertex* startVertex = new Vertex("START");
-    startVertex -> setId(numEntries - 1); 
     addVertex(startVertex);
     start_ = startVertex;
     for(unsigned i=0;i<ALL_COURSE_data.size();i++)
@@ -82,4 +81,8 @@ ClassGraph& ClassGraph::operator=(const ClassGraph& ot){
 ClassGraph::ClassGraph(const ClassGraph& ot) : Graph(ot){
     std::cout << "Copy constructing a class graph" << std::endl;
     start_ = new Vertex(*ot.start_);
+}
+
+void ClassGraph::makeAcyclic(){
+    Graph::makeAcyclic(start_);
 }

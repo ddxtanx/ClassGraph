@@ -13,9 +13,11 @@ class Graph{
         std::vector<Vertex*> & getVertices();   //used for printing and whole graph representation
         std::vector<Edge> & getEdges();
 
+        std::vector<Edge> getEdgesFrom(Vertex* from) const;
+
         bool vertexInGraph(Vertex* v) const;
         
-        double getWeightBetweenVertices(Vertex from, Vertex to) const;                    //used in algorithms
+        double getWeightBetweenVertices(Vertex from, Vertex to) const;              //used in algorithms
         double getWeightBetweenVertices(Edge edge) const;
 
         //ColoredGraph minimalPrerecChainBetween(ColoredVertex from, ColoredVertex to);          //main function to use for output
@@ -27,6 +29,7 @@ class Graph{
         void addEdge(Vertex* from, Vertex* to, double weight);
         void addEdge(Edge e);
         void makeAcyclic(Vertex* source);
+
 
         Graph& operator=(const Graph& other);
 
