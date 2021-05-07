@@ -23,20 +23,6 @@ int main(int argc, char** argv)
   std::cout << "------------------------------------------------------" << std::endl;
 
   std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
-  //Vertex* start = g.getStart();
-  /*
-    std::cout << "Printing First 15 vertexes in graph obj: " << std::endl;
-    int count = 0;
-    for (std::vector<Vertex*>::iterator it = verts.begin(); it != verts.end(); ++it)
-    {
-      std::cout << count << " " << **it << std::endl;
-      ++count;
-      if (count == 15)
-        break;
-
-    }
-  */
-
   Vertex* start = g.getStart();
 
   BFS traversal(&g, start);                    //create traversal, start at vert 0

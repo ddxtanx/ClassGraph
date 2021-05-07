@@ -5,6 +5,22 @@
 #include "../Graph/Graph.h"
 #include "../ClassGraph.h"
 #include "../utils.h"
+
+//Vertex* start = g.getStart();
+/*
+    std::cout << "Printing First 15 vertexes in graph obj: " << std::endl;
+    int count = 0;
+    for (std::vector<Vertex*>::iterator it = verts.begin(); it != verts.end(); ++it)
+    {
+      std::cout << count << " " << **it << std::endl;
+      ++count;
+      if (count == 15)
+        break;
+
+    }
+  */
+
+
 /*
 TEST_CASE("BFS iterator small test")
 {
@@ -180,7 +196,13 @@ TEST_CASE("BFS iterator visits all points in large data set", "[weight=5][part=1
     {
         count++;
     }
-    REQUIRE( count == 8495 ); //For some reason this is the number we get
+    REQUIRE( count == 8495 );
 
 }
 
+TEST_CASE("example test", "[weight=5][part=1]") {
+
+    int i = 5;
+    ++i;
+    REQUIRE( i == 6);
+}
