@@ -3,7 +3,7 @@ EXE = project
 TEST=test
 
 EXE_OBJ=project.o
-OBJS=project.o utils.o ClassGraph.o dataConvert.o
+OBJS=project.o utils.o ClassGraph.o dataConvert.o dsets.o
 
 include Graph/graph.mk
 include Davids_Work/david.mk

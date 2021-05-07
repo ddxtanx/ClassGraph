@@ -6,8 +6,11 @@
 #include "utils.h"
 using namespace std;
 std::string filename = "./Courses-and-prereqs/AllPrereqs.dat";
-int main()
+int main(int argc, char** argv)
 {
+  if(argc == 2){
+    filename = argv[1];
+  }
   ClassGraph g(filename);
   g.makeAcyclic();
   std::cout << std::endl;
@@ -40,7 +43,7 @@ int main()
   for (auto it = traversal.begin(); it != traversal.end(); ++it)
   {
     Vertex v = **it;
-    std::cout << "Classes that require " << v << ": ";
+    std::cout << "Prerequisites of " << v << ": ";
     for(Vertex* vp : v.getVerticesPointedTo()){
       std::cout << *vp << ", ";
     } 

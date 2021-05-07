@@ -33,13 +33,16 @@ ClassGraph::ClassGraph(const std::string fileName){
     Vertex::setCountNum(0);
     std::vector<std::vector<std::string>> ALL_COURSE_data = DataConvert::getData(fileName);
 
-    int numEntries = ALL_COURSE_data.size() + 1;
+    int numEntries = ALL_COURSE_data.size() + 2;
     int numClassIDs = 1000*Utils::numDepts;
     vertexMap_.resize(numClassIDs);
     resizeAdjMatrix(numEntries);
     Vertex* startVertex = new Vertex("START");
+    Vertex* endVertex = new Vertex("END");
     addVertex(startVertex);
+    addVertex(endVertex);
     start_ = startVertex;
+    end_ = endVertex;
     for(unsigned i=0;i<ALL_COURSE_data.size();i++)
     {
         std::vector<std::string> firstTok=ALL_COURSE_data[i];
@@ -47,27 +50,36 @@ ClassGraph::ClassGraph(const std::string fileName){
             std::cout << "Empty tok at line " << i << std::endl;
             continue;
         }
-        std::string baseCourseName = firstTok[0];
+        std::string baseCourseName = firstTok[0]; //Course name
         Vertex* currVertex = getOrCreateVertex(baseCourseName);
-        bool hasNoPrereq = true;
+        bool hasPrereqs = false;
         for(unsigned i=1;i<firstTok.size();i++)
         {
-            std::string prereqCourseName = firstTok[i];
+            std::string prereqCourseName = firstTok[i];  //Prerequisite of baseCourseName
             Utils::trim(prereqCourseName);
             if(!prereqCourseName.empty()){  
+                hasPrereqs = true;
                 Vertex* toVer = getOrCreateVertex(prereqCourseName);
-                addEdge(toVer, currVertex, 1);
-                hasNoPrereq = false;
+                addEdge(currVertex, toVer, 1);  //Class points to its prerequisite
             }
         }
-        if(hasNoPrereq){
-            addEdge(startVertex, currVertex, 1);
+        if(!hasPrereqs){
+            addEdge(currVertex, end_, 1);
+        }
+    }
+    for(Vertex* v: vertices_){
+        if(v->getNumPointedFrom() == 0 && v != startVertex && v != endVertex){
+            addEdge(startVertex, v, 1); //Start points to ultimate classes (classes that are not prereqs for other classes)
         }
     }
 }
 
 Vertex*& ClassGraph::getStart(){
     return start_;
+}
+
+Vertex*& ClassGraph::getEnd(){
+    return end_;
 }
 
 ClassGraph& ClassGraph::operator=(const ClassGraph& ot){
@@ -86,5 +98,5 @@ ClassGraph::ClassGraph(const ClassGraph& ot) : Graph(ot){
 }
 
 void ClassGraph::makeAcyclic(){
-    Graph::makeAcyclic(start_);
+    Graph::makeAcyclic(end_, true, start_);
 }

@@ -2,7 +2,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "../FibonacciHeap/fiboheap.h"
+#include "../dsets.h"
+#include <stack>
 
 template <typename T>
 Graph::Matrix<T>::Matrix(){
@@ -160,6 +161,7 @@ void Graph::addEdge(Edge e){
         return;
     }
     from.connectTo(e.getTo());
+    to.connectFrom(e.getFrom());
     double weight = e.getWeight();
 
     adjacencyMatrix_.setVal(fromIndex,toIndex,weight);
@@ -176,6 +178,7 @@ void Graph::addEdge(Vertex* from, Vertex* to, double weight){
         return;
     }
     from -> connectTo(to);
+    to -> connectFrom(from);
 
     adjacencyMatrix_.setVal(fromIndex,toIndex,weight);
 
@@ -183,38 +186,73 @@ void Graph::addEdge(Vertex* from, Vertex* to, double weight){
     edges_.push_back(e);
 }
 
-void Graph::makeAcyclic(Vertex* source){
+void Graph::makeAcyclic(Vertex* source, bool backwards, Vertex* necessaryVertex){
     if(!vertexInGraph(source)){
         return;
     }
     std::vector<Edge> edges;
-    std::vector<bool> vertexInMST;
-    vertexInMST.resize(getVerticiesSize());
-    Edge e(source, source, 0);
-    FibHeap<Edge, std::less<Edge>> st;
-    st.push(e);
+    std::vector<int> levelIndex;
+    std::vector<bool> seenBefore;
+    seenBefore.resize(getVerticiesSize());
+    levelIndex.assign(getVerticiesSize(), -1);
+    levelIndex[source -> getId()] = 0;
+    std::stack<Edge> st;
+    Edge firstE(source, source, 0);
+    st.push(firstE);
     while(!st.empty()){
-        Edge ep = st.top();
+        Edge e = st.top();
         st.pop();
-        Vertex* from = ep.getFrom();
-        Vertex* end = ep.getTo();
-        vertexInMST[from -> getId()] = true;
-        vertexInMST[end -> getId()] = true;
-        if(end != from && end != nullptr && from != nullptr){
-            edges.push_back(ep);
+
+        Vertex* from = e.getFrom();
+        Vertex* to = e.getTo();
+        size_t fromId = from -> getId();
+        size_t toId = to -> getId();
+        seenBefore[fromId] = true;
+        seenBefore[toId] = true;
+        if(from != to){
+            edges.push_back(e);
+            if(backwards){
+                int prevLevel = levelIndex[toId];
+                levelIndex[fromId] = prevLevel+1;
+            } else{
+                int prevLevel = levelIndex[fromId];
+                levelIndex[toId] = prevLevel+1;
+            }
         }
-        std::vector<Vertex*> adjacentVertices = end -> getVerticesPointedTo();
-        for(Vertex* vp : adjacentVertices){
-            if(vp == nullptr){
+
+        Vertex* nextVertex;
+        size_t nextId;
+        std::vector<Vertex*> nextVertices;
+        if(backwards){
+            nextVertex = from;
+            nextId = from -> getId();
+            nextVertices = from -> getVerticesPointedFrom();
+        } else{
+            nextVertex = to;
+            nextId = to -> getId();
+            nextVertices = to -> getVerticesPointedTo();
+        }
+        for(Vertex* vp : nextVertices){
+            size_t adjId = vp -> getId();
+            if((vp != necessaryVertex && seenBefore[adjId] && levelIndex[adjId] < levelIndex[nextId]) || vp == nextVertex){
+                if(backwards){
+                    vp -> disconnectTo(nextVertex);
+                    nextVertex -> disconnectFrom(vp);
+                    adjacencyMatrix_.setVal(adjId, nextId, 0);
+                } else{
+                    vp -> disconnectFrom(nextVertex);
+                    nextVertex -> disconnectTo(vp);
+                    adjacencyMatrix_.setVal(nextId, adjId, 0);
+                }
                 continue;
             }
-            if(vertexInMST[vp -> getId()]){
-                end->disconnectTo(vp);
-                adjacencyMatrix_.setVal(end -> getId(), vp -> getId(), 0);
-                continue;
+            if(backwards){
+                Edge nextE(vp, nextVertex, getWeightBetweenVertices(*vp, *nextVertex));
+                st.push(nextE);
+            } else{
+                Edge nextE(nextVertex, vp, getWeightBetweenVertices(*nextVertex, *vp));
+                st.push(nextE);
             }
-            Edge edge(end, vp, getWeightBetweenVertices(*end, *vp));
-            st.push(edge);
         }
     }
     edges_ = edges;

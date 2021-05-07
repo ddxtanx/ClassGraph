@@ -28,7 +28,7 @@ class Graph{
         void addVertex(Vertex* vert);
         void addEdge(Vertex* from, Vertex* to, double weight);
         void addEdge(Edge e);
-        void makeAcyclic(Vertex* source);
+        void makeAcyclic(Vertex* source, bool backwards = false, Vertex* necessaryVertex = nullptr);
 
 
         Graph& operator=(const Graph& other);
@@ -51,9 +51,7 @@ class Graph{
                 std::vector<T> matrix_;
                 int rows_;
                 int cols_;
-        };
-        std::vector<Vertex*> vertices_;
-        std::vector<Edge> edges_;               
+        };          
         
         Matrix<double> adjacencyMatrix_;
 
@@ -62,4 +60,6 @@ class Graph{
 
     protected:
         void resizeAdjMatrix(size_t size);
+        std::vector<Vertex*> vertices_;
+        std::vector<Edge> edges_;     
 };

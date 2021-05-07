@@ -11,6 +11,7 @@ class ClassGraph : public Graph{
         ClassGraph(const ClassGraph& ot);
 
         Vertex*& getStart();
+        Vertex*& getEnd();
         
         void makeAcyclic();
         ClassGraph& operator=(const ClassGraph& ot);
@@ -19,4 +20,5 @@ class ClassGraph : public Graph{
         Vertex* getOrCreateVertex(std::string courseName);
 
         Vertex* start_;
+        Vertex* end_;
 };
