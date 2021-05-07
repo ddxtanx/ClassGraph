@@ -24,23 +24,23 @@ class BFS
     bool isDone() const;
 
     private:
-    std::vector<bool> visited;
+    std::vector<bool> visited;    
     std::queue<Vertex*> q;
     Vertex * current;             //is NULL when finished
   };
 
   BFS();  //constructors
-  BFS(Graph & g, Vertex & v);   //pass in by reference for easy use
-  BFS(Graph * g, Vertex * v);   //pass in by pointer for flexibility
+  BFS(Graph & g, Vertex & v);   //create by reference for easy use
+  BFS(Graph * g, Vertex * v);   //create by pointer for flexibility
 
-  BFS::Iterator begin();
+  BFS::Iterator begin();        //returns iterator to start node
   BFS::Iterator end();
   
 
 
   private:
-  Graph * graph_;
-  Vertex * root_;
+  Graph * graph_;                 //pointers to object to search
+  Vertex * root_;                 //pointer to start node
   std::vector<Vertex*> * verts_;  //private data from graph
   std::vector<Edge> * edges_;
   
