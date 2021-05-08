@@ -7,4 +7,4 @@ allDepts.txt
 *.dSYM
 *objs
 test
-BFS.out
+*.out
