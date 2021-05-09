@@ -323,8 +323,6 @@ void Graph::generateBetweennessCentrality(bool backwards){ //Assumes unweighted
         betwCent[*v] = 0;
     }
     size_t numVertices = getVerticiesSize();
-    std::vector<std::vector<Vertex*>> onAShortestPath;
-    onAShortestPath.assign(numVertices, {});
     Matrix<size_t> shortestPathNumMatrix(numVertices, numVertices, 0);
     Matrix<int> minDistMatrix(numVertices, numVertices, -1);
     for(size_t i = 0; i < numVertices; i++){
@@ -333,6 +331,7 @@ void Graph::generateBetweennessCentrality(bool backwards){ //Assumes unweighted
     }
     for(Vertex* s : vertices_){
         size_t sourceId = s -> getId();
+        Matrix<bool> isOnShortestPath(numVertices, numVertices, false); //If (row,col) is true then col is on shortest path from s to row;
         std::stack<Vertex*> stack1;
         std::queue<Vertex*> distQueue;
         distQueue.push(s);
@@ -353,7 +352,7 @@ void Graph::generateBetweennessCentrality(bool backwards){ //Assumes unweighted
                     curDistance = distToVertex + 1;
                 }
                 if(curDistance == distToVertex + 1){
-                    onAShortestPath[neighborId].push_back(vn);
+                    isOnShortestPath.setVal(neighborId, curVertId, true);
                     size_t curNumShortPath = shortestPathNumMatrix.getVal(sourceId, neighborId);
                     shortestPathNumMatrix.setVal(sourceId, neighborId, curNumShortPath + prevNumShortPath);
                 }
@@ -366,9 +365,15 @@ void Graph::generateBetweennessCentrality(bool backwards){ //Assumes unweighted
             int vertId = w -> getId();
             double curVertexShortestPathNum = (double) shortestPathNumMatrix.getVal(sourceId, vertId);
             int nextId = vertId;
-            for(Vertex* v: onAShortestPath[vertId]){
-                double pathVertexShortestPathNum = (double) shortestPathNumMatrix.getVal(sourceId, v -> getId());
-                dependencies[v -> getId()] += pathVertexShortestPathNum/curVertexShortestPathNum * (1 + dependencies[vertId]);
+            std::vector<size_t> onAShortestPath;
+            for(size_t i = 0; i<numVertices; i++){
+                if(isOnShortestPath.getVal(vertId, i)){
+                    onAShortestPath.push_back(i);
+                }
+            }
+            for(size_t vId: onAShortestPath){
+                double pathVertexShortestPathNum = (double) shortestPathNumMatrix.getVal(sourceId, vId);
+                dependencies[vId] += pathVertexShortestPathNum/curVertexShortestPathNum * (1 + dependencies[vertId]);
             }
             if(w != s){
                 betwCent[*w] += dependencies[vertId];
