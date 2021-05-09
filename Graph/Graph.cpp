@@ -1,8 +1,11 @@
 #include "Graph.h"
+#include "Vertex.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <stack>
+#include <unordered_map>
+#include <queue>
 
 template <typename T>
 Graph::Matrix<T>::Matrix(){
@@ -98,8 +101,7 @@ std::vector<Edge> Graph::getEdgesFrom(Vertex* v) const{
         if(vp == nullptr){
             continue;
         }
-        double weight = getWeightBetweenVertices(*v, *vp);
-        Edge e(v, vp, weight);
+        Edge e(v, vp);
         edges.push_back(e);
     }
     return edges;
@@ -116,22 +118,6 @@ size_t Graph::getEdgesSize() const
 
 bool Graph::vertexInGraph(Vertex* v) const{
     return v -> getId() < getVerticiesSize();
-}
-
-double Graph::getWeightBetweenVertices(Vertex from, Vertex to) const{
-    if(!vertexInGraph(&from) || !vertexInGraph(&to)){
-        return -1;
-    }
-    size_t fromIndex = from.getId();
-    size_t toIndex = to.getId();
-    return (adjacencyMatrix_.getVal(fromIndex, toIndex));
-}
-
-double Graph::getWeightBetweenVertices(Edge e) const{
-    if(!e.isValidEdge()){
-        return -1;
-    }
-    return getWeightBetweenVertices(*e.getFrom(), *e.getTo());
 }
 
 void Graph::resizeAdjMatrix(size_t size){ //might need to alter this, might cause problems on resize
@@ -161,12 +147,11 @@ void Graph::addEdge(Edge e){
     }
     from.connectTo(e.getTo());
     to.connectFrom(e.getFrom());
-    double weight = e.getWeight();
 
-    adjacencyMatrix_.setVal(fromIndex,toIndex,weight);
+    adjacencyMatrix_.setVal(fromIndex,toIndex,1);
 }
 
-void Graph::addEdge(Vertex* from, Vertex* to, double weight){
+void Graph::addEdge(Vertex* from, Vertex* to){
     if(from == nullptr || to == nullptr){
         return;
     }
@@ -179,9 +164,9 @@ void Graph::addEdge(Vertex* from, Vertex* to, double weight){
     from -> connectTo(to);
     to -> connectFrom(from);
 
-    adjacencyMatrix_.setVal(fromIndex,toIndex,weight);
+    adjacencyMatrix_.setVal(fromIndex,toIndex,1);
 
-    Edge e(from, to, weight);
+    Edge e(from, to);
     edges_.push_back(e);
 }
 
@@ -196,7 +181,7 @@ void Graph::makeAcyclic(Vertex* source, bool backwards, Vertex* necessaryVertex)
     levelIndex.assign(getVerticiesSize(), -1);
     levelIndex[source -> getId()] = 0;
     std::stack<Edge> st;
-    Edge firstE(source, source, 0);
+    Edge firstE(source, source);
     st.push(firstE);
     while(!st.empty()){
         Edge e = st.top();
@@ -246,15 +231,20 @@ void Graph::makeAcyclic(Vertex* source, bool backwards, Vertex* necessaryVertex)
                 continue;
             }
             if(backwards){
-                Edge nextE(vp, nextVertex, getWeightBetweenVertices(*vp, *nextVertex));
+                Edge nextE(vp, nextVertex);
                 st.push(nextE);
             } else{
-                Edge nextE(nextVertex, vp, getWeightBetweenVertices(*nextVertex, *vp));
+                Edge nextE(nextVertex, vp);
                 st.push(nextE);
             }
         }
     }
     edges_ = edges;
+    for(Vertex* v : vertices_){
+        if(v != necessaryVertex && v -> getNumPointedFrom() == 0){
+            addEdge(necessaryVertex, v);
+        }
+    }
 }
 
 void Graph::clear(){
@@ -294,8 +284,7 @@ void Graph::copy(const Graph& other){
             } else{
                 newVertexN = newVertices[idn];
             }
-            double weight = other.getWeightBetweenVertices(*v, *vn);
-            Edge e(newVertex, newVertexN, weight);
+            Edge e(newVertex, newVertexN);
             newEdges.push_back(e);
         }
     }
@@ -313,4 +302,72 @@ Graph& Graph::operator=(const Graph& ot){
 
 Graph::Graph(const Graph& ot){
     copy(ot);
+}
+
+void Graph::generateBetweennessCentrality(bool backwards){ //Assumes unweighted
+    if(!betweennessCentrality_.empty()){
+        return;
+    }
+    std::unordered_map<Vertex, double> betwCent;
+    size_t numVertices = getVerticiesSize();
+    Matrix<size_t> shortestPathMatrix(numVertices, numVertices);  //value at (row,col) represents shortest path from row vert to col vert
+    for(size_t i = 0; i < numVertices; i++){
+        shortestPathMatrix.setVal(i,i,i);
+    }
+    for(Vertex* v : vertices_){
+        std::stack<Vertex*> stack1;
+        std::vector<size_t> shortestPathNum(numVertices, 0);
+        shortestPathNum[v -> getId()] = 1;
+        std::vector<int> minDistance(numVertices, -1);
+        minDistance[v -> getId()] = 0;
+        std::queue<Vertex*> distQueue;
+        distQueue.push(v);
+        while(!distQueue.empty()){
+            Vertex* vn = distQueue.front();
+            distQueue.pop();
+            stack1.push(vn);
+            double distToVertex = minDistance[vn -> getId()];
+            auto nextVertices = backwards ? vn -> getVerticesPointedFrom() : vn -> getVerticesPointedTo();
+            for(Vertex* neighbor : nextVertices){
+                int& curDistance = minDistance[neighbor -> getId()];
+                if(curDistance == -1){
+                    distQueue.push(neighbor);
+                    curDistance = distToVertex + 1;
+                }
+                if(curDistance == distToVertex + 1){
+                    shortestPathMatrix.setVal(v -> getId(), neighbor -> getId(), vn -> getId());
+                    shortestPathNum[neighbor -> getId()] += shortestPathNum[vn -> getId()];
+                }
+            }
+        }
+        std::vector<double> dependencies(numVertices, 0);
+        while(!stack1.empty()){
+            Vertex* vn = stack1.top();
+            stack1.pop();
+            size_t vertId = vn -> getId();
+            size_t nextId = vertId;
+            do{
+                nextId = shortestPathMatrix.getVal(v -> getId(), nextId);
+                if(vertId != nextId){
+                    dependencies[nextId] += (double(shortestPathNum[nextId]))/(double(shortestPathNum[vertId]))*(1 + dependencies[vertId]);
+                }
+            }while(nextId != v -> getId());
+            if(vn != v){
+                betwCent[*vn] += dependencies[vertId];
+            }
+        }
+    }
+    betweennessCentrality_ = betwCent;
+}
+
+double Graph::getBetweennessCentrality(Vertex* source){
+    if(betweennessCentrality_.empty()){
+        std::cout << "Betweenness centrality has not been generated yet" << std::endl;
+        return -1;
+    }
+    return betweennessCentrality_[*source];
+}
+
+std::unordered_map<Vertex, double>* Graph::getBetweennessCentrality(){
+    return &betweennessCentrality_;
 }
