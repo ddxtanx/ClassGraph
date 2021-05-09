@@ -96,10 +96,24 @@ Image LGD::drawGraph()
 
     //rendering code:
     
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "++++++++++++ DISCLAIMER ++++++++++++" << std::endl;
+    std::cout << "The current drawGraph() meathod" << std::endl;
+    std::cout << "simply draws all verts in the" << std::endl;
+    std::cout << "order they are stored in the" << std::endl;
+    std::cout << "graph obj, and lines are drawn" << std::endl;
+    std::cout << "between consecutive vertexes." << std::endl;
+    std::cout << "This is debug, not final, behavior" << std::endl;
+    std::cout << "+++++++++++++++++++++++++++++++++++" << std::endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
+
     unsigned int maxLayerWidth;
     unsigned int maxGraphHeight;
 
-    //####### Temp code that just plots all vertices in a sqaure png ############## for testing purposes
+
     std::vector<Vertex*> & verts = graph_->getVertices();
     size_t size = verts.size();
     maxLayerWidth = 2;
@@ -108,19 +122,14 @@ Image LGD::drawGraph()
       ++maxLayerWidth;
     }
     maxGraphHeight = maxLayerWidth;
-    //#############################################################################
-
-
 
 
     unsigned int totalNodes = (unsigned int)size;
     Image temp(150*maxLayerWidth, 50*maxGraphHeight);
-    background_ = temp;
-    
+    background_ = temp;    
     stickers_ = new StickerSheet(background_,totalNodes); //make sticker sheet to render vertices
 
     std::vector<Vertex*>::iterator it = verts.begin();
-
     for (unsigned int x = 0; x < maxLayerWidth; ++x)
     {
       for (unsigned int y = 0; y < maxGraphHeight; ++y)
@@ -132,11 +141,11 @@ Image LGD::drawGraph()
         ++it;
       }
     }
-    //recursive meathod??
+
+
     std::cout << "Calling Render" << std::endl;
     pic_ = stickers_->render(); //render vertices
 
-    //draw edges TODO
     std::cout << "Drawing Edges" << std::endl;
     unsigned int idx = 0;
     Image * curr = NULL;
@@ -155,9 +164,7 @@ Image LGD::drawGraph()
     }
 
     std::cout << "Returning pic_" << std::endl;
-
     return pic_;    //returning graph result
-
 }       
 Image LGD::drawGraph(Vertex * start)      //overload
 {
@@ -370,3 +377,23 @@ int LGD::drawVertex(Vertex & v, unsigned int x1, unsigned int y1)  //overload
     //default to black and call drawVertex
     return drawVertex(v.getName(), x1, y1, cs225::HSLAPixel(0,0,0));
 }
+
+
+
+
+////////// Debug material //////////
+
+//test vertex drawing
+/* --project.cpp
+  std::cout << std::endl;
+  std::cout << std::endl;
+  std::cout << std::endl;
+  std::cout << "Testing draw Vertex" << std::endl;
+
+  std::cout << "Creating LGD obj with graph g and START" << std::endl;
+  LGD l(&g, start);
+  std::cout << "Calling DrawGraph" << std::endl;
+  Image output = l.drawGraph();
+  std::cout << "Writing to File" << std::endl;
+  output.writeToFile("Output_PNGs/myImage.png");
+*/

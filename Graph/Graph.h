@@ -40,7 +40,7 @@ class Graph{
         class Matrix{
             public:
                 Matrix();
-                Matrix(int rows, int cols);
+                Matrix(int rows, int cols, T defVal = T());
 
                 T getVal(int row, int col) const;
                 void setVal(int row, int col, T val);
@@ -48,6 +48,22 @@ class Graph{
                 void resizeMatrix(int rows, int cols);
                 
                 std::pair<int, int> getDims() const;
+
+                friend std::ostream& operator<<(std::ostream& os, const Matrix& mat){
+                    auto dims = mat.getDims();
+                    int rows = dims.first;
+                    int cols = dims.second;
+                    for(int i = 0; i<rows; i++){
+                        for(int j = 0; j<cols; j++){
+                            T v = mat.getVal(i,j);
+                            os << v << ",";
+                        }
+                        os<<std::endl;
+                    }
+                    return os;
+                }
+
+                std::string toString() const;
             private:
                 int getCoordinate(int row, int col) const;
                 std::vector<T> matrix_;

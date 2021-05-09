@@ -1,6 +1,7 @@
 #include "Graph.h"
 #include "Vertex.h"
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <algorithm>
 #include <stack>
@@ -14,11 +15,11 @@ Graph::Matrix<T>::Matrix(){
 }
 
 template <typename T>
-Graph::Matrix<T>::Matrix(int rows, int cols){
+Graph::Matrix<T>::Matrix(int rows, int cols, T defaultValue){
     rows_ = rows;
     cols_ = cols;
 
-    matrix_.resize(rows_ * cols_ + 1);
+    matrix_.assign(rows_*cols_, defaultValue);
 }
 
 template <typename T>
@@ -63,6 +64,13 @@ void Graph::Matrix<T>::setVal(int row, int col, T val){
 template <typename T>
 std::pair<int, int> Graph::Matrix<T>::getDims() const{
     return {rows_, cols_};
+}
+
+template <typename T>
+std::string Graph::Matrix<T>::toString() const{
+    std::stringstream s;
+    s << *this;
+    return s.str();
 }
 Graph::Graph(){
 }
@@ -309,49 +317,64 @@ void Graph::generateBetweennessCentrality(bool backwards){ //Assumes unweighted
         return;
     }
     std::unordered_map<Vertex, double> betwCent;
+    for(Vertex* v : vertices_){
+        betwCent[*v] = 0;
+    }
     size_t numVertices = getVerticiesSize();
-    Matrix<size_t> shortestPathMatrix(numVertices, numVertices);  //value at (row,col) represents shortest path from row vert to col vert
+    Matrix<int> shortestPathMatrix(numVertices, numVertices,-1);  //value at (row,col) represents shortest path from row vert to col vert
+    Matrix<size_t> shortestPathNumMatrix(numVertices, numVertices, 0);
+    Matrix<int> minDistMatrix(numVertices, numVertices, -1);
     for(size_t i = 0; i < numVertices; i++){
         shortestPathMatrix.setVal(i,i,i);
+        shortestPathNumMatrix.setVal(i,i,1);
+        minDistMatrix.setVal(i,i,0);
     }
     for(Vertex* v : vertices_){
         std::stack<Vertex*> stack1;
-        std::vector<size_t> shortestPathNum(numVertices, 0);
-        shortestPathNum[v -> getId()] = 1;
-        std::vector<int> minDistance(numVertices, -1);
-        minDistance[v -> getId()] = 0;
         std::queue<Vertex*> distQueue;
         distQueue.push(v);
         while(!distQueue.empty()){
             Vertex* vn = distQueue.front();
             distQueue.pop();
             stack1.push(vn);
-            double distToVertex = minDistance[vn -> getId()];
+            int distToVertex = minDistMatrix.getVal(v -> getId(), vn -> getId());
             auto nextVertices = backwards ? vn -> getVerticesPointedFrom() : vn -> getVerticesPointedTo();
+            size_t prevNumShortPath = shortestPathNumMatrix.getVal(v -> getId(), vn -> getId());
             for(Vertex* neighbor : nextVertices){
-                int& curDistance = minDistance[neighbor -> getId()];
+                int curDistance = minDistMatrix.getVal(v -> getId(), neighbor -> getId());
                 if(curDistance == -1){
                     distQueue.push(neighbor);
+                    minDistMatrix.setVal(v -> getId(), neighbor -> getId(), distToVertex + 1);
                     curDistance = distToVertex + 1;
                 }
                 if(curDistance == distToVertex + 1){
                     shortestPathMatrix.setVal(v -> getId(), neighbor -> getId(), vn -> getId());
-                    shortestPathNum[neighbor -> getId()] += shortestPathNum[vn -> getId()];
+                    size_t curNumShortPath = shortestPathNumMatrix.getVal(v -> getId(), neighbor -> getId());
+                    shortestPathNumMatrix.setVal(v -> getId(), neighbor -> getId(), curNumShortPath + prevNumShortPath);
                 }
             }
         }
         std::vector<double> dependencies(numVertices, 0);
+        std::cout << shortestPathMatrix << std::endl;
+        std::cout << std::endl;
+        std::cout << shortestPathNumMatrix << std::endl;
+        std::cout << std::endl;
+        std::cout << minDistMatrix << std::endl;
         while(!stack1.empty()){
             Vertex* vn = stack1.top();
             stack1.pop();
-            size_t vertId = vn -> getId();
-            size_t nextId = vertId;
+            int vertId = vn -> getId();
+            double curVertexShortestPathNum = (double) shortestPathNumMatrix.getVal(v -> getId(), vertId);
+            int nextId = vertId;
             do{
                 nextId = shortestPathMatrix.getVal(v -> getId(), nextId);
-                if(vertId != nextId){
-                    dependencies[nextId] += (double(shortestPathNum[nextId]))/(double(shortestPathNum[vertId]))*(1 + dependencies[vertId]);
+                if(nextId == -1){
+                    break;
                 }
-            }while(nextId != v -> getId());
+                double pathVertexShortestPathNum = (double) shortestPathNumMatrix.getVal(v -> getId(), nextId);
+                
+                dependencies[nextId] += (pathVertexShortestPathNum/curVertexShortestPathNum)*(1 + dependencies[vertId]);
+            }while(nextId != (int)v -> getId());
             if(vn != v){
                 betwCent[*vn] += dependencies[vertId];
             }
