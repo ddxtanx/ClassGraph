@@ -1,11 +1,11 @@
 #pragma once
-#include "Graph/Graph.h"
-#include "Graph/Edge.h"
-#include "Graph/Vertex.h"
-#include "ClassGraph.h"
+#include "../Graph/Graph.h"
+#include "../Graph/Edge.h"
+#include "../Graph/Vertex.h"
+#include "../ClassGraph.h"
 #include <string>
 #include <vector>
-#include "Davids_Work/BFS.h"
+#include "../Davids_Work/BFS.h"
 
 class SpanningTree : public Graph{
     public:

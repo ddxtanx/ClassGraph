@@ -9,12 +9,12 @@ class LGD
 {
     public:
     LGD();                          //constructors
-    LGD(Graph & g, Vertex & v);     //create by reference for easy use
+    LGD(Graph & g, Vertex & v);     //create by reference for easy 
+    ~LGD();                         //destructor
     LGD(Graph * g, Vertex * v);     //create by pointer for flexibility
 
     LGD(const LGD &other);          //copy constructor
-    ~LGD();                         //destructor
-    const LGD & operator= (const LGD & other); 	//copy constructor overload
+    const LGD & operator= (const LGD & other);     //copy constructor overload
 
     Image drawGraph();                    //creates PNG of a layered style of all courses that are prerequisit to the start course
     Image drawGraph(Vertex * start);      //same as drawGraph() but modifies start point before running
@@ -37,7 +37,7 @@ class LGD
     Image background_;
     Image oval_;
 
-    StickerSheet * stickers_; //Sticker sheet for vertex rendering
+    StickerSheet* stickers_; //Sticker sheet for vertex rendering
 
     Vertex * start_;        //Node to show prereq tree for
     Graph * graph_;         //graph structure for data

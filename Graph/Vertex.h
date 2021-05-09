@@ -30,6 +30,8 @@ class Vertex{
 
         void setId(int id);
 
+        unsigned getLayer() const;
+        void setLayer(unsigned layer);
 
         bool operator==(const Vertex v) const;
 
@@ -45,6 +47,7 @@ class Vertex{
         std::vector<Vertex*> pointsTo_;  //Collection of vertices v such that there is an edge e where e.getFrom == this and e.getTo == v
         std::vector<Vertex*> pointsFrom_;  //Collection of vertices v such that there is an edge e where e.getFrom == v and e.getTo == this
 
+        unsigned layer_; //Layer
         size_t numPointsTo;
         size_t numPointsFrom;
         std::string name_;                                  //course data
