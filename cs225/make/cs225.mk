@@ -43,9 +43,13 @@ $(EXE): output_msg $(patsubst %.o, $(OBJS_DIR)/%.o, $(OBJS))
 
 # Ensure .objs/ exists:
 $(GRAPH_OBJS_DIR):
-	@mkdir $(GRAPH_OBJS_DIR)
+	mkdir $(GRAPH_OBJS_DIR)
 $(DAVID_OBJS_DIR):
-	@mkdir $(DAVID_OBJS_DIR)
+	mkdir $(DAVID_OBJS_DIR)
+$(LGD_OBJS_DIR):
+	mkdir $(LGD_OBJS_DIR)
+$(STICKER_OBJS_DIR):
+	mkdir $(STICKER_OBJS_DIR)
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 	@mkdir -p $(OBJS_DIR)/cs225
@@ -62,7 +66,7 @@ $(OBJS_DIR):
 # Rules for compiling source code.
 # - Every object file is required by $(EXE)
 # - Generates the rule requiring the .cpp file of the same name
-$(OBJS_DIR)/%.o: %.cpp | $(OBJS_DIR) $(GRAPH_OBJS_DIR) $(DAVID_OBJS_DIR)
+$(OBJS_DIR)/%.o: %.cpp | $(OBJS_DIR) $(GRAPH_OBJS_DIR) $(DAVID_OBJS_DIR) $(LGD_OBJS_DIR) $(STICKER_OBJS_DIR)
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 

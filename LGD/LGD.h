@@ -11,8 +11,7 @@ class LGD
     LGD();                          //constructors
     LGD(Graph & g, Vertex & v);     //create by reference for easy use
     LGD(Graph * g, Vertex * v);     //create by pointer for flexibility
-    ~LGD();                         //destructor
-    const LGD & operator= (const LGD & other); 	//copy constructor
+    const LGD & operator= (const LGD & other);     //copy constructor
 
     Image drawGraph();                    //creates PNG of a layered style of all courses that are prerequisit to the start course
     Image drawGraph(Vertex * start);      //same as drawGraph() but modifies start point before running
@@ -22,10 +21,10 @@ class LGD
     void setStart(Vertex & start);
 
     
-    void drawEdge(cs225::PNG & png, unsigned int & x1, unsigned int & y1, unsigned int x2, unsigned int y2);
-    void drawEdge(cs225::PNG & png, unsigned int & x1, unsigned int & y1, unsigned int x2, unsigned int y2, cs225::HSLAPixel & color);
-    void drawVertex(std::string  name, unsigned int & x1, unsigned int & y1);
-    void drawVertex(std::string  name, unsigned int & x1, unsigned int & y1, cs225::HSLAPixel & color);
+    void drawEdge(cs225::PNG & png, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2);
+    void drawEdge(cs225::PNG & png, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, cs225::HSLAPixel color);
+    void drawVertex(std::string  name, unsigned int x1, unsigned int y1);
+    void drawVertex(std::string  name, unsigned int x1, unsigned int y1, cs225::HSLAPixel color);
 
     private:
 

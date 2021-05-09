@@ -1,48 +1,95 @@
 #include "LGD.h"
+#include "../cs225/PNG.h"
+#include "../Stickers/Image.h"
 #include <cmath>
 
+using namespace cs225;
 // constructors
 LGD::LGD() 
-: pic_(new PNG()), start_(NULL), graph_(NULL)
+: pic_(Image()), stickers_(StickerSheet(pic_, 10u)), start_(NULL),  graph_(NULL)
 { 
-    text_.readFromFile("text.png");
-    oval_.readFromFile("oval.png");
+    text_.readFromFile("./LGD/text.png");
+    oval_.readFromFile("./LGD/oval.png");
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
-    //stickers_(const Image &picture, unsigned max);
 }                      
 LGD::LGD(Graph & g, Vertex & v)  
-: pic_(new PNG()), start_(&v), graph_(&g)
+: pic_(Image()), stickers_(StickerSheet(pic_, 10u)), start_(&v), graph_(&g)
 {
-    text_.readFromFile("text.png");
-    oval_.readFromFile("oval.png");
+    text_.readFromFile("./LGD/text.png");
+    oval_.readFromFile("./LGD/oval.png");
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
     //stickers_(const Image &picture, unsigned max);
 }   
 LGD::LGD(Graph * g, Vertex * v)    
-: pic_(new PNG()), start_(v), graph_(g)
+: pic_(Image()), stickers_(StickerSheet(pic_, 10u)), start_(v), graph_(g)
 {
-    text_.readFromFile("text.png");
-    oval_.readFromFile("oval.png");
+    text_.readFromFile("./LGD/text.png");
+    oval_.readFromFile("./LGD/oval.png");
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
     //stickers_(const Image &picture, unsigned max);
 } 
-LGD::~LGD()
-{   delete stickers_;    }
+
 const LGD & LGD::operator= (const LGD & other)
 {
-    delete stickers_;
     stickers_ = other.stickers_;
     pic_ = other.pic_;
     start_ = other.start_;
     graph_ = other.graph_;
+    return *this;
 }
 
 
-void setStart(Vertex * start)
+void LGD::setStart(Vertex * start)
 {   start_ = start;     }
-void setStart(Vertex & start)
+void LGD::setStart(Vertex & start)
 {   start_ = &start;    }
 
+//needs testing
+void LGD::drawVertex(std::string name, unsigned int x1, unsigned int y1, cs225::HSLAPixel color)
+{
+    //check dict if dept name has already been made
+    //Create a department name PNG from cutting and pasting text.png if not made already
+    //place png in dictionary
+
+  unsigned int xOffset = 7;
+  unsigned int yOffset = 10;
+  unsigned int currPos = 0;
+  for (char& c : name)
+  {
+    unsigned int position;
+    if (c - ' ' == 0)
+    {
+      currPos = 70; //if space is encountered, set the spacing to be consistant
+      continue;     
+    }
+    else if (c - '0' < 10)                        //if number is encountered
+    {
+      position = 14*(26 + (c-'0')); //gets position of character in text.png
+    }
+    else if (c - 'A' > 0)                         //if letter is encountered
+    {
+      position = 14*(c-'A');        //gets position of character in text.png
+    }
+
+    //copies letter from text.png to oval.png, overwriting any past vertex
+    for (unsigned int x = 0; x < 14; ++x)
+    {
+      for (unsigned int y = 0; y < 10; ++y)
+      {
+        oval_.getPixel(currPos + x + xOffset, y + yOffset) = text_.getPixel(position + x, y);
+      }
+    }
+    currPos += 14;
+  }
+  //oval_ now contains vertex with name Image
+  stickers_.addSticker(oval_, x1, y1);
+}
+void LGD::drawVertex(std::string name, unsigned int x1, unsigned int y1)  //overload
+{
+    //default to black and call drawVertex
+    auto color = cs225::HSLAPixel(0,0,0,1);
+    drawVertex(name, x1, y1, color);
+}
 
 //needs implementation LUCA ALGORITHM HERE!
 Image LGD::drawGraph()            
@@ -63,9 +110,9 @@ Image LGD::drawGraph()
     unsigned int maxLayerWidth = 1;
     unsigned int maxGraphHeight = 1;
     unsigned int totalNodes = 1;
-    background_(150*maxLayerWidth, 100*maxGraphHeight); 
-    stickers_(background_,totalNodes);
-    drawVertex("WWWW 987", 5, 5);
+    background_ = Image(); 
+    std::string name = "WWWW 987";
+    drawVertex(name, 5u, 5u);
     //recursive?
     pic_ = stickers_.render();
     //draw edges
@@ -84,7 +131,7 @@ Image LGD::drawGraph(Vertex & start)      //overload
 
 //partially implemented
 //make edge detection to not intersect node?
-void LGD::drawEdge(cs225::PNG & png, unsigned int & x1, unsigned int & y1, unsigned int x2, unsigned int y2, cs225::HSLAPixel & color)
+void LGD::drawEdge(cs225::PNG & png, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, cs225::HSLAPixel color)
 {
   if (x1 == x2)  //handles vertical lines
   {
@@ -191,54 +238,10 @@ void LGD::drawEdge(cs225::PNG & png, unsigned int & x1, unsigned int & y1, unsig
   }
   return;
 }
-void LGD::drawEdge(cs225::PNG & png, unsigned int & x1, unsigned int & y1, unsigned int x2, unsigned int y2) //overload
+void LGD::drawEdge(cs225::PNG & png, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2) //overload
 {
     //default to black and call drawEdge
-    drawEdge(png, x1, y1, x2, y2, cs225::HSLAPixel color(0,0,0));
-}
-
-//needs testing
-void LGD::drawVertex(std::string name , unsigned int & x1, unsigned int & y1, cs225::HSLAPixel & color)
-{
-    //check dict if dept name has already been made
-    //Create a department name PNG from cutting and pasting text.png if not made already
-    //place png in dictionary
-
-  unsigned int xOffset = 7;
-  unsigned int yOffset = 10;
-  unsigned int currPos = 0;
-  for (char& c : name)
-  {
-    if (c - ' ' == 0)
-    {
-      currPos = 70; //if space is encountered, set the spacing to be consistant
-      continue;     
-    }
-    else if (c - '0' < 10)                        //if number is encountered
-    {
-      unsigned int position = 14*(26 + (c-'0')); //gets position of character in text.png
-    }
-    else if (c - 'A' > 0)                         //if letter is encountered
-    {
-      unsigned int position = 14*(c-'A');        //gets position of character in text.png
-    }
-
-    //copies letter from text.png to oval.png, overwriting any past vertex
-    for (unsigned int x = 0; x < 14; ++x)
-    {
-      for (unsigned int y = 0; y < 10; ++y)
-      {
-        oval_.getPixel(currPos + x + xOffset, y + yOffset) = text.getPixel(position + x, y);
-      }
-    }
-    currPos += 14;
-  }
-  //oval_ now contains vertex with name Image
-  stickers_.addSticker(oval_, x1, y1);
-}
-void LGD::drawVertex(std::string  name, unsigned int & x1, unsigned int & y1)  //overload
-{
-    //default to black and call drawVertex
-    drawEdge(png, x, y, cs225::HSLAPixel color(0,0,0));
+    auto color = cs225::HSLAPixel(0,0,0,1);
+    drawEdge(png, x1, y1, x2, y2, color);
 }
 
