@@ -24,14 +24,16 @@ class LGD
     private:
     void drawEdge(cs225::PNG & png, unsigned int & x1, unsigned int & y1, unsigned int x2, unsigned int y2);
     void drawEdge(cs225::PNG & png, unsigned int & x1, unsigned int & y1, unsigned int x2, unsigned int y2, cs225::HSLAPixel & color);
-    void drawVertex(cs225::PNG & png, unsigned int & x, unsigned int & y);
-    void drawVertex(cs225::PNG & png, unsigned int & x, unsigned int & y, cs225::HSLAPixel & color);
+    void drawVertex(std::string, unsigned int & x, unsigned int & y);
+    void drawVertex(std::string, unsigned int & x, unsigned int & y, cs225::HSLAPixel & color);
 
+    Image pic_;             //sticker output Image, used for edge drawing and final picture
+    Image text_;            //character storage png
+    Image background_;
+    Image oval_;
 
+    StickerSheet stickers_; //Sticker sheet for vertex rendering
 
-    PNG * pic_;     //output graph drawing
-    Image text_;     //character storage png
-
-    Vertex * start_;
-    Graph * graph_;
+    Vertex * start_;        //Node to show prereq tree for
+    Graph * graph_;         //graph structure for data
 };

@@ -6,23 +6,33 @@ LGD::LGD()
 : pic_(new PNG()), start_(NULL), graph_(NULL)
 { 
     text_.readFromFile("text.png");
+    oval_.readFromFile("oval.png");
+    //Image pic_();              //sticker output Image, used for edge drawing and final picture
+    //stickers_(const Image &picture, unsigned max);
 }                      
 LGD::LGD(Graph & g, Vertex & v)  
 : pic_(new PNG()), start_(&v), graph_(&g)
 {
     text_.readFromFile("text.png");
+    oval_.readFromFile("oval.png");
+    //Image pic_();              //sticker output Image, used for edge drawing and final picture
+    //stickers_(const Image &picture, unsigned max);
 }   
 LGD::LGD(Graph * g, Vertex * v)    
 : pic_(new PNG()), start_(v), graph_(g)
 {
     text_.readFromFile("text.png");
+    oval_.readFromFile("oval.png");
+    //Image pic_();              //sticker output Image, used for edge drawing and final picture
+    //stickers_(const Image &picture, unsigned max);
 } 
 LGD::~LGD()
-{   delete pic_;    }
+{   delete stickers_;    }
 const LGD & LGD::operator= (const LGD & other)
 {
-    delete pic_;
-    pic_ = new PNG(other.pic_); //deep copy PNG
+    delete stickers_;
+    stickers_ = other.stickers_;
+    pic_ = other.pic_;
     start_ = other.start_;
     graph_ = other.graph_;
 }
@@ -34,7 +44,7 @@ void setStart(Vertex & start)
 {   start_ = &start;    }
 
 
-//needs implementation
+//needs implementation LUCA ALGORITHM HERE!
 LGD::drawGraph()            
 {
     //BFS->store verts by distance from start->save total nodes # for spacing
@@ -168,16 +178,29 @@ void LGD::drawEdge(cs225::PNG & png, unsigned int & x1, unsigned int & y1, unsig
 }
 
 //needs implementation
-void LGD::drawVertex(cs225::PNG & png, unsigned int & x, unsigned int & y, cs225::HSLAPixel & color)
+void LGD::drawVertex(std::string, unsigned int & x, unsigned int & y, cs225::HSLAPixel & color)
 {
     //check dict if dept name has already been made
-        //Create a department name PNG from cutting and pasting text.png if not made already
-        //place png in dictionary
+    //Create a department name PNG from cutting and pasting text.png if not made already
+    //place png in dictionary
+
+  Image cat; 
+  cat.readFromFile("cat.png");
+
+  Image background; 
+  background.readFromFile("background.png");
+
+  stickers_.addSticker(cat, 400, 20);
+
+
+  Image output = sheet.render();
+
+  output.writeToFile("myImage.png");
     //tack on course numbers to department name to get full course name
     //put name on pic_
     //put circle around name in pic_
 }
-void LGD::drawVertex(cs225::PNG & png, unsigned int & x, unsigned int & y)  //overload
+void LGD::drawVertex(std::string, unsigned int & x, unsigned int & y)  //overload
 {
     //default to black and call drawVertex
     drawEdge(png, x, y, cs225::HSLAPixel color(0,0,0));
