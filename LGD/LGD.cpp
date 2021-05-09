@@ -6,23 +6,33 @@ LGD::LGD()
 : pic_(new PNG()), start_(NULL), graph_(NULL)
 { 
     text_.readFromFile("text.png");
+    oval_.readFromFile("oval.png");
+    //Image pic_();              //sticker output Image, used for edge drawing and final picture
+    //stickers_(const Image &picture, unsigned max);
 }                      
 LGD::LGD(Graph & g, Vertex & v)  
 : pic_(new PNG()), start_(&v), graph_(&g)
 {
     text_.readFromFile("text.png");
+    oval_.readFromFile("oval.png");
+    //Image pic_();              //sticker output Image, used for edge drawing and final picture
+    //stickers_(const Image &picture, unsigned max);
 }   
 LGD::LGD(Graph * g, Vertex * v)    
 : pic_(new PNG()), start_(v), graph_(g)
 {
     text_.readFromFile("text.png");
+    oval_.readFromFile("oval.png");
+    //Image pic_();              //sticker output Image, used for edge drawing and final picture
+    //stickers_(const Image &picture, unsigned max);
 } 
 LGD::~LGD()
-{   delete pic_;    }
+{   delete stickers_;    }
 const LGD & LGD::operator= (const LGD & other)
 {
-    delete pic_;
-    pic_ = new PNG(other.pic_); //deep copy PNG
+    delete stickers_;
+    stickers_ = other.stickers_;
+    pic_ = other.pic_;
     start_ = other.start_;
     graph_ = other.graph_;
 }
@@ -34,19 +44,39 @@ void setStart(Vertex & start)
 {   start_ = &start;    }
 
 
-//needs implementation
-LGD::drawGraph()            
+//needs implementation LUCA ALGORITHM HERE!
+Image LGD::drawGraph()            
 {
-    //BFS->store verts by distance from start->save total nodes # for spacing
+  
+    
+    //BFS->store verts by distance from start->save total nodes # per layer for maxLayerWidth, and save height for maxGraphHegiht
     //loop{}
-    return NULL;    //replace
+    //Need these vars:
+    //unsgined int maxLayerWidth -- # of verts in widest layer
+    //unsinged int maxGraphHeight -- # of layers in tallest part
+    //unsigned int totalNodes  -- # of nodes traversed
+
+
+
+    //rendering code:
+
+    unsigned int maxLayerWidth = 1;
+    unsigned int maxGraphHeight = 1;
+    unsigned int totalNodes = 1;
+    background_(150*maxLayerWidth, 100*maxGraphHeight); 
+    stickers_(background_,totalNodes);
+    drawVertex("WWWW 987", 5, 5);
+    //recursive?
+    pic_ = stickers_.render();
+    //draw edges
+    return pic_;    //replace
 }       
-LGD::drawGraph(Vertex * start)      //overload
+Image LGD::drawGraph(Vertex * start)      //overload
 {
     start_ = start;
     return drawGraph();
 }   
-LGD::drawGraph(Vertex & start)      //overload
+Image LGD::drawGraph(Vertex & start)      //overload
 {
     start_ = &start;
     return drawGraph();
@@ -167,17 +197,46 @@ void LGD::drawEdge(cs225::PNG & png, unsigned int & x1, unsigned int & y1, unsig
     drawEdge(png, x1, y1, x2, y2, cs225::HSLAPixel color(0,0,0));
 }
 
-//needs implementation
-void LGD::drawVertex(cs225::PNG & png, unsigned int & x, unsigned int & y, cs225::HSLAPixel & color)
+//needs testing
+void LGD::drawVertex(std::string name , unsigned int & x1, unsigned int & y1, cs225::HSLAPixel & color)
 {
     //check dict if dept name has already been made
-        //Create a department name PNG from cutting and pasting text.png if not made already
-        //place png in dictionary
-    //tack on course numbers to department name to get full course name
-    //put name on pic_
-    //put circle around name in pic_
+    //Create a department name PNG from cutting and pasting text.png if not made already
+    //place png in dictionary
+
+  unsigned int xOffset = 7;
+  unsigned int yOffset = 10;
+  unsigned int currPos = 0;
+  for (char& c : name)
+  {
+    if (c - ' ' == 0)
+    {
+      currPos = 70; //if space is encountered, set the spacing to be consistant
+      continue;     
+    }
+    else if (c - '0' < 10)                        //if number is encountered
+    {
+      unsigned int position = 14*(26 + (c-'0')); //gets position of character in text.png
+    }
+    else if (c - 'A' > 0)                         //if letter is encountered
+    {
+      unsigned int position = 14*(c-'A');        //gets position of character in text.png
+    }
+
+    //copies letter from text.png to oval.png, overwriting any past vertex
+    for (unsigned int x = 0; x < 14; ++x)
+    {
+      for (unsigned int y = 0; y < 10; ++y)
+      {
+        oval_.getPixel(currPos + x + xOffset, y + yOffset) = text.getPixel(position + x, y);
+      }
+    }
+    currPos += 14;
+  }
+  //oval_ now contains vertex with name Image
+  stickers_.addSticker(oval_, x1, y1);
 }
-void LGD::drawVertex(cs225::PNG & png, unsigned int & x, unsigned int & y)  //overload
+void LGD::drawVertex(std::string  name, unsigned int & x1, unsigned int & y1)  //overload
 {
     //default to black and call drawVertex
     drawEdge(png, x, y, cs225::HSLAPixel color(0,0,0));
