@@ -3,9 +3,14 @@
 #include "Davids_Work/BFS.h"
 #include "Graph/Graph.h"
 #include "ClassGraph.h"
+#include "LGD/LGD.h"
 #include "utils.h"
+
+
 using namespace std;
 std::string filename = "./Courses-and-prereqs/AllPrereqs.dat";
+
+
 int main(int argc, char** argv)
 {
   if(argc == 2){
@@ -35,7 +40,16 @@ int main(int argc, char** argv)
     } 
     std::cout << std::endl;
   }
+
+  std::cout << std::endl;
+  std::cout << std::endl;
+  std::cout << std::endl;
+  std::cout << "Testing draw Vertex" << std::endl;
+
+  LGD l(&g, start);
+  Image output = l.drawGraph();
+  output.writeToFile("Output_PNGs/myImage.png");
+
+  
   return 0;
-
-
 }

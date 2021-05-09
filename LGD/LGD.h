@@ -14,18 +14,21 @@ class LGD
     ~LGD();                         //destructor
     const LGD & operator= (const LGD & other); 	//copy constructor
 
-    PNG * drawGraph();                    //creates PNG of a layered style of all courses that are prerequisit to the start course
-    PNG * drawGraph(Vertex * start);      //same as drawGraph() but modifies start point before running
-    PNG * drawGraph(Vertex & start);
+    Image drawGraph();                    //creates PNG of a layered style of all courses that are prerequisit to the start course
+    Image drawGraph(Vertex * start);      //same as drawGraph() but modifies start point before running
+    Image drawGraph(Vertex & start);
 
     void setStart(Vertex * start);         //changes start value
     void setStart(Vertex & start);
 
-    private:
+    
     void drawEdge(cs225::PNG & png, unsigned int & x1, unsigned int & y1, unsigned int x2, unsigned int y2);
     void drawEdge(cs225::PNG & png, unsigned int & x1, unsigned int & y1, unsigned int x2, unsigned int y2, cs225::HSLAPixel & color);
-    void drawVertex(std::string, unsigned int & x, unsigned int & y);
-    void drawVertex(std::string, unsigned int & x, unsigned int & y, cs225::HSLAPixel & color);
+    void drawVertex(std::string  name, unsigned int & x1, unsigned int & y1);
+    void drawVertex(std::string  name, unsigned int & x1, unsigned int & y1, cs225::HSLAPixel & color);
+
+    private:
+
 
     Image pic_;             //sticker output Image, used for edge drawing and final picture
     Image text_;            //character storage png
