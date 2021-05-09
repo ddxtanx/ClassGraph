@@ -10,6 +10,7 @@ Vertex::Vertex(){
     count++;
     numPointsTo = 0;
     numPointsFrom = 0;
+    layer_=0;
 }
 
 Vertex::Vertex(std::string name){
@@ -18,6 +19,7 @@ Vertex::Vertex(std::string name){
     count++;
     numPointsTo = 0;
     numPointsFrom = 0;
+    layer_=0;
 }
 
 void Vertex::connectTo(Vertex* to){
@@ -96,6 +98,14 @@ std::vector<Vertex*> Vertex::getVerticesPointedFrom(){
         }
     }
     return nonNulls;
+}
+
+unsigned Vertex::getLayer() const{
+    return layer_;
+}
+
+void Vertex::setLayer(unsigned layer){
+    layer_=layer;
 }
 
 size_t Vertex::getNumPointedTo(){
