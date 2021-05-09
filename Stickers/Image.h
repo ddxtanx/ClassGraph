@@ -8,15 +8,13 @@
 #include "../cs225/PNG.h"
 
 
-    class Image: public cs225::PNG
-    {
-        public:
-        Image();
-        Image(unsigned int width, unsigned int height);
-        void scale(double factor);
-        void scale(unsigned w, unsigned h);
-        unsigned int xPos, yPos;
-        private:
-
-
-    };
+class Image: public cs225::PNG
+{
+    public:
+    Image();
+    Image(unsigned int width, unsigned int height);
+    void scale(double factor);
+    void scale(unsigned w, unsigned h);
+    unsigned int xPos, yPos;
+    private:
+};
