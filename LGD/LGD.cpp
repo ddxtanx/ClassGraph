@@ -104,9 +104,9 @@ Image LGD::drawGraph()
     std::cout << "simply draws all verts in the" << std::endl;
     std::cout << "order they are stored in the" << std::endl;
     std::cout << "graph obj, and lines are drawn" << std::endl;
-    std::cout << "between consecutive vertexes." < std::endl;
+    std::cout << "between consecutive vertexes." << std::endl;
     std::cout << "This is debug, not final, behavior" << std::endl;
-    std::cout << "+++++++++++++++++++++++++++++++++++" < std::endl;
+    std::cout << "+++++++++++++++++++++++++++++++++++" << std::endl;
     std::cout << std::endl;
     std::cout << std::endl;
 
