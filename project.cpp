@@ -5,10 +5,11 @@
 #include "ClassGraph.h"
 #include "LGD/LGD.h"
 #include "utils.h"
+#include "SpanningTree/SpanningTree.h"
 
 
 using namespace std;
-std::string filename = "./Courses-and-prereqs/AllPrereqs.dat";
+std::string filename = "./Courses-and-prereqs/TestData.dat";
 
 
 int main(int argc, char** argv)
