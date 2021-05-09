@@ -28,7 +28,7 @@ class Vertex{
         std::string getName() const;
         size_t getId() const;
 
-        void setId(int id);
+        void setId(size_t id);
 
         unsigned getLayer() const;
         void setLayer(unsigned layer);
@@ -40,10 +40,9 @@ class Vertex{
             return os;
         }
 
-        static void setCountNum(int c);
-        static int getCountNum();
+        static void setCountNum(size_t c);
     private:
-        static int count;
+        static size_t count;
         std::vector<Vertex*> pointsTo_;  //Collection of vertices v such that there is an edge e where e.getFrom == this and e.getTo == v
         std::vector<Vertex*> pointsFrom_;  //Collection of vertices v such that there is an edge e where e.getFrom == v and e.getTo == this
 
