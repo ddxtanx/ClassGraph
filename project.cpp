@@ -31,6 +31,7 @@ int main(int argc, char** argv)
   Vertex* start = g.getStart();
 
   BFS traversal(&g, start);                    //create traversal, start at vert 0
+  /*
   for (auto it = traversal.begin(); it != traversal.end(); ++it)
   {
     Vertex v = **it;
@@ -40,14 +41,17 @@ int main(int argc, char** argv)
     } 
     std::cout << std::endl;
   }
-
+*/
   std::cout << std::endl;
   std::cout << std::endl;
   std::cout << std::endl;
   std::cout << "Testing draw Vertex" << std::endl;
 
+  std::cout << "Creating LGD obj with graph g and START" << std::endl;
   LGD l(&g, start);
+  std::cout << "Calling DrawGraph" << std::endl;
   Image output = l.drawGraph();
+  std::cout << "Writing to File" << std::endl;
   output.writeToFile("Output_PNGs/myImage.png");
 
   

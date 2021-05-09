@@ -24,10 +24,10 @@ class LGD
     void setStart(Vertex & s);
 
     
-    void drawEdge(cs225::PNG & png, unsigned int & x1, unsigned int & y1, unsigned int x2, unsigned int y2);
-    void drawEdge(cs225::PNG & png, unsigned int & x1, unsigned int & y1, unsigned int x2, unsigned int y2, cs225::HSLAPixel color);
-    void drawVertex(std::string  name, unsigned int & x1, unsigned int & y1);
-    void drawVertex(std::string  name, unsigned int & x1, unsigned int & y1, cs225::HSLAPixel color);
+    void drawEdge(cs225::PNG & png, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2);
+    void drawEdge(cs225::PNG & png, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, cs225::HSLAPixel color);
+    void drawVertex(std::string  name, unsigned int x1, unsigned int y1);
+    void drawVertex(std::string  name, unsigned int x1, unsigned int y1, cs225::HSLAPixel color);
 
     private:
 
