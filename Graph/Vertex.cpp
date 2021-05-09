@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-int Vertex::count = 0;
+size_t Vertex::count = 0;
 Vertex::Vertex(){
     name_ = "";
     id_ = count;
@@ -128,14 +128,10 @@ bool Vertex::operator==(const Vertex v) const{
     return (name_ == v.name_);
 }
 
-void Vertex::setId(int id){
+void Vertex::setId(size_t id){
     id_ = id;
 }
 
-void Vertex::setCountNum(int c){
+void Vertex::setCountNum(size_t c){
     count = c;
-}
-
-int Vertex::getCountNum(){
-    return count;
 }
