@@ -29,6 +29,7 @@ int main(int argc, char** argv)
 
   std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
   Vertex* start = g.getStart();
+  Vertex* end = g.getEnd();
 
   BFS traversal(&g, start);                    //create traversal, start at vert 0
   for (auto it = traversal.begin(); it != traversal.end(); ++it)
@@ -39,6 +40,11 @@ int main(int argc, char** argv)
       std::cout << *vp << ", ";
     } 
     std::cout << std::endl;
+  }
+
+  g.generateBetweennessCentrality(true);
+  for(std::pair<Vertex, double> betwCent : *g.getBetweennessCentrality()){
+    std::cout << "The betweenness centrality of " << betwCent.first << " is " << betwCent.second << std::endl;
   }
 
   std::cout << std::endl;

@@ -50,3 +50,12 @@ class Vertex{
         std::string name_;                                  //course data
         size_t id_;                                 //id used for the adjacency graph
 };
+
+namespace std{
+    template<>
+    struct hash<Vertex>{
+        size_t operator()(const Vertex& v) const{
+            return v.getId();
+        }
+    };
+};
