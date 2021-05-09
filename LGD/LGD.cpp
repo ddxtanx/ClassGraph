@@ -81,52 +81,7 @@ void LGD::setStart(Vertex * start)
 void LGD::setStart(Vertex & start)
 {   start_ = &start;    }
 
-//needs testing
-void LGD::drawVertex(std::string name, unsigned int x1, unsigned int y1, cs225::HSLAPixel color)
-{
-    //check dict if dept name has already been made
-    //Create a department name PNG from cutting and pasting text.png if not made already
-    //place png in dictionary
 
-  unsigned int xOffset = 7;
-  unsigned int yOffset = 10;
-  unsigned int currPos = 0;
-  for (char& c : name)
-  {
-    unsigned int position;
-    if (c - ' ' == 0)
-    {
-      currPos = 70; //if space is encountered, set the spacing to be consistant
-      continue;     
-    }
-    else if (c - '0' < 10)                        //if number is encountered
-    {
-      position = 14*(26 + (c-'0')); //gets position of character in text.png
-    }
-    else if (c - 'A' > 0)                         //if letter is encountered
-    {
-      position = 14*(c-'A');        //gets position of character in text.png
-    }
-
-    //copies letter from text.png to oval.png, overwriting any past vertex
-    for (unsigned int x = 0; x < 14; ++x)
-    {
-      for (unsigned int y = 0; y < 10; ++y)
-      {
-        oval_.getPixel(currPos + x + xOffset, y + yOffset) = text_.getPixel(position + x, y);
-      }
-    }
-    currPos += 14;
-  }
-  //oval_ now contains vertex with name Image
-  stickers_ -> addSticker(oval_, x1, y1);
-}
-void LGD::drawVertex(std::string name, unsigned int x1, unsigned int y1)  //overload
-{
-    //default to black and call drawVertex
-    auto color = cs225::HSLAPixel(0,0,0,1);
-    drawVertex(name, x1, y1, color);
-}
 
 //needs implementation LUCA ALGORITHM HERE!
 Image LGD::drawGraph()            
