@@ -30,10 +30,12 @@ BFS::Iterator & BFS::Iterator::operator++()
     //std::cout << "Vert name = " << current->getName() << std::endl;
     //std::cout << "Vert ID = " << current->getId() << std::endl;
     //std::cout << "adj size() = "<< adj.size() << std::endl;
+    unsigned currLayer=current->getLayer();
     for (Vertex* v : adj)    //push all valid adjacent verts
     {
         if(v != nullptr){
             q.push(v);
+            v->setLayer(currLayer);
         }
     }
 
