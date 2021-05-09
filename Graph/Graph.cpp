@@ -316,69 +316,76 @@ void Graph::generateBetweennessCentrality(bool backwards){ //Assumes unweighted
     if(!betweennessCentrality_.empty()){
         return;
     }
+    double max_centrality = std::numeric_limits<double>::min();
+    double min_centrality = std::numeric_limits<double>::max();
     std::unordered_map<Vertex, double> betwCent;
     for(Vertex* v : vertices_){
         betwCent[*v] = 0;
     }
     size_t numVertices = getVerticiesSize();
-    Matrix<int> shortestPathMatrix(numVertices, numVertices,-1);  //value at (row,col) represents shortest path from row vert to col vert
+    std::vector<std::vector<Vertex*>> onAShortestPath;
+    onAShortestPath.assign(numVertices, {});
     Matrix<size_t> shortestPathNumMatrix(numVertices, numVertices, 0);
     Matrix<int> minDistMatrix(numVertices, numVertices, -1);
     for(size_t i = 0; i < numVertices; i++){
-        shortestPathMatrix.setVal(i,i,i);
         shortestPathNumMatrix.setVal(i,i,1);
         minDistMatrix.setVal(i,i,0);
     }
-    for(Vertex* v : vertices_){
+    for(Vertex* s : vertices_){
+        size_t sourceId = s -> getId();
         std::stack<Vertex*> stack1;
         std::queue<Vertex*> distQueue;
-        distQueue.push(v);
+        distQueue.push(s);
         while(!distQueue.empty()){
             Vertex* vn = distQueue.front();
+            size_t curVertId = vn -> getId();
             distQueue.pop();
             stack1.push(vn);
-            int distToVertex = minDistMatrix.getVal(v -> getId(), vn -> getId());
+            int distToVertex = minDistMatrix.getVal(sourceId, curVertId);
             auto nextVertices = backwards ? vn -> getVerticesPointedFrom() : vn -> getVerticesPointedTo();
-            size_t prevNumShortPath = shortestPathNumMatrix.getVal(v -> getId(), vn -> getId());
+            size_t prevNumShortPath = shortestPathNumMatrix.getVal(sourceId, curVertId);
             for(Vertex* neighbor : nextVertices){
-                int curDistance = minDistMatrix.getVal(v -> getId(), neighbor -> getId());
+                size_t neighborId = neighbor -> getId();
+                int curDistance = minDistMatrix.getVal(sourceId, neighborId);
                 if(curDistance == -1){
                     distQueue.push(neighbor);
-                    minDistMatrix.setVal(v -> getId(), neighbor -> getId(), distToVertex + 1);
+                    minDistMatrix.setVal(sourceId, neighborId, distToVertex + 1);
                     curDistance = distToVertex + 1;
                 }
                 if(curDistance == distToVertex + 1){
-                    shortestPathMatrix.setVal(v -> getId(), neighbor -> getId(), vn -> getId());
-                    size_t curNumShortPath = shortestPathNumMatrix.getVal(v -> getId(), neighbor -> getId());
-                    shortestPathNumMatrix.setVal(v -> getId(), neighbor -> getId(), curNumShortPath + prevNumShortPath);
+                    onAShortestPath[neighborId].push_back(vn);
+                    size_t curNumShortPath = shortestPathNumMatrix.getVal(sourceId, neighborId);
+                    shortestPathNumMatrix.setVal(sourceId, neighborId, curNumShortPath + prevNumShortPath);
                 }
             }
         }
         std::vector<double> dependencies(numVertices, 0);
-        std::cout << shortestPathMatrix << std::endl;
-        std::cout << std::endl;
-        std::cout << shortestPathNumMatrix << std::endl;
-        std::cout << std::endl;
-        std::cout << minDistMatrix << std::endl;
         while(!stack1.empty()){
-            Vertex* vn = stack1.top();
+            Vertex* w = stack1.top();
             stack1.pop();
-            int vertId = vn -> getId();
-            double curVertexShortestPathNum = (double) shortestPathNumMatrix.getVal(v -> getId(), vertId);
+            int vertId = w -> getId();
+            double curVertexShortestPathNum = (double) shortestPathNumMatrix.getVal(sourceId, vertId);
             int nextId = vertId;
-            do{
-                nextId = shortestPathMatrix.getVal(v -> getId(), nextId);
-                if(nextId == -1){
-                    break;
+            for(Vertex* v: onAShortestPath[vertId]){
+                double pathVertexShortestPathNum = (double) shortestPathNumMatrix.getVal(sourceId, v -> getId());
+                dependencies[v -> getId()] += pathVertexShortestPathNum/curVertexShortestPathNum * (1 + dependencies[vertId]);
+            }
+            if(w != s){
+                betwCent[*w] += dependencies[vertId];
+                double cent = betwCent[*w];
+                if(cent > max_centrality){
+                    max_centrality = cent;
                 }
-                double pathVertexShortestPathNum = (double) shortestPathNumMatrix.getVal(v -> getId(), nextId);
-                
-                dependencies[nextId] += (pathVertexShortestPathNum/curVertexShortestPathNum)*(1 + dependencies[vertId]);
-            }while(nextId != (int)v -> getId());
-            if(vn != v){
-                betwCent[*vn] += dependencies[vertId];
+                if(cent < min_centrality){
+                    min_centrality = cent;
+                }
             }
         }
+    }
+    for(auto pair : betwCent){
+        Vertex v = pair.first;
+        double score = pair.second;
+        betwCent[v] = (score - min_centrality)/(max_centrality - min_centrality);
     }
     betweennessCentrality_ = betwCent;
 }

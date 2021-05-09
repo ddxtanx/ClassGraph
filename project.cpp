@@ -44,9 +44,20 @@ int main(int argc, char** argv)
   }
 
   g.generateBetweennessCentrality(true);
+  Vertex mostImportantVertex;
+  double maxScore = std::numeric_limits<double>::min();
   for(std::pair<Vertex, double> betwCent : *g.getBetweennessCentrality()){
-    std::cout << "The betweenness centrality of " << betwCent.first << " is " << betwCent.second << std::endl;
+    Vertex v = betwCent.first;
+    double score = betwCent.second;
+    std::cout << "The betweenness centrality of " << v << " is " << score << std::endl;
+
+    if(score > maxScore){
+      maxScore = score;
+      mostImportantVertex = v;
+    }
   }
+
+  std::cout << "The most central vertex in the graph is " << mostImportantVertex << " with a centrality of " << maxScore << std::endl;
 
   std::cout << std::endl;
   std::cout << std::endl;
