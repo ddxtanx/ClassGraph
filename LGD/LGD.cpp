@@ -4,7 +4,7 @@
 #include <cmath>
 
 using namespace cs225;
-// constructors
+// constructors, rule of 3
 LGD::LGD() 
 : pic_(Image()), stickers_(new StickerSheet(pic_, 10u)), start_(NULL),  graph_(NULL)
 { 
@@ -44,8 +44,6 @@ LGD::LGD(const LGD &other)
       stickers_ = NULL;
     }
 } 
-
-
 LGD::~LGD()
 {   
   delete stickers_;   
@@ -71,23 +69,22 @@ const LGD & LGD::operator= (const LGD & other)
 }
 
 /*
-void setStart(Vertex * s)
-{   start_ = s;     }
-void setStart(Vertex & s)
-{   start_ = &s;    }
-*/
-void LGD::setStart(Vertex * start)
-{   start_ = start;     }
-void LGD::setStart(Vertex & start)
-{   start_ = &start;    }
+  void setStart(Vertex * s)
+  {   start_ = s;     }
+  void setStart(Vertex & s)
+  {   start_ = &s;    }
 
+  void LGD::setStart(Vertex * start)
+  {   start_ = start;     }
+  void LGD::setStart(Vertex & start)
+  {   start_ = &start;    }
+*/
 
 
 //needs implementation LUCA ALGORITHM HERE!
 Image LGD::drawGraph()            
 {
   
-    
     //BFS->store verts by distance from start->save total nodes # per layer for maxLayerWidth, and save height for maxGraphHegiht
     //loop{}
     //Need these vars:
@@ -102,7 +99,7 @@ Image LGD::drawGraph()
     unsigned int maxLayerWidth;
     unsigned int maxGraphHeight;
 
-    //####### Temp code that just plots all vertices in a sqaure png ##############
+    //####### Temp code that just plots all vertices in a sqaure png ############## for testing purposes
     std::vector<Vertex*> & verts = graph_->getVertices();
     size_t size = verts.size();
     maxLayerWidth = 2;
@@ -124,7 +121,6 @@ Image LGD::drawGraph()
 
     std::vector<Vertex*>::iterator it = verts.begin();
 
-
     for (unsigned int x = 0; x < maxLayerWidth; ++x)
     {
       for (unsigned int y = 0; y < maxGraphHeight; ++y)
@@ -132,18 +128,33 @@ Image LGD::drawGraph()
         if (it == verts.end())
           break;
         drawVertex((*it)->getName(), x*150, y*50);
+        
         ++it;
       }
     }
-
-    
-
-
     //recursive meathod??
     std::cout << "Calling Render" << std::endl;
     pic_ = stickers_->render(); //render vertices
 
     //draw edges TODO
+    std::cout << "Drawing Edges" << std::endl;
+    unsigned int idx = 0;
+    Image * curr = NULL;
+    Image * prev = NULL;
+    while ( (curr = stickers_->getSticker(idx)) != NULL)
+    {
+      if (prev == NULL)
+      {
+        prev = curr;
+        ++idx;
+        continue;
+      }
+      drawEdge(prev, curr);
+      prev = curr;
+      ++idx;
+    }
+
+    std::cout << "Returning pic_" << std::endl;
 
     return pic_;    //returning graph result
 
@@ -160,19 +171,27 @@ Image LGD::drawGraph(Vertex & start)      //overload
 }
 
 //partially implemented
-//make edge detection to not intersect node?
-void LGD::drawEdge(cs225::PNG & png, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, cs225::HSLAPixel color)
+void LGD::drawEdge(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, cs225::HSLAPixel color)
 {
+  unsigned int xCenter = 63;
+  unsigned int yBottom = 31;
+  x1 += xCenter;
+  x2 += xCenter;
+  y1 += yBottom;
+
+
+  //####################### Code from David's mp_intro ##############################
+
   if (x1 == x2)  //handles vertical lines
   {
     //std::cout << "Vertical" << std::endl;
     if (y1 < y2)
     {
-      for (; y1 < y2; y1++){png.getPixel(x1,y1) = color;}
+      for (; y1 < y2; y1++){pic_.getPixel(x1,y1) = color;}
     }
     else
     {
-       for (; y1 > y2; y1--){png.getPixel(x1,y1) = color;}
+       for (; y1 > y2; y1--){pic_.getPixel(x1,y1) = color;}
     }
     return;
   }
@@ -183,11 +202,11 @@ void LGD::drawEdge(cs225::PNG & png, unsigned int x1, unsigned int y1, unsigned 
     //std::cout << "Horiztonal" << std::endl;
     if (x1 < x2)
     {
-      for (; x1 < x2; x1++){png.getPixel(x1,y1) = color;}
+      for (; x1 < x2; x1++){pic_.getPixel(x1,y1) = color;}
     }
     else
     {
-       for (; x1 > x2; x1--){png.getPixel(x1,y1) = color;}
+       for (; x1 > x2; x1--){pic_.getPixel(x1,y1) = color;}
     }
     return;
   }
@@ -204,12 +223,12 @@ void LGD::drawEdge(cs225::PNG & png, unsigned int x1, unsigned int y1, unsigned 
         dy = dy + slope;
         if ((y1-dy) < 1 && (y1-dy) > -1)
         {
-          png.getPixel(x1,y1) = color;
+          pic_.getPixel(x1,y1) = color;
         }
         for (; y1 < dy; y1++)
         {
           //std::cout << "x1 = " << x1 << "   x2 = " << x2 <<"   y1 = " << y1 << "    dy = " << dy << "    y2 = " << y2  << std::endl;
-          png.getPixel(x1,y1) = color;
+          pic_.getPixel(x1,y1) = color;
         }
       }
     }
@@ -221,11 +240,11 @@ void LGD::drawEdge(cs225::PNG & png, unsigned int x1, unsigned int y1, unsigned 
         dy = dy + slope;
         if ((y1-dy) < 1 && (y1-dy) > -1)
         {
-          png.getPixel(x1,y1) = color;
+          pic_.getPixel(x1,y1) = color;
         }
         for (; y1 > dy; y1--)
         {
-          png.getPixel(x1,y1) = color;
+          pic_.getPixel(x1,y1) = color;
         }
       }
     }
@@ -240,11 +259,11 @@ void LGD::drawEdge(cs225::PNG & png, unsigned int x1, unsigned int y1, unsigned 
         dy = dy - slope;
         if ((y1-dy) < 1 && (y1-dy) > -1)
         {
-          png.getPixel(x1,y1) = color;
+          pic_.getPixel(x1,y1) = color;
         }
         for (; y1 < dy; y1++)
         {
-          png.getPixel(x1,y1) = color;
+          pic_.getPixel(x1,y1) = color;
         }
       }
     }
@@ -257,25 +276,40 @@ void LGD::drawEdge(cs225::PNG & png, unsigned int x1, unsigned int y1, unsigned 
         dy = dy - slope;
         if ((y1-dy) < 1 && (y1-dy) > -1)
         {
-          png.getPixel(x1,y1) = color;
+          pic_.getPixel(x1,y1) = color;
         }
         for (; y1 > dy; y1--)
         {
-          png.getPixel(x1,y1) = color;
+          pic_.getPixel(x1,y1) = color;
         }
       }
     }
   }
   return;
 }
-void LGD::drawEdge(cs225::PNG & png, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2) //overload
+void LGD::drawEdge(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2) //overload
 {
-    //default to black and call drawEdge
-    drawEdge(png, x1, y1, x2, y2, cs225::HSLAPixel(0,0,0));
+    drawEdge(x1, y1, x2, y2, cs225::HSLAPixel(0,0,0));
+}
+void LGD::drawEdge(Image * pic1, Image * pic2) //overload
+{
+    unsigned int x1 = pic1->xPos;
+    unsigned int y1 = pic1->yPos;
+    unsigned int x2 = pic2->xPos;
+    unsigned int y2 = pic2->yPos;
+    drawEdge(x1, y1, x2, y2, cs225::HSLAPixel(0,0,0));
+}
+void LGD::drawEdge(Image & pic1, Image & pic2) //overload
+{
+    unsigned int x1 = pic1.xPos;
+    unsigned int y1 = pic1.yPos;
+    unsigned int x2 = pic2.xPos;
+    unsigned int y2 = pic2.yPos;
+    drawEdge(x1, y1, x2, y2, cs225::HSLAPixel(0,0,0));
 }
 
-//needs testing
-void LGD::drawVertex(std::string name , unsigned int x1, unsigned int y1, cs225::HSLAPixel color)
+//needs testing //hogs memory
+int LGD::drawVertex(std::string name , unsigned int x1, unsigned int y1, cs225::HSLAPixel color)
 {
     //check dict if dept name has already been made
     //Create a department name PNG from cutting and pasting text.png if not made already
@@ -319,11 +353,20 @@ void LGD::drawVertex(std::string name , unsigned int x1, unsigned int y1, cs225:
     currPos += xLim;
   }
   //oval_ now contains vertex with name Image
-  stickers_->addSticker(drawing, x1, y1);
+  return stickers_->addSticker(drawing, x1, y1);
 }
-void LGD::drawVertex(std::string  name, unsigned int x1, unsigned int y1)  //overload
+int LGD::drawVertex(std::string  name, unsigned int x1, unsigned int y1)  //overload
 {
     //default to black and call drawVertex
-    drawVertex(name, x1, y1, cs225::HSLAPixel(0,0,0));
+    return drawVertex(name, x1, y1, cs225::HSLAPixel(0,0,0));
 }
-
+int LGD::drawVertex(Vertex* v, unsigned int x1, unsigned int y1)  //overload
+{
+    //default to black and call drawVertex
+    return drawVertex(v->getName(), x1, y1, cs225::HSLAPixel(0,0,0));
+}
+int LGD::drawVertex(Vertex & v, unsigned int x1, unsigned int y1)  //overload
+{
+    //default to black and call drawVertex
+    return drawVertex(v.getName(), x1, y1, cs225::HSLAPixel(0,0,0));
+}

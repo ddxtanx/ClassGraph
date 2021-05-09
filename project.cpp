@@ -9,7 +9,7 @@
 
 
 using namespace std;
-std::string filename = "./Courses-and-prereqs/TestData.dat";
+std::string filename = "./Courses-and-prereqs/AllPrereqs.dat";
 
 
 int main(int argc, char** argv)
@@ -30,9 +30,9 @@ int main(int argc, char** argv)
 
   std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
   Vertex* start = g.getStart();
+  Vertex* end = g.getEnd();
 
   BFS traversal(&g, start);                    //create traversal, start at vert 0
-  /*
   for (auto it = traversal.begin(); it != traversal.end(); ++it)
   {
     Vertex v = **it;
@@ -42,7 +42,12 @@ int main(int argc, char** argv)
     } 
     std::cout << std::endl;
   }
-*/
+
+  g.generateBetweennessCentrality(true);
+  for(std::pair<Vertex, double> betwCent : *g.getBetweennessCentrality()){
+    std::cout << "The betweenness centrality of " << betwCent.first << " is " << betwCent.second << std::endl;
+  }
+
   std::cout << std::endl;
   std::cout << std::endl;
   std::cout << std::endl;

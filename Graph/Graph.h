@@ -2,6 +2,7 @@
 #include "Vertex.h"
 #include "Edge.h"
 #include <vector>
+#include <unordered_map>
 class Graph{
     public:     
         Graph();                                                                         //constructors
@@ -16,9 +17,6 @@ class Graph{
         std::vector<Edge> getEdgesFrom(Vertex* from) const;
 
         bool vertexInGraph(Vertex* v) const;
-        
-        double getWeightBetweenVertices(Vertex from, Vertex to) const;              //used in algorithms
-        double getWeightBetweenVertices(Edge edge) const;
 
         //ColoredGraph minimalPrerecChainBetween(ColoredVertex from, ColoredVertex to);          //main function to use for output
         size_t getVerticiesSize() const;
@@ -26,12 +24,16 @@ class Graph{
         //iterator for BFS?
 
         void addVertex(Vertex* vert);
-        void addEdge(Vertex* from, Vertex* to, double weight);
+        void addEdge(Vertex* from, Vertex* to);
         void addEdge(Edge e);
         void makeAcyclic(Vertex* source, bool backwards = false, Vertex* necessaryVertex = nullptr);
 
+        double getBetweennessCentrality(Vertex* v);
+        std::unordered_map<Vertex, double>* getBetweennessCentrality();
+
 
         Graph& operator=(const Graph& other);
+        void generateBetweennessCentrality(bool backwards=false);
 
     private:
         template <typename T>
@@ -54,6 +56,8 @@ class Graph{
         };          
         
         Matrix<double> adjacencyMatrix_;
+        std::unordered_map<Vertex, double> betweennessCentrality_;
+
 
         void copy(const Graph& other);
         void clear();

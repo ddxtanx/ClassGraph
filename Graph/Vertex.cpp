@@ -75,7 +75,7 @@ void Vertex::disconnectFrom(Vertex* from){
         pointsFrom_.resize(id+1);
     }
     if(pointsFrom_[id] != nullptr){
-        numPointsTo --;
+        numPointsFrom --;
     }
     pointsFrom_[id] = nullptr;
 }

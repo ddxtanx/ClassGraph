@@ -60,16 +60,16 @@ ClassGraph::ClassGraph(const std::string fileName){
             if(!prereqCourseName.empty()){  
                 hasPrereqs = true;
                 Vertex* toVer = getOrCreateVertex(prereqCourseName);
-                addEdge(currVertex, toVer, 1);  //Class points to its prerequisite
+                addEdge(currVertex, toVer);  //Class points to its prerequisite
             }
         }
         if(!hasPrereqs){
-            addEdge(currVertex, end_, 1);
+            addEdge(currVertex, end_);
         }
     }
     for(Vertex* v: vertices_){
         if(v->getNumPointedFrom() == 0 && v != startVertex && v != endVertex){
-            addEdge(startVertex, v, 1); //Start points to ultimate classes (classes that are not prereqs for other classes)
+            addEdge(startVertex, v); //Start points to ultimate classes (classes that are not prereqs for other classes)
         }
     }
 }
