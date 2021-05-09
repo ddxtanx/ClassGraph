@@ -56,7 +56,7 @@
         stickerPtr->yPos = y;
         Images_.push_back(stickerPtr);
         index_++;
-        return (int)index_;                       //calculates the index and returns it as int
+        return (int)index_ - 1;                       //calculates the index and returns it as int
     }
 
     bool StickerSheet::translate(unsigned index, unsigned x, unsigned y)
