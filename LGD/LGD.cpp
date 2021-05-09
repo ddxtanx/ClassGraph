@@ -6,39 +6,72 @@
 using namespace cs225;
 // constructors
 LGD::LGD() 
-: pic_(Image()), stickers_(StickerSheet(pic_, 10u)), start_(NULL),  graph_(NULL)
+: pic_(Image()), stickers_(new StickerSheet(pic_, 10u)), start_(NULL),  graph_(NULL)
 { 
     text_.readFromFile("./LGD/text.png");
     oval_.readFromFile("./LGD/oval.png");
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
 }                      
 LGD::LGD(Graph & g, Vertex & v)  
-: pic_(Image()), stickers_(StickerSheet(pic_, 10u)), start_(&v), graph_(&g)
+: pic_(Image()), stickers_(new StickerSheet(pic_, 10u)), start_(&v), graph_(&g)
 {
     text_.readFromFile("./LGD/text.png");
     oval_.readFromFile("./LGD/oval.png");
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
-    //stickers_(const Image &picture, unsigned max);
 }   
 LGD::LGD(Graph * g, Vertex * v)    
-: pic_(Image()), stickers_(StickerSheet(pic_, 10u)), start_(v), graph_(g)
+: pic_(Image()), stickers_(new StickerSheet(pic_, 10u)), start_(v), graph_(g)
 {
     text_.readFromFile("./LGD/text.png");
     oval_.readFromFile("./LGD/oval.png");
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
-    //stickers_(const Image &picture, unsigned max);
+} 
+LGD::LGD(const LGD &other)    
+: start_(other.start_), graph_(other.graph_)
+{
+    text_.readFromFile("text.png");
+    oval_.readFromFile("oval.png");
+    
+    pic_ = other.pic_;
+    background_ = other.background_;
+    if (other.stickers_ != NULL)
+    {
+      stickers_ = new StickerSheet(*other.stickers_);
+    }
+    else
+    {
+      stickers_ = NULL;
+    }
 } 
 
+
+LGD::~LGD()
+{   delete stickers_;    }
 const LGD & LGD::operator= (const LGD & other)
 {
-    stickers_ = other.stickers_;
+    
+    if (other.stickers_ != NULL)
+    {
+      delete stickers_;
+      stickers_ = new StickerSheet(*other.stickers_);
+    }
+    else
+    {
+      stickers_ = NULL;
+    }
     pic_ = other.pic_;
+    background_ = other.background_;
     start_ = other.start_;
     graph_ = other.graph_;
     return *this;
 }
 
-
+/*
+void setStart(Vertex * s)
+{   start_ = s;     }
+void setStart(Vertex & s)
+{   start_ = &s;    }
+*/
 void LGD::setStart(Vertex * start)
 {   start_ = start;     }
 void LGD::setStart(Vertex & start)
@@ -82,7 +115,7 @@ void LGD::drawVertex(std::string name, unsigned int x1, unsigned int y1, cs225::
     currPos += 14;
   }
   //oval_ now contains vertex with name Image
-  stickers_.addSticker(oval_, x1, y1);
+  stickers_ -> addSticker(oval_, x1, y1);
 }
 void LGD::drawVertex(std::string name, unsigned int x1, unsigned int y1)  //overload
 {
@@ -114,9 +147,9 @@ Image LGD::drawGraph()
     std::string name = "WWWW 987";
     drawVertex(name, 5u, 5u);
     //recursive?
-    pic_ = stickers_.render();
+    pic_ = stickers_->render();
     //draw edges
-    return pic_;    //replace
+    return pic_;
 }       
 Image LGD::drawGraph(Vertex * start)      //overload
 {
