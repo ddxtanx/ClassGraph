@@ -68,6 +68,45 @@ const LGD & LGD::operator= (const LGD & other)
     return *this;
 }
 
+void LGD::makeDummyVerts()
+{
+    std::vector<Vertex*> vertices=graph_->getVertices();
+    for(auto it=vertices.begin();it!=vertices.end();it++)
+    {
+      Vertex* currTex=*it;
+      std::vector<Vertex*> ADJS=currTex->getVerticesPointedTo();
+      int currLayer= (int)currTex->getLayer();
+      for(auto iter=ADJS.begin();iter!=ADJS.end();iter++)
+      {
+        int ADJLayer=(int)(*iter)->getLayer();
+        int LayerDiff=ADJLayer-currLayer;
+        if(LayerDiff<=1)
+        {
+          continue;
+        }
+        else
+        {
+          while(LayerDiff>1)
+          {
+            Vertex* Dummy=new Vertex("DUMMY");
+            Dummy->setLayer(currLayer+1);
+            currTex->disconnectTo(*iter);
+            currTex->connectTo(Dummy);
+            Dummy->connectTo(*iter);
+            Dummy->connectFrom(currTex);
+            graph_->addVertex(Dummy);
+            (*iter)->disconnectFrom(currTex);
+            (*iter)->connectFrom(Dummy);
+            currTex=Dummy;
+            currLayer++;
+            graph_->increaseLayerCount(currLayer);
+            LayerDiff--;
+          }
+        }
+      }
+    }
+    std::cout<<(graph_->getLayerCounts_()).size()<<std::endl;
+}
 /*
   void setStart(Vertex * s)
   {   start_ = s;     }

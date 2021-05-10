@@ -100,6 +100,11 @@ std::vector<Edge> & Graph::getEdges()
     return edges_;
 }
 
+std::vector<int> & Graph::getLayerCounts_()
+{
+    return layerCounts_;
+}
+
 std::vector<Edge> Graph::getEdgesFrom(Vertex* v) const{
     if(!vertexInGraph(v)){
         return {};
@@ -176,6 +181,26 @@ void Graph::addEdge(Vertex* from, Vertex* to){
 
     Edge e(from, to);
     edges_.push_back(e);
+}
+
+void Graph::initLayers()
+{
+    for(auto it=vertices_.begin();it!=vertices_.end();it++)
+    {
+        int currLayer=(*it)->getLayer();
+        if((int)layerCounts_.size()<currLayer+1)
+        {
+            layerCounts_.resize(currLayer+1,0);
+            layerCounts_[currLayer]=1;
+            continue;
+        }
+        layerCounts_[currLayer]++;
+    }
+}
+
+void Graph::increaseLayerCount(unsigned layer)
+{
+    layerCounts_[layer]++;
 }
 
 void Graph::makeAcyclic(Vertex* source, bool backwards, Vertex* necessaryVertex){

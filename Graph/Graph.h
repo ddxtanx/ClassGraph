@@ -3,6 +3,7 @@
 #include "Edge.h"
 #include <vector>
 #include <unordered_map>
+#include <map>
 class Graph{
     public:     
         Graph();                                                                         //constructors
@@ -13,7 +14,7 @@ class Graph{
 
         std::vector<Vertex*> & getVertices();   //used for printing and whole graph representation
         std::vector<Edge> & getEdges();
-
+        std::vector<int> & getLayerCounts_();
         std::vector<Edge> getEdgesFrom(Vertex* from) const;
 
         bool vertexInGraph(Vertex* v) const;
@@ -27,6 +28,8 @@ class Graph{
         void addEdge(Vertex* from, Vertex* to);
         void addEdge(Edge e);
         void makeAcyclic(Vertex* source, bool backwards = false, Vertex* necessaryVertex = nullptr);
+        void initLayers();
+        void increaseLayerCount(unsigned layer);
 
         double getBetweennessCentrality(Vertex* v);
         std::unordered_map<Vertex, double>* getBetweennessCentrality();
@@ -81,5 +84,6 @@ class Graph{
     protected:
         void resizeAdjMatrix(size_t size);
         std::vector<Vertex*> vertices_;
-        std::vector<Edge> edges_;     
+        std::vector<Edge> edges_;  
+        std::vector<int> layerCounts_;   
 };

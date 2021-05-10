@@ -42,7 +42,7 @@ int main(int argc, char** argv)
     } 
     std::cout << std::endl;
   }
-
+  g.initLayers();
   g.generateBetweennessCentrality(true);
   Vertex mostImportantVertex;
   double maxScore = std::numeric_limits<double>::min();
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 
   std::cout << "The most central vertex in the graph is " << mostImportantVertex << " with a centrality of " << maxScore << std::endl;
 
-
-  
+  LGD gLGD(&g,start);
+  gLGD.makeDummyVerts();
   return 0;
 }

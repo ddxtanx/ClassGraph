@@ -16,6 +16,7 @@ class LGD
     LGD(const LGD &other);          //copy constructor
     const LGD & operator= (const LGD & other);     //copy constructor overload
 
+    void makeDummyVerts();
 
     /**  /////////////////////////////////////////////////////////////////////////////////////////////////////
      * Uses a layered graph drawing algorithm to organize and render a PNG that shows the start
