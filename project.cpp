@@ -58,7 +58,7 @@ int main(int argc, char** argv)
   }
 
   std::cout << "The most central vertex in the graph is " << mostImportantVertex << " with a centrality of " << maxScore << std::endl;
-
+  
   std::cout << std::endl;
   std::cout << std::endl;
   std::cout << std::endl;
