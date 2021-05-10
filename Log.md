@@ -11,3 +11,6 @@ Finish implementing graph and start BFS. Have meeting with TA
 
 Week of 4/30:
 Finish BFS and fully implement course prerequisite structure into graphs. Found list of *all* prerequisities at U of I, not just math/cs/ece/phys.
+
+Week of 5/9:
+Start and finish betweenness centrality. Begin layered graph drawing
