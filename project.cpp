@@ -58,18 +58,7 @@ int main(int argc, char** argv)
   }
 
   std::cout << "The most central vertex in the graph is " << mostImportantVertex << " with a centrality of " << maxScore << std::endl;
-  
-  std::cout << std::endl;
-  std::cout << std::endl;
-  std::cout << std::endl;
-  std::cout << "Testing draw Vertex" << std::endl;
 
-  std::cout << "Creating LGD obj with graph g and START" << std::endl;
-  LGD l(&g, start);
-  std::cout << "Calling DrawGraph" << std::endl;
-  Image output = l.drawGraph();
-  std::cout << "Writing to File" << std::endl;
-  output.writeToFile("Output_PNGs/myImage.png");
 
   
   return 0;
