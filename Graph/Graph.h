@@ -19,7 +19,7 @@ class Graph{
         bool vertexInGraph(Vertex* v) const;
 
         //ColoredGraph minimalPrerecChainBetween(ColoredVertex from, ColoredVertex to);          //main function to use for output
-        size_t getVerticiesSize() const;
+        size_t getVerticesSize() const;
         size_t getEdgesSize() const;
         //iterator for BFS?
 
@@ -33,7 +33,7 @@ class Graph{
 
 
         Graph& operator=(const Graph& other);
-        void generateBetweennessCentrality(bool backwards=false);
+        void generateBetweennessCentrality(bool backwards=false, bool normalize=true);
 
     private:
         template <typename T>

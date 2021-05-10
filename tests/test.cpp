@@ -5,6 +5,7 @@
 #include "../Graph/Graph.h"
 #include "../ClassGraph.h"
 #include "../utils.h"
+#include <unordered_map>
 
 //Vertex* start = g.getStart();
 /*
@@ -200,6 +201,44 @@ TEST_CASE("BFS iterator visits all points in large data set", "[weight=5][part=1
 
 }
 
+TEST_CASE("Betweenness centrality works on line graph", "[weight=5][part=2]"){
+    ClassGraph lineTest("./Courses-and-prereqs/LongPrereqs.dat");
+    lineTest.generateBetweennessCentrality(true, false);
+    Vertex* start = lineTest.getStart();
+    Vertex* end = lineTest.getEnd();
+    auto vertices = lineTest.getVertices(); //{start, end, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+    auto betwCent = lineTest.getBetweennessCentrality();
+    for(std::pair<Vertex, double> pair : *betwCent){
+        Vertex v = pair.first;
+        double d = pair.second;
+        if(v == *start){
+            REQUIRE(d == 0);
+        }
+        else if(v == *end){
+            REQUIRE(d == 0);
+        }
+        else{
+            size_t id = v.getId();
+            double factor1 = (double)id - 1;
+            double factor2 = 12 - (double)id;
+            REQUIRE(d == factor1*factor2);
+        }
+    }
+}
+
+TEST_CASE("Betweenness centrality works on more complicated graph", "[part=2]"){
+    ClassGraph centralityComplicated("./Courses-and-prereqs/CentralityTestComplicated.dat");
+    centralityComplicated.generateBetweennessCentrality(false, false);
+    auto verts = centralityComplicated.getVertices(); // {s,e,8,9,10,6,5,7,4,3,1,2}
+    std::vector<double> expected_centralities = {0,0,73.0/30,10.0/3,67.0/30,4.2,13,2.8,13,6,1,1};  //Calculated via mathematica
+    int index = 0;
+    for(auto pair : *centralityComplicated.getBetweennessCentrality()){
+        double v = pair.second;
+        REQUIRE(abs(v - expected_centralities[index]) <= .00001);
+        index++;
+    }
+
+}
 TEST_CASE("example test", "[weight=5][part=1]") {
 
     int i = 5;

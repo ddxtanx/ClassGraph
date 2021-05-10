@@ -14,7 +14,7 @@ std::string filename = "./Courses-and-prereqs/AllPrereqs.dat";
 
 int main(int argc, char** argv)
 {
-  if(argc == 2){
+  if(argc >= 2){
     filename = argv[1];
   }
   ClassGraph g(filename);

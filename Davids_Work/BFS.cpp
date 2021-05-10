@@ -17,7 +17,7 @@ BFS::Iterator::Iterator()
 BFS::Iterator::Iterator(Vertex * start, Graph * g)
 : current(start)
 {
-    visited.resize(g->getVerticiesSize()); //init visited to size of graph
+    visited.resize(g->getVerticesSize()); //init visited to size of graph
     //q.push(current);
 }
 
@@ -128,7 +128,7 @@ Graph();                                                                        
         double getWeightBetweenVertices(Edge edge) const;
 
         //ColoredGraph minimalPrerecChainBetween(ColoredVertex from, ColoredVertex to);          //main function to use for output
-        size_t getVerticiesSize() const;
+        size_t getVerticesSize() const;
         size_t getEdgesSize() const;
         //iterator for BFS?
 
@@ -178,7 +178,7 @@ BFS::Iterator::Iterator(const Graph * graph, Vertex * startPoint, BFS * traversa
 : traversal_(traversal), curr_(startPoint), graph_(graph)
 {
     done_ = false;
-    int size = graph->getVerticiesSize();
+    int size = graph->getVerticesSize();
     for ( int i = 0; i < size; ++i)
     {
         visited_.push_back(0);  //init visited list

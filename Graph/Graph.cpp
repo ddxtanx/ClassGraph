@@ -115,7 +115,7 @@ std::vector<Edge> Graph::getEdgesFrom(Vertex* v) const{
     return edges;
 }
 
-size_t Graph::getVerticiesSize() const
+size_t Graph::getVerticesSize() const
 {
     return vertices_.size();
 }
@@ -125,7 +125,7 @@ size_t Graph::getEdgesSize() const
 }
 
 bool Graph::vertexInGraph(Vertex* v) const{
-    return v -> getId() < getVerticiesSize();
+    return v -> getId() < getVerticesSize();
 }
 
 void Graph::resizeAdjMatrix(size_t size){ //might need to alter this, might cause problems on resize
@@ -185,8 +185,8 @@ void Graph::makeAcyclic(Vertex* source, bool backwards, Vertex* necessaryVertex)
     std::vector<Edge> edges;
     std::vector<int> levelIndex;
     std::vector<bool> seenBefore;
-    seenBefore.resize(getVerticiesSize());
-    levelIndex.assign(getVerticiesSize(), -1);
+    seenBefore.resize(getVerticesSize());
+    levelIndex.assign(getVerticesSize(), -1);
     levelIndex[source -> getId()] = 0;
     std::stack<Edge> st;
     Edge firstE(source, source);
@@ -271,7 +271,7 @@ Graph::~Graph(){
 void Graph::copy(const Graph& other){
     std::vector<Edge> newEdges;
     std::vector<Vertex*> newVertices;
-    newVertices.resize(other.getVerticiesSize());
+    newVertices.resize(other.getVerticesSize());
     adjacencyMatrix_ = other.adjacencyMatrix_;
 
     for(Vertex* v : other.vertices_){
@@ -312,7 +312,7 @@ Graph::Graph(const Graph& ot){
     copy(ot);
 }
 
-void Graph::generateBetweennessCentrality(bool backwards){ //Assumes unweighted
+void Graph::generateBetweennessCentrality(bool backwards, bool normalize){ //Assumes unweighted
     if(!betweennessCentrality_.empty()){
         return;
     }
@@ -322,7 +322,7 @@ void Graph::generateBetweennessCentrality(bool backwards){ //Assumes unweighted
     for(Vertex* v : vertices_){
         betwCent[*v] = 0;
     }
-    size_t numVertices = getVerticiesSize();
+    size_t numVertices = getVerticesSize();
     Matrix<size_t> shortestPathNumMatrix(numVertices, numVertices, 0);
     Matrix<int> minDistMatrix(numVertices, numVertices, -1);
     for(size_t i = 0; i < numVertices; i++){
@@ -367,7 +367,7 @@ void Graph::generateBetweennessCentrality(bool backwards){ //Assumes unweighted
             int nextId = vertId;
             std::vector<size_t> onAShortestPath;
             for(size_t i = 0; i<numVertices; i++){
-                if(isOnShortestPath.getVal(vertId, i)){
+                if(isOnShortestPath.getVal(vertId, i) && i != s -> getId() && i != w -> getId()){
                     onAShortestPath.push_back(i);
                 }
             }
@@ -387,10 +387,12 @@ void Graph::generateBetweennessCentrality(bool backwards){ //Assumes unweighted
             }
         }
     }
-    for(auto pair : betwCent){
-        Vertex v = pair.first;
-        double score = pair.second;
-        betwCent[v] = (score - min_centrality)/(max_centrality - min_centrality);
+    if(normalize){
+        for(auto pair : betwCent){
+            Vertex v = pair.first;
+            double score = pair.second;
+            betwCent[v] = (score - min_centrality)/(max_centrality - min_centrality);
+        }
     }
     betweennessCentrality_ = betwCent;
 }
