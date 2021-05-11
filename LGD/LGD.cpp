@@ -1,4 +1,5 @@
 #include "LGD.h"
+#include "../Davids_Work/BFS.h"
 #include "../cs225/PNG.h"
 #include "../Stickers/Image.h"
 #include <cmath>
@@ -10,6 +11,7 @@ LGD::LGD()
 { 
     text_.readFromFile("LGD/text.png");
     oval_.readFromFile("LGD/Oval.png");
+    skip_.readFromFile("LGD/skip.png");
 
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
 }                      
@@ -18,6 +20,7 @@ LGD::LGD(Graph & g, Vertex & v)
 {
     text_.readFromFile("LGD/text.png");
     oval_.readFromFile("LGD/Oval.png");
+    skip_.readFromFile("LGD/skip.png");
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
 }   
 LGD::LGD(Graph * g, Vertex * v)    
@@ -25,6 +28,7 @@ LGD::LGD(Graph * g, Vertex * v)
 {
     text_.readFromFile("LGD/text.png");
     oval_.readFromFile("LGD/Oval.png");
+    skip_.readFromFile("LGD/skip.png");
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
 } 
 LGD::LGD(const LGD &other)    
@@ -32,6 +36,7 @@ LGD::LGD(const LGD &other)
 {
     text_.readFromFile("text.png");
     oval_.readFromFile("oval.png");
+    skip_.readFromFile("LGD/skip.png");
     
     pic_ = other.pic_;
     background_ = other.background_;
@@ -105,103 +110,71 @@ void LGD::makeDummyVerts()
         }
       }
     }
-    std::cout<<(graph_->getLayerCounts_()).size()<<std::endl;
+    //std::cout<<(graph_->getLayerCounts_()).size()<<std::endl;
 }
-/*
-  void setStart(Vertex * s)
-  {   start_ = s;     }
-  void setStart(Vertex & s)
-  {   start_ = &s;    }
-
-  void LGD::setStart(Vertex * start)
-  {   start_ = start;     }
-  void LGD::setStart(Vertex & start)
-  {   start_ = &start;    }
-*/
 
 
-//needs implementation LUCA ALGORITHM HERE!
 Image LGD::drawGraph()            
 {
-  
-    //BFS->store verts by distance from start->save total nodes # per layer for maxLayerWidth, and save height for maxGraphHegiht
-    //loop{}
-    //Need these vars:
-    //unsgined int maxLayerWidth -- # of verts in widest layer
-    //unsinged int maxGraphHeight -- # of layers in tallest part
-    //unsigned int totalNodes  -- # of nodes traversed
+       
+    makeDummyVerts();                                                   //set up graph with dummy spacers
+
+    std::vector<int> layers = graph_->getLayers();
+    unsigned int maxLayerWidth = (unsigned int)*max_element(layers.begin(), layers.end());
+    unsigned int maxGraphHeight = layers.size();
 
 
+    std::cout << "Height of graph (# of verts): " << maxGraphHeight << std::endl;
+    std::cout << "Width of graph  (# of verts): " << maxLayerWidth << std::endl;
+    std::cout <<  std::endl;
 
     //rendering code:
     
-    std::cout << std::endl;
-    std::cout << std::endl;
-    std::cout << std::endl;
-    std::cout << "++++++++++++ DISCLAIMER ++++++++++++" << std::endl;
-    std::cout << "The current drawGraph() meathod" << std::endl;
-    std::cout << "simply draws all verts in the" << std::endl;
-    std::cout << "order they are stored in the" << std::endl;
-    std::cout << "graph obj, and lines are drawn" << std::endl;
-    std::cout << "between consecutive vertexes." << std::endl;
-    std::cout << "This is debug, not final, behavior" << std::endl;
-    std::cout << "+++++++++++++++++++++++++++++++++++" << std::endl;
-    std::cout << std::endl;
-    std::cout << std::endl;
-
-    unsigned int maxLayerWidth;
-    unsigned int maxGraphHeight;
+    std::cout << "Setting up" << std::endl;
+    BFS verts(graph_, start_);                                                //BFS used to traverse data
 
 
-    std::vector<Vertex*> & verts = graph_->getVertices();
-    size_t size = verts.size();
-    maxLayerWidth = 2;
-    while (maxLayerWidth*maxLayerWidth < size)
-    {
-      ++maxLayerWidth;
-    }
-    maxGraphHeight = maxLayerWidth;
-
-
-    unsigned int totalNodes = (unsigned int)size;
-    Image temp(150*maxLayerWidth, 50*maxGraphHeight);
+    unsigned int totalNodes = (unsigned int)graph_->getVertices().size();     
+    Image temp(150*maxLayerWidth, 250*maxGraphHeight);                        //creates image to use as background
     background_ = temp;    
-    stickers_ = new StickerSheet(background_,totalNodes); //make sticker sheet to render vertices
+    stickers_ = new StickerSheet(background_,totalNodes);                     //make sticker sheet to render vertices
 
-    std::vector<Vertex*>::iterator it = verts.begin();
-    for (unsigned int x = 0; x < maxLayerWidth; ++x)
+    unsigned int currentLayer = 0;                                            //init counters
+    unsigned int x = 0;
+    std::vector<unsigned int> layerCount;
+    layerCount.resize(layers.size());
+
+
+    std::cout << "Making verts into Stickers" << std::endl;
+    for (auto it = verts.begin(); it != verts.end(); ++it)
     {
-      for (unsigned int y = 0; y < maxGraphHeight; ++y)
-      {
-        if (it == verts.end())
-          break;
-        drawVertex((*it)->getName(), x*150, y*50);
-        
-        ++it;
-      }
+      currentLayer = (*it)->getLayer();
+      drawVertex(*it, layerCount[currentLayer]*150, currentLayer*250);
+      (*it)->xPos = layerCount[currentLayer]*150;
+      (*it)->yPos = currentLayer*250;
+      ++layerCount[currentLayer];
+      ++x;
     }
 
 
-    std::cout << "Calling Render" << std::endl;
+    std::cout << "Calling Render on StickerSheet" << std::endl;
     pic_ = stickers_->render(); //render vertices
 
-    std::cout << "Drawing Edges" << std::endl;
-    unsigned int idx = 0;
-    Image * curr = NULL;
-    Image * prev = NULL;
-    while ( (curr = stickers_->getSticker(idx)) != NULL)
-    {
-      if (prev == NULL)
-      {
-        prev = curr;
-        ++idx;
-        continue;
-      }
-      drawEdge(prev, curr);
-      prev = curr;
-      ++idx;
-    }
 
+    std::cout << "Drawing Edges onto pic_" << std::endl;
+    std::vector<Vertex*> adj;
+    for (auto it = verts.begin(); it != verts.end(); ++it)    //loops through all verts via BFS, *it is the lower vertex, this draws down from start
+    {
+      adj = (*it)->getVerticesPointedTo();
+      //if ((*it)->getName() == "START")            //skip start node
+      //  continue;
+      for (auto at = adj.begin(); at != adj.end(); ++at)      //loops through adjacent verts to *it
+      {
+      //  if ((*at)->getName() == "END")            //skip end node
+      //    continue;
+        drawEdge(*it, *at);
+      }
+    }
     std::cout << "Returning pic_" << std::endl;
     return pic_;    //returning graph result
 }       
@@ -353,20 +326,40 @@ void LGD::drawEdge(Image & pic1, Image & pic2) //overload
     unsigned int y2 = pic2.yPos;
     drawEdge(x1, y1, x2, y2, cs225::HSLAPixel(0,0,0));
 }
+void LGD::drawEdge(Vertex * v1, Vertex * v2) //overload
+{
+  unsigned int x1 = v1->xPos;
+  unsigned int y1 = v1->yPos;
+  unsigned int x2 = v2->xPos;
+  unsigned int y2 = v2->yPos;
+  drawEdge(x1, y1, x2, y2, cs225::HSLAPixel(0,0,0));
+}
+void LGD::drawEdge(Vertex & v1, Vertex & v2) //overload
+{
+  unsigned int x1 = v1.xPos;
+  unsigned int y1 = v1.yPos;
+  unsigned int x2 = v2.xPos;
+  unsigned int y2 = v2.yPos;
+  drawEdge(x1, y1, x2, y2, cs225::HSLAPixel(0,0,0));
+}
 
 //needs testing //hogs memory
 int LGD::drawVertex(std::string name , unsigned int x1, unsigned int y1, cs225::HSLAPixel color)
 {
-    //check dict if dept name has already been made
-    //Create a department name PNG from cutting and pasting text.png if not made already
-    //place png in dictionary
-
   unsigned int xOffset = 14;
   unsigned int yOffset = 10;
   unsigned int currPos = 0;
   unsigned int position = 0;
   unsigned int xLim = 14;
 
+
+  if (name == "DUMMY")
+  {
+    //std::cout << "drawing dummy" << std::endl;
+    return stickers_->addSticker(skip_, x1, y1);
+  }
+
+  //std::cout << "name: " << name << std::endl;
   Image drawing(oval_);
   for (char& c : name)
   {
@@ -436,3 +429,90 @@ int LGD::drawVertex(Vertex & v, unsigned int x1, unsigned int y1)  //overload
   std::cout << "Writing to File" << std::endl;
   output.writeToFile("Output_PNGs/myImage.png");
 */
+
+
+//        TEST DRAW VERT + EDGE
+
+
+
+    /*
+    std::vector<Vertex*> & verts = graph_->getVertices();
+    size_t size = verts.size();
+    maxLayerWidth = 2;
+    while (maxLayerWidth*maxLayerWidth < size)
+    {
+      ++maxLayerWidth;
+    }
+    maxGraphHeight = maxLayerWidth;
+
+
+    unsigned int totalNodes = (unsigned int)size;
+    Image temp(150*maxLayerWidth, 50*maxGraphHeight);
+    background_ = temp;    
+    stickers_ = new StickerSheet(background_,totalNodes); //make sticker sheet to render vertices
+
+    std::vector<Vertex*>::iterator it = verts.begin();
+    for (unsigned int x = 0; x < maxLayerWidth; ++x)
+    {
+      for (unsigned int y = 0; y < maxGraphHeight; ++y)
+      {
+        if (it == verts.end())
+          break;
+        drawVertex((*it)->getName(), x*150, y*50);
+        
+        ++it;
+      }
+    }
+
+
+    std::cout << "Calling Render" << std::endl;
+    pic_ = stickers_->render(); //render vertices
+
+    std::cout << "Drawing Edges" << std::endl;
+    unsigned int idx = 0;
+    Image * curr = NULL;
+    Image * prev = NULL;
+    while ( (curr = stickers_->getSticker(idx)) != NULL)
+    {
+      if (prev == NULL)
+      {
+        prev = curr;
+        ++idx;
+        continue;
+      }
+      drawEdge(prev, curr);
+      prev = curr;
+      ++idx;
+    }
+
+    std::cout << "Returning pic_" << std::endl;
+    */
+
+
+
+
+
+//
+
+
+
+//saving draw edges up code
+   /*
+   
+    for (auto it = verts.begin(); it != verts.end(); ++it)
+    {
+      adj = (*it)->getVerticesPointedFrom();
+
+      if ((*it)->getName() == "END")            //skip start node when printing whole departments
+        continue;
+
+      for (auto at = adj.begin(); at != adj.end(); ++at)
+      {
+        if ((*at)->getName() == "START")
+          continue;
+
+        drawEdge(*at, *it);
+      }
+    }
+
+   */

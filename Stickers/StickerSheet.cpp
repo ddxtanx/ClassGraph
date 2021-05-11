@@ -95,8 +95,13 @@
     Image StickerSheet::render() const
     {
         Image output(background_);           //initializes the output image with the background
+        std::cout << "# of images: " << Images_.size() << std::endl;
+        std::cout << "background size: " << background_.width() << "," << background_.height() << std::endl;
+
         for (auto i : Images_ )
         {
+            
+            
             if (i == nullptr)
             { continue; }
             unsigned xPos = i->xPos;
@@ -104,8 +109,12 @@
             unsigned width = i->width();    //get size of sticker
             unsigned height = i->height();
             unsigned dx, dy;
+            //std::cout << "Next Image of size: " << i->width() << "," << i->height() << "   @ " << xPos << "," << yPos << std::endl;
+
             if (xPos + width > output.width() || yPos + height > output.height())
             {
+                
+                std::cout << "Resizing -- xPos,yPos = " << xPos << "," << yPos << std::endl;
                 dy = std::max(yPos + height, output.height());
                 dx = std::max(xPos + width, output.width());
                 output.resize(dx, dy);               //resize if sticker goes out of bounds
@@ -114,7 +123,7 @@
             {
                 for (unsigned y = 0; y < i->height(); y++) 
                 {
-                    cs225::HSLAPixel & stickerPixel = i->getPixel(x, y);
+                    cs225::HSLAPixel &stickerPixel = i->getPixel(x, y);
                     if(stickerPixel.a == 0)
                     {
                         continue;                                                       //accounts for transparent pixels

@@ -35,6 +35,8 @@ class LGD
      *
      * @param pic1  - Image or vertex coordinates that are physically above pic2 in output PNG
      * @param pic2  - Image or vertex coordinates that are physically below pic1 in output PNG
+     * @param v1     - Vertex ptr/ref thats above
+     * @param v2     - Vertex ptr/ref below
      * @param x     - coordinate of left most edge of vertex drawing
      * @param y     - coordinate of upper most edge of vertex drawing
      * @param color - optional HSLAPixel argument to change color of line, defaults to black
@@ -43,6 +45,8 @@ class LGD
     void drawEdge(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, cs225::HSLAPixel color);
     void drawEdge(Image * pic1, Image * pic2);
     void drawEdge(Image & pic1, Image & pic2);
+    void drawEdge(Vertex * v1, Vertex * v2);
+    void drawEdge(Vertex & v1, Vertex & v2);
 
 
     /**  /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,6 +72,7 @@ class LGD
     Image text_;            //character storage png
     Image background_;      //background, typically plain white
     Image oval_;            //holds vertex drawing border
+    Image skip_;            //holds dummy vertex line pass thru
 
     StickerSheet* stickers_; //Sticker sheet for vertex rendering
 

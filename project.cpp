@@ -12,36 +12,63 @@ using namespace std;
 std::string filename = "./Courses-and-prereqs/AllPrereqs.dat";
 
 
+/**  /////////////////////////////////////////////////////////////////////////////////////////////////////
+     * Main file used to interface with final project
+     * 
+     * @param arg0 -- No command line args runs ALL UIUC COURSES        formatted like:
+     * @param arg1 -- Path to .dat file to use for graph data,          formatted like: ./project ./Courses-and-prereqs/CS_courses.dat    
+     * @param arg2 -- String of a course to draw the prerequisits of,   formatted like: ./project ./Courses-and-prereqs/CS_courses.dat "CS 225"
+     * 
+     * @return     -- Command line information along with PNG output into ./Output_PNGs
+     */  /////////////////////////////////////////////////////////////////////////////////////////////////////
+
 int main(int argc, char** argv)
 {
-  if(argc >= 2){
+  //Handles command line inputs
+  string inputStr;
+  Vertex* inputVert;
+  if(argc == 2){
     filename = argv[1];
+    inputStr = "yeet";
   }
+  if(argc == 3){
+    filename = argv[1];
+    inputStr = argv[2];
+  }
+
+
   ClassGraph g(filename);
   g.makeAcyclic();
   std::cout << std::endl;
   std::cout << std::endl;
   std::cout << "#####################################   Welcome to the danger zone  --  (Start of main)   ######################################" << std::endl;
   std::cout<< "# of verts in graph: " << g.getVertices().size()<<std::endl;
-
-  std::cout << std::endl;
-  std::cout << std::endl;
   std::cout << "------------------------------------------------------" << std::endl;
 
   std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
   Vertex* start = g.getStart();
   Vertex* end = g.getEnd();
 
+  //BFS TEST CODE//////////////////////////////////////////////////////////////////////////////////////////
   BFS traversal(&g, start);                    //create traversal, start at vert 0
+  
   for (auto it = traversal.begin(); it != traversal.end(); ++it)
   {
     Vertex v = **it;
+    if (v.getName() == inputStr)                    //pulls out target start vertex if argument specifies it KEEP
+      inputVert = *it;
+    
+    /*
     std::cout << "Prerequisites of " << v << ": ";
     for(Vertex* vp : v.getVerticesPointedTo()){
       std::cout << *vp << ", ";
     } 
     std::cout << std::endl;
+    */
   }
+  
+  //BETWEENESS CENTRALITY TEST CODE////////////////////////////////////////////////////////////////////////
+
   g.initLayers();
   g.generateBetweennessCentrality(true);
   Vertex mostImportantVertex;
@@ -59,7 +86,37 @@ int main(int argc, char** argv)
 
   std::cout << "The most central vertex in the graph is " << mostImportantVertex << " with a centrality of " << maxScore << std::endl;
 
+
+
+  //LAYERED GRAPH DRAWING TEST CODE/////////////////////////////////////////////////////////////////////////
+
+  std::cout << std::endl;
+  std::cout << std::endl;
+  std::cout << "++++++++++++++ DISCLAIMER +++++++++++++" << std::endl;
+  std::cout << "The drawGraph() meathod is not final," << std::endl;
+  std::cout << "some graphs will have graphical errors" << std::endl;
+  std::cout << "+++++++++++++++++++++++++++++++++++++++" << std::endl;
+  std::cout << std::endl;
+
   LGD gLGD(&g,start);
-  gLGD.makeDummyVerts();
+
+  Image output;
+  if (inputStr != "yeet")
+  {
+    std::cout << "Running drawgraph from " << *inputVert << std::endl;
+    output = gLGD.drawGraph(inputVert);
+  }
+  else
+  {
+    std::cout << "Running drawgraph from START" << std::endl;
+    output = gLGD.drawGraph();
+  }
+
+  std::cout << "Writing to File" << std::endl;
+  output.writeToFile("Output_PNGs/myImage.png");
+
+
+
+
   return 0;
 }

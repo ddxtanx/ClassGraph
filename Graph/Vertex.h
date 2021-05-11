@@ -41,6 +41,10 @@ class Vertex{
         }
 
         static void setCountNum(size_t c);
+
+
+        unsigned int xPos = 0;  //used in drawGraph
+        unsigned int yPos = 0;
     private:
         static size_t count;
         std::vector<Vertex*> pointsTo_;  //Collection of vertices v such that there is an edge e where e.getFrom == this and e.getTo == v
@@ -51,6 +55,9 @@ class Vertex{
         size_t numPointsFrom;
         std::string name_;                                  //course data
         size_t id_;                                 //id used for the adjacency graph
+        
+        
+
 };
 
 namespace std{

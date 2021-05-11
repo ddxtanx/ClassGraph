@@ -22,7 +22,6 @@ class Graph{
         //ColoredGraph minimalPrerecChainBetween(ColoredVertex from, ColoredVertex to);          //main function to use for output
         size_t getVerticesSize() const;
         size_t getEdgesSize() const;
-        //iterator for BFS?
 
         void addVertex(Vertex* vert);
         void addEdge(Vertex* from, Vertex* to);
@@ -30,6 +29,7 @@ class Graph{
         void makeAcyclic(Vertex* source, bool backwards = false, Vertex* necessaryVertex = nullptr);
         void initLayers();
         void increaseLayerCount(unsigned layer);
+        std::vector<int> getLayers();
 
         double getBetweennessCentrality(Vertex* v);
         std::unordered_map<Vertex, double>* getBetweennessCentrality();

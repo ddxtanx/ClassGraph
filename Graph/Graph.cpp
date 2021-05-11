@@ -203,6 +203,13 @@ void Graph::increaseLayerCount(unsigned layer)
     layerCounts_[layer]++;
 }
 
+std::vector<int> Graph::getLayers()
+{
+    return layerCounts_;
+}
+
+
+
 void Graph::makeAcyclic(Vertex* source, bool backwards, Vertex* necessaryVertex){
     if(!vertexInGraph(source)){
         return;
