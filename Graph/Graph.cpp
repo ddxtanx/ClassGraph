@@ -210,13 +210,14 @@ std::vector<int> Graph::getLayers()
 
 
 
-void Graph::makeAcyclic(Vertex* source, bool backwards, Vertex* necessaryVertex){
+void Graph::makeAcyclic(Vertex* source, Vertex* startVertex, bool backwards){
     if(!vertexInGraph(source)){
         return;
     }
     std::vector<Edge> edges;
     std::vector<int> levelIndex;
     std::vector<bool> seenBefore;
+    std::unordered_map<Edge, bool> m;
     seenBefore.resize(getVerticesSize());
     levelIndex.assign(getVerticesSize(), -1);
     levelIndex[source -> getId()] = 0;
@@ -233,8 +234,9 @@ void Graph::makeAcyclic(Vertex* source, bool backwards, Vertex* necessaryVertex)
         size_t toId = to -> getId();
         seenBefore[fromId] = true;
         seenBefore[toId] = true;
-        if(from != to){
+        if(from != to && m[e] != true){
             edges.push_back(e);
+            m[e] = true;
             if(backwards){
                 int prevLevel = levelIndex[toId];
                 levelIndex[fromId] = prevLevel+1;
@@ -258,7 +260,7 @@ void Graph::makeAcyclic(Vertex* source, bool backwards, Vertex* necessaryVertex)
         }
         for(Vertex* vp : nextVertices){
             size_t adjId = vp -> getId();
-            if((vp != necessaryVertex && seenBefore[adjId] && levelIndex[adjId] < levelIndex[nextId]) || vp == nextVertex){
+            if((seenBefore[adjId] && levelIndex[adjId] < levelIndex[nextId]) || vp == nextVertex){
                 if(backwards){
                     vp -> disconnectTo(nextVertex);
                     nextVertex -> disconnectFrom(vp);
@@ -281,8 +283,8 @@ void Graph::makeAcyclic(Vertex* source, bool backwards, Vertex* necessaryVertex)
     }
     edges_ = edges;
     for(Vertex* v : vertices_){
-        if(v != necessaryVertex && v -> getNumPointedFrom() == 0){
-            addEdge(necessaryVertex, v);
+        if(v != startVertex && v -> getNumPointedFrom() == 0){
+            addEdge(startVertex, v);
         }
     }
 }
@@ -439,4 +441,36 @@ double Graph::getBetweennessCentrality(Vertex* source){
 
 std::unordered_map<Vertex, double>* Graph::getBetweennessCentrality(){
     return &betweennessCentrality_;
+}
+
+
+std::string Graph::toMathematicaForm(bool backwards){
+    std::stringstream ss;
+    ss << "Graph[{";
+    size_t numVerts = getVerticesSize();
+    size_t i = 0;
+    for(Vertex* v : vertices_){
+        ss << *v;
+        if(i != numVerts - 1){
+            ss << ",";
+        }
+        i ++;
+    }
+    ss << "}, {";
+    size_t numEdges = getEdgesSize();
+    i = 0;
+    for(Edge e : edges_){
+        if(backwards){
+            ss << *e.getTo() << " -> " << *e.getFrom();
+        }else{
+            ss << *e.getFrom() << " -> " << *e.getTo();
+        }
+        
+        if(i != numEdges - 1){
+            ss << ",";
+        }
+        i++;
+    }
+    ss <<"}]";
+    return ss.str();
 }

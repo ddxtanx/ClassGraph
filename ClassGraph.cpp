@@ -98,5 +98,16 @@ ClassGraph::ClassGraph(const ClassGraph& ot) : Graph(ot){
 }
 
 void ClassGraph::makeAcyclic(){
-    Graph::makeAcyclic(end_, true, start_);
+    Graph::makeAcyclic(end_, start_, true);
+}
+
+Vertex*& ClassGraph::getVertexByName(std::string name){
+    if(name == "START"){
+        return start_;
+    }
+    if(name == "END"){
+        return end_;
+    }
+    size_t hash = Utils::hashCourseName(name);
+    return vertexMap_[hash];
 }

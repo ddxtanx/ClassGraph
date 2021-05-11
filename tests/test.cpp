@@ -1,5 +1,6 @@
 #include "../cs225/catch/catch.hpp"
 #include <iostream>
+#include <sstream>
 #include "../dataConvert.h"
 #include "../Davids_Work/BFS.h"
 #include "../Graph/Graph.h"
@@ -201,6 +202,10 @@ TEST_CASE("BFS iterator visits all points in large data set", "[weight=5][part=1
 
 }
 
+//I calculated all of the true betweenness centralities with mathematica. To verify that I didn't just copy-pasta 
+//What the results of my version of the betweenness were, you can run [GRAPH].getMathematicaForm(); and use it
+//To calculate the true betweenness centrality. A point to note is that if you generate betweenness centrality 
+//Backwards then you should generate the mathematica graph backwards.
 TEST_CASE("Betweenness centrality works on line graph", "[weight=5][part=2]"){
     ClassGraph lineTest("./Courses-and-prereqs/LongPrereqs.dat");
     lineTest.generateBetweennessCentrality(true, false);
@@ -237,7 +242,44 @@ TEST_CASE("Betweenness centrality works on more complicated graph", "[part=2]"){
         REQUIRE(abs(v - expected_centralities[index]) <= .00001);
         index++;
     }
+}
 
+TEST_CASE("Betweenness centrality works on test graph", "[part=2]"){
+    std::map<std::string, double> expectedCentrality = {
+        {"START", 0},
+        {"END", 0},
+        {"CSE 100", 3},
+        {"CSE 200", 5},
+        {"CSE 300", 5},
+        {"ADV 101", 3},
+        {"ANTH 101", 17.0/6},
+        {"STE 100", 13.0/6},
+        {"STE 115", 13.0/3},
+        {"ANTH 201", 11.0/3},
+        {"ANTH 107", 1},
+        {"ANTH 301", 3},
+        {"STE 215", 6},
+        {"STE 315", 2},
+        {"MATH 231", 2},
+        {"MATH 213", 2},
+        {"MATH 347", 5},
+        {"CS 225", 6},
+        {"MATH 412", 5},
+        {"CS 374", 4}
+    }; 
+    ClassGraph testDataGraph("./Courses-and-prereqs/TestData.dat");
+    testDataGraph.makeAcyclic();
+    testDataGraph.generateBetweennessCentrality(true, false);
+    auto centrality = *testDataGraph.getBetweennessCentrality();
+    for(auto pair : expectedCentrality){
+        Vertex* v = testDataGraph.getVertexByName(pair.first);
+        std::stringstream ss;
+        ss << "Vertex " << *v << " has centrality of " << centrality[*v] << " but it should be " << pair.second;
+        INFO(ss.str())
+        INFO(testDataGraph.toMathematicaForm(true));
+        REQUIRE(abs(centrality[*v] - pair.second) <= .0001);
+        
+    }
 }
 TEST_CASE("example test", "[weight=5][part=1]") {
 

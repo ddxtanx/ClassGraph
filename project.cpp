@@ -39,6 +39,7 @@ int main(int argc, char** argv)
 
   ClassGraph g(filename);
   g.makeAcyclic();
+  std::cout << g.toMathematicaForm(true) << std::endl;
   std::cout << std::endl;
   std::cout << std::endl;
   std::cout << "#####################################   Welcome to the danger zone  --  (Start of main)   ######################################" << std::endl;
@@ -70,7 +71,7 @@ int main(int argc, char** argv)
   //BETWEENESS CENTRALITY TEST CODE////////////////////////////////////////////////////////////////////////
 
   g.initLayers();
-  g.generateBetweennessCentrality(true);
+  g.generateBetweennessCentrality(true, false);
   Vertex mostImportantVertex;
   double maxScore = std::numeric_limits<double>::min();
   for(std::pair<Vertex, double> betwCent : *g.getBetweennessCentrality()){
