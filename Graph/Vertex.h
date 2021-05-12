@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <vector>
+#include <unordered_map>
 #include <iostream>
 #include <vector>
 class Vertex{
@@ -20,7 +20,9 @@ class Vertex{
 
 
         std::vector<Vertex*> getVerticesPointedTo();             //returns all vertecies that *this points to
+        std::vector<Vertex*>& getVerticesPointedToRaw();
         std::vector<Vertex*> getVerticesPointedFrom();
+        std::vector<Vertex*>& getVerticesPointedFromRaw();
 
         size_t getNumPointedTo();
         size_t getNumPointedFrom();
@@ -48,8 +50,9 @@ class Vertex{
     private:
         static size_t count;
         std::vector<Vertex*> pointsTo_;  //Collection of vertices v such that there is an edge e where e.getFrom == this and e.getTo == v
+        std::unordered_map<int, bool> pointsToIndices_;
         std::vector<Vertex*> pointsFrom_;  //Collection of vertices v such that there is an edge e where e.getFrom == v and e.getTo == this
-
+        std::unordered_map<int,bool> pointsFromIndices_;
         unsigned layer_; //Layer
         size_t numPointsTo;
         size_t numPointsFrom;

@@ -27,6 +27,7 @@ void Vertex::connectTo(Vertex* to){
         return;
     }
     size_t id = to -> getId();
+    pointsToIndices_[id] = true;
     if(id >= pointsTo_.size()){
         pointsTo_.resize(id+1, nullptr);
     }
@@ -42,6 +43,7 @@ void Vertex::disconnectTo(Vertex* to){
         return;
     }
     size_t id = to -> getId();
+    pointsToIndices_[id] = false;
     if(id >= pointsTo_.size()){
         pointsTo_.resize(id+1, nullptr);
     }
@@ -56,6 +58,7 @@ void Vertex::connectFrom(Vertex* from){
         return;
     }
     size_t id = from -> getId();
+    pointsFromIndices_[id] = true;
     if(id >= pointsFrom_.size()){
         pointsFrom_.resize(id+1, nullptr);
     }
@@ -71,6 +74,7 @@ void Vertex::disconnectFrom(Vertex* from){
         return;
     }
     size_t id = from -> getId();
+    pointsFromIndices_[id] = false;
     if(id >= pointsFrom_.size()){
         pointsFrom_.resize(id+1, nullptr);
     }
@@ -82,22 +86,30 @@ void Vertex::disconnectFrom(Vertex* from){
 
 std::vector<Vertex*> Vertex::getVerticesPointedTo(){
     std::vector<Vertex*> nonNulls;
-    for(Vertex* vp : pointsTo_){
-        if(vp != nullptr){
-            nonNulls.push_back(vp);
+    for(auto pair : pointsToIndices_){
+        if(pair.second){
+            nonNulls.push_back(pointsTo_[pair.first]);
         }
     }
     return nonNulls;
 }
 
+std::vector<Vertex*>& Vertex::getVerticesPointedToRaw(){
+    return pointsTo_;
+}
+
 std::vector<Vertex*> Vertex::getVerticesPointedFrom(){
     std::vector<Vertex*> nonNulls;
-    for(Vertex* vp : pointsFrom_){
-        if(vp != nullptr){
-            nonNulls.push_back(vp);
+    for(auto pair : pointsFromIndices_){
+        if(pair.second){
+            nonNulls.push_back(pointsFrom_[pair.first]);
         }
     }
     return nonNulls;
+}
+
+std::vector<Vertex*>& Vertex::getVerticesPointedFromRaw(){
+    return pointsFrom_;
 }
 
 unsigned Vertex::getLayer() const{

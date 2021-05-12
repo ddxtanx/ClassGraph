@@ -221,6 +221,24 @@ void Graph::makeAcyclic(Vertex* source, Vertex* startVertex, bool backwards){
     seenBefore.resize(getVerticesSize());
     levelIndex.assign(getVerticesSize(), -1);
     levelIndex[source -> getId()] = 0;
+    std::stack<Vertex*> levelAssign;
+    levelAssign.push(source);
+    while(!levelAssign.empty()){
+        Vertex* head = levelAssign.top();
+        levelAssign.pop();
+        seenBefore[head -> getId()] = true;
+        auto neighbors = backwards ? head -> getVerticesPointedFrom() : head -> getVerticesPointedTo();
+        int level = levelIndex[head -> getId()];
+        for(Vertex* v : neighbors){
+            if(levelIndex[v -> getId()] < level+1){
+                levelIndex[v -> getId()] = level + 1;
+            }
+            if(!seenBefore[v -> getId()]){
+                levelAssign.push(v);
+            }
+        }
+    }
+    seenBefore.assign(getVerticesSize(), false);
     std::stack<Edge> st;
     Edge firstE(source, source);
     st.push(firstE);
@@ -237,13 +255,6 @@ void Graph::makeAcyclic(Vertex* source, Vertex* startVertex, bool backwards){
         if(from != to && m[e] != true){
             edges.push_back(e);
             m[e] = true;
-            if(backwards){
-                int prevLevel = levelIndex[toId];
-                levelIndex[fromId] = prevLevel+1;
-            } else{
-                int prevLevel = levelIndex[fromId];
-                levelIndex[toId] = prevLevel+1;
-            }
         }
 
         Vertex* nextVertex;
@@ -259,6 +270,9 @@ void Graph::makeAcyclic(Vertex* source, Vertex* startVertex, bool backwards){
             nextVertices = to -> getVerticesPointedTo();
         }
         for(Vertex* vp : nextVertices){
+            if(vp == nullptr){
+                continue;
+            }
             size_t adjId = vp -> getId();
             if((seenBefore[adjId] && levelIndex[adjId] < levelIndex[nextId]) || vp == nextVertex){
                 if(backwards){
@@ -274,10 +288,14 @@ void Graph::makeAcyclic(Vertex* source, Vertex* startVertex, bool backwards){
             }
             if(backwards){
                 Edge nextE(vp, nextVertex);
-                st.push(nextE);
+                if(!m[nextE]){
+                    st.push(nextE);
+                }
             } else{
                 Edge nextE(nextVertex, vp);
-                st.push(nextE);
+                if(!m[nextE]){
+                    st.push(nextE);
+                }
             }
         }
     }
