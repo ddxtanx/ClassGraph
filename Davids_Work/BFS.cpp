@@ -35,8 +35,7 @@ BFS::Iterator & BFS::Iterator::operator++()
     {
         if(v != nullptr){
             q.push(v);
-            if(v->getLayer()<currLayer+1)
-            {v->setLayer(currLayer+1);}
+            v->setLayer(currLayer+1);
         }
     }
 
@@ -45,7 +44,7 @@ BFS::Iterator & BFS::Iterator::operator++()
         current = q.front();
         q.pop();
 
-        if (current != nullptr && !visited[current->getId()]) //if current has not been visited
+        if (!visited[current->getId()]) //if current has not been visited
             break;                      //  return current basically
     }
 
