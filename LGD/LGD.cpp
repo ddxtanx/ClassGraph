@@ -78,20 +78,14 @@ void LGD::makeDummyVerts()
     std::vector<Vertex*> vertices=graph_->getVertices();
     for(auto it=vertices.begin();it!=vertices.end();it++)
     {
-      Vertex*& currTex=*it;
-      if(currTex->getName()=="DUMMY")
-      {
-        continue;
-      }
+      Vertex* currTex=*it;
       std::vector<Vertex*> ADJS=currTex->getVerticesPointedTo();
       int currLayer= (int)currTex->getLayer();
       for(auto iter=ADJS.begin();iter!=ADJS.end();iter++)
       {
-        currTex=*it;
         int ADJLayer=(int)(*iter)->getLayer();
         int LayerDiff=ADJLayer-currLayer;
-        Vertex*& ADJTex=*iter;
-        if(LayerDiff<=1||ADJTex->getName()=="END")
+        if(LayerDiff<=1)
         {
           continue;
         }
@@ -101,13 +95,13 @@ void LGD::makeDummyVerts()
           {
             Vertex* Dummy=new Vertex("DUMMY");
             Dummy->setLayer(currLayer+1);
-            currTex->disconnectTo(ADJTex);
+            currTex->disconnectTo(*iter);
             currTex->connectTo(Dummy);
-            Dummy->connectTo(ADJTex);
+            Dummy->connectTo(*iter);
             Dummy->connectFrom(currTex);
             graph_->addVertex(Dummy);
-            ADJTex->disconnectFrom(currTex);
-            ADJTex->connectFrom(Dummy);
+            (*iter)->disconnectFrom(currTex);
+            (*iter)->connectFrom(Dummy);
             currTex=Dummy;
             currLayer++;
             graph_->increaseLayerCount(currLayer);
@@ -136,11 +130,11 @@ Image LGD::drawGraph()
     unsigned int minLayer = start_->getLayer();
 
     //subgraph sizing code:
-    std::vector<unsigned int> subLayers;
     if (start_->getName() != "START")                                                       //If custom course specified, size down Image
     {                                                                                       //by traversing and storing sub-graph layer data
       std::cout << "Drawing sub-graph" << std::endl;
       unsigned maxLayer = minLayer;
+      std::vector<unsigned int> subLayers;
       subLayers.resize((size_t)maxGraphHeight);
       unsigned nodeCounter = 0;
       for (auto it = verts.begin(); it != verts.end(); ++it)                                //use BFS to create a smaller Image bounds
@@ -148,7 +142,7 @@ Image LGD::drawGraph()
         currentLayer = (*it)->getLayer();
         if (currentLayer > maxLayer)
           maxLayer = currentLayer;
-        ++subLayers[currentLayer];
+        ++subLayers[currentLayer-minLayer];
         ++nodeCounter;
       }
       maxLayerWidth = (unsigned int)*max_element(subLayers.begin(), subLayers.end());  
@@ -169,34 +163,17 @@ Image LGD::drawGraph()
     //unsigned int x = 0;
     std::vector<unsigned int> layerCount;
     layerCount.resize(layers.size());
-    std::cout<<background_.width()<<std::endl;
-    std::vector<int> Spacings;
-    if(start_->getName()=="START")
-    {
-      for(unsigned i=0;i<layers.size();i++)
-      {
-        std::cout<< "layer " << i << ": ";
-        int layerSpacing=background_.width()/(layers[i]+1);
-        std::cout << layerSpacing << std::endl;
-        Spacings.push_back(layerSpacing);
-      }
-    }
-    else
-    {
-      for(unsigned i=0;i<subLayers.size();i++)
-      {
-        int layerSpacing=background_.width()/(subLayers[i]+1);
-        Spacings.push_back(layerSpacing);
-      }
-    }
+
+
+
     std::cout << "Making verts into Stickers" << std::endl;
     for (auto it = verts.begin(); it != verts.end(); ++it)
     {
       currentLayer = (*it)->getLayer();
-      (*it)->xPos = (layerCount[currentLayer]+1)*Spacings[currentLayer];
-      (*it)->yPos = (currentLayer-minLayer)*250;
       if (!detectEND(*it))                //prevents drawing
-        drawVertex(*it, (*it)->xPos, (*it)->yPos);
+        drawVertex(*it, layerCount[currentLayer]*150, (currentLayer-minLayer)*250);
+      (*it)->xPos = layerCount[currentLayer]*150;
+      (*it)->yPos = (currentLayer-minLayer)*250;
       ++layerCount[currentLayer];
       //++x;
     }
@@ -437,7 +414,6 @@ int LGD::drawVertex(std::string name , unsigned int x1, unsigned int y1, cs225::
     currPos += xLim;
   }
   //oval_ now contains vertex with name Image
-
   return stickers_->addSticker(drawing, x1, y1);
 }
 int LGD::drawVertex(std::string  name, unsigned int x1, unsigned int y1)  //overload
@@ -448,12 +424,12 @@ int LGD::drawVertex(std::string  name, unsigned int x1, unsigned int y1)  //over
 int LGD::drawVertex(Vertex* v, unsigned int x1, unsigned int y1)  //overload
 {
     //default to black and call drawVertex
-    return drawVertex(v->getName(), v->xPos, y1, cs225::HSLAPixel(0,0,0));
+    return drawVertex(v->getName(), x1, y1, cs225::HSLAPixel(0,0,0));
 }
 int LGD::drawVertex(Vertex & v, unsigned int x1, unsigned int y1)  //overload
 {
     //default to black and call drawVertex
-    return drawVertex(v.getName(), v.xPos, y1, cs225::HSLAPixel(0,0,0));
+    return drawVertex(v.getName(), x1, y1, cs225::HSLAPixel(0,0,0));
 }
 
 bool LGD::detectEND(Vertex * v) //recursive checker to see if END node is at the end of a string of DUMMYs
