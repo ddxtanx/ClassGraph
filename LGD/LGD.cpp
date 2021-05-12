@@ -87,6 +87,7 @@ void LGD::makeDummyVerts()
       int currLayer= (int)currTex->getLayer();
       for(auto iter=ADJS.begin();iter!=ADJS.end();iter++)
       {
+        currTex=*it;
         int ADJLayer=(int)(*iter)->getLayer();
         int LayerDiff=ADJLayer-currLayer;
         Vertex*& ADJTex=*iter;
@@ -174,9 +175,7 @@ Image LGD::drawGraph()
     {
       for(unsigned i=0;i<layers.size();i++)
       {
-        std::cout<<"Layer: "<<i<<" Number of verts: "<<layers[i]<<std::endl;
         int layerSpacing=background_.width()/(layers[i]+1);
-        std::cout<<"Layer: "<<i<<" Spacing "<<layerSpacing<<std::endl;
         Spacings.push_back(layerSpacing);
       }
     }
@@ -184,9 +183,7 @@ Image LGD::drawGraph()
     {
       for(unsigned i=0;i<layers.size();i++)
       {
-        std::cout<<"Layer: "<<i<<" Number of verts: "<<subLayers[i]<<std::endl;
         int layerSpacing=background_.width()/(subLayers[i]+1);
-        std::cout<<"Layer: "<<i<<" Spacing "<<layerSpacing<<std::endl;
         Spacings.push_back(layerSpacing);
       }
     }
