@@ -117,43 +117,65 @@ void LGD::makeDummyVerts()
 Image LGD::drawGraph()            
 {
        
-    makeDummyVerts();                                                   //set up graph with dummy spacers
+    makeDummyVerts();                                                                       //set up graph with dummy spacers
 
-    std::vector<int> layers = graph_->getLayers();
-    unsigned int maxLayerWidth = (unsigned int)*max_element(layers.begin(), layers.end());
+    std::vector<int> layers = graph_->getLayers();                                          //get whole file layer data
+    unsigned int maxLayerWidth = (unsigned int)*max_element(layers.begin(), layers.end());  
     unsigned int maxGraphHeight = layers.size();
+    unsigned int totalNodes = (unsigned int)graph_->getVertices().size(); 
+    unsigned int currentLayer = 0;                                                          //init counters layer counters
+    //rendering code:
+    std::cout << "Setting up" << std::endl;
+    BFS verts(graph_, start_);                                                              //BFS used to traverse data
+    unsigned int minLayer = start_->getLayer();
 
+    //subgraph sizing code:
+    if (start_->getName() != "START")                                                       //If custom course specified, size down Image
+    {                                                                                       //by traversing and storing sub-graph layer data
+      std::cout << "Drawing sub-graph" << std::endl;
+      unsigned maxLayer = minLayer;
+      std::vector<unsigned int> subLayers;
+      subLayers.resize((size_t)maxGraphHeight);
+      unsigned nodeCounter = 0;
+      for (auto it = verts.begin(); it != verts.end(); ++it)                                //use BFS to create a smaller Image bounds
+      {
+        currentLayer = (*it)->getLayer();
+        if (currentLayer > maxLayer)
+          maxLayer = currentLayer;
+        ++subLayers[currentLayer-minLayer];
+        ++nodeCounter;
+      }
+      maxLayerWidth = (unsigned int)*max_element(subLayers.begin(), subLayers.end());  
+      maxGraphHeight = maxLayer - minLayer;
+      totalNodes = nodeCounter;
+    }
 
     std::cout << "Height of graph (# of verts): " << maxGraphHeight << std::endl;
     std::cout << "Width of graph  (# of verts): " << maxLayerWidth << std::endl;
     std::cout <<  std::endl;
-
-    //rendering code:
     
-    std::cout << "Setting up" << std::endl;
-    BFS verts(graph_, start_);                                                //BFS used to traverse data
-
-
-    unsigned int totalNodes = (unsigned int)graph_->getVertices().size();     
     Image temp(150*maxLayerWidth, 250*maxGraphHeight);                        //creates image to use as background
     background_ = temp;    
     stickers_ = new StickerSheet(background_,totalNodes);                     //make sticker sheet to render vertices
 
-    unsigned int currentLayer = 0;                                            //init counters
-    unsigned int x = 0;
+    
+    currentLayer = 0;                                                          //init counters layer counters
+    //unsigned int x = 0;
     std::vector<unsigned int> layerCount;
     layerCount.resize(layers.size());
+
 
 
     std::cout << "Making verts into Stickers" << std::endl;
     for (auto it = verts.begin(); it != verts.end(); ++it)
     {
       currentLayer = (*it)->getLayer();
-      drawVertex(*it, layerCount[currentLayer]*150, currentLayer*250);
+      if (!detectEND(*it))                //prevents drawing
+        drawVertex(*it, layerCount[currentLayer]*150, (currentLayer-minLayer)*250);
       (*it)->xPos = layerCount[currentLayer]*150;
-      (*it)->yPos = currentLayer*250;
+      (*it)->yPos = (currentLayer-minLayer)*250;
       ++layerCount[currentLayer];
-      ++x;
+      //++x;
     }
 
 
@@ -166,12 +188,12 @@ Image LGD::drawGraph()
     for (auto it = verts.begin(); it != verts.end(); ++it)    //loops through all verts via BFS, *it is the lower vertex, this draws down from start
     {
       adj = (*it)->getVerticesPointedTo();
-      //if ((*it)->getName() == "START")            //skip start node
-      //  continue;
+      if ((*it)->getName() == "START")            //skip start node
+        continue;
       for (auto at = adj.begin(); at != adj.end(); ++at)      //loops through adjacent verts to *it
       {
-      //  if ((*at)->getName() == "END")            //skip end node
-      //    continue;
+        if (detectEND(*at))                //prevents drawing
+          continue;
         drawEdge(*it, *at);
       }
     }
@@ -410,8 +432,17 @@ int LGD::drawVertex(Vertex & v, unsigned int x1, unsigned int y1)  //overload
     return drawVertex(v.getName(), x1, y1, cs225::HSLAPixel(0,0,0));
 }
 
+bool LGD::detectEND(Vertex * v) //recursive checker to see if END node is at the end of a string of DUMMYs
+{
 
-
+  std::string name = v->getName();
+  if (name == "END")
+    return true;
+  else if (name == "DUMMY")
+    return detectEND(v->getVerticesPointedTo()[0]);
+  else
+    return false;
+}
 
 ////////// Debug material //////////
 
