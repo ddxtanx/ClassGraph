@@ -175,7 +175,9 @@ Image LGD::drawGraph()
     {
       for(unsigned i=0;i<layers.size();i++)
       {
+        std::cout<< "layer " << i << ": ";
         int layerSpacing=background_.width()/(layers[i]+1);
+        std::cout << layerSpacing << std::endl;
         Spacings.push_back(layerSpacing);
       }
     }
