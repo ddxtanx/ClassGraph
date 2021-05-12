@@ -28,7 +28,7 @@ void Vertex::connectTo(Vertex* to){
     }
     size_t id = to -> getId();
     if(id >= pointsTo_.size()){
-        pointsTo_.resize(id+1);
+        pointsTo_.resize(id+1, nullptr);
     }
     if(pointsTo_[id] == nullptr){
         numPointsTo++;
@@ -43,7 +43,7 @@ void Vertex::disconnectTo(Vertex* to){
     }
     size_t id = to -> getId();
     if(id >= pointsTo_.size()){
-        pointsTo_.resize(id+1);
+        pointsTo_.resize(id+1, nullptr);
     }
     if(pointsTo_[id] != nullptr){
         numPointsTo --;
@@ -57,7 +57,7 @@ void Vertex::connectFrom(Vertex* from){
     }
     size_t id = from -> getId();
     if(id >= pointsFrom_.size()){
-        pointsFrom_.resize(id+1);
+        pointsFrom_.resize(id+1, nullptr);
     }
     if(pointsFrom_[id] == nullptr){
         numPointsFrom++;
@@ -72,7 +72,7 @@ void Vertex::disconnectFrom(Vertex* from){
     }
     size_t id = from -> getId();
     if(id >= pointsFrom_.size()){
-        pointsFrom_.resize(id+1);
+        pointsFrom_.resize(id+1, nullptr);
     }
     if(pointsFrom_[id] != nullptr){
         numPointsFrom --;

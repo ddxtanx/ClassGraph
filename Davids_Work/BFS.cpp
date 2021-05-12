@@ -44,7 +44,7 @@ BFS::Iterator & BFS::Iterator::operator++()
         current = q.front();
         q.pop();
 
-        if (!visited[current->getId()]) //if current has not been visited
+        if (current != nullptr && !visited[current->getId()]) //if current has not been visited
             break;                      //  return current basically
     }
 

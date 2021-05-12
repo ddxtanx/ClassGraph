@@ -8,4 +8,4 @@ allDepts.txt
 *objs
 test
 *.out
-Output_PNGs/*
+Output_PNGs

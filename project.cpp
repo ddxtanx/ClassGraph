@@ -29,7 +29,7 @@ int main(int argc, char** argv)
   Vertex* inputVert;
   if(argc == 2){
     filename = argv[1];
-    inputStr = "yeet";
+    inputStr = "";
   }
   if(argc == 3){
     filename = argv[1];
@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 
   ClassGraph g(filename);
   g.makeAcyclic();
-  std::cout << g.toMathematicaForm(true) << std::endl;
+  //std::cout << g.toMathematicaForm(true) << std::endl;
   std::cout << std::endl;
   std::cout << std::endl;
   std::cout << "#####################################   Welcome to the danger zone  --  (Start of main)   ######################################" << std::endl;
@@ -53,19 +53,15 @@ int main(int argc, char** argv)
   //BFS TEST CODE//////////////////////////////////////////////////////////////////////////////////////////
   BFS traversal(&g, start);                    //create traversal, start at vert 0
   
+  
   for (auto it = traversal.begin(); it != traversal.end(); ++it)
   {
     Vertex v = **it;
-    if (v.getName() == inputStr)                    //pulls out target start vertex if argument specifies it KEEP
-      inputVert = *it;
-    
-    /*
     std::cout << "Prerequisites of " << v << ": ";
     for(Vertex* vp : v.getVerticesPointedTo()){
       std::cout << *vp << ", ";
     } 
     std::cout << std::endl;
-    */
   }
   
   //BETWEENESS CENTRALITY TEST CODE////////////////////////////////////////////////////////////////////////
@@ -100,7 +96,11 @@ int main(int argc, char** argv)
   std::cout << std::endl;
 
   LGD gLGD(&g,start);
-
+  if(inputStr != ""){
+    inputVert = g.getVertexByName(inputStr);
+  } else{
+    inputVert = g.getStart();
+  }
   Image output;
   if (inputStr != "yeet")
   {
