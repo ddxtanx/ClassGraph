@@ -135,11 +135,11 @@ Image LGD::drawGraph()
     unsigned int minLayer = start_->getLayer();
 
     //subgraph sizing code:
+    std::vector<unsigned int> subLayers;
     if (start_->getName() != "START")                                                       //If custom course specified, size down Image
     {                                                                                       //by traversing and storing sub-graph layer data
       std::cout << "Drawing sub-graph" << std::endl;
       unsigned maxLayer = minLayer;
-      std::vector<unsigned int> subLayers;
       subLayers.resize((size_t)maxGraphHeight);
       unsigned nodeCounter = 0;
       for (auto it = verts.begin(); it != verts.end(); ++it)                                //use BFS to create a smaller Image bounds
@@ -170,14 +170,26 @@ Image LGD::drawGraph()
     layerCount.resize(layers.size());
     std::cout<<background_.width()<<std::endl;
     std::vector<int> Spacings;
-    for(unsigned i=0;i<layers.size();i++)
+    if(start_->getName()=="START")
     {
-      std::cout<<"Layer: "<<i<<" Number of verts: "<<layers[i]<<std::endl;
-      int layerSpacing=background_.width()/(layers[i]+1);
-      std::cout<<"Layer: "<<i<<" Spacing "<<layerSpacing<<std::endl;
-      Spacings.push_back(layerSpacing);
+      for(unsigned i=0;i<layers.size();i++)
+      {
+        std::cout<<"Layer: "<<i<<" Number of verts: "<<layers[i]<<std::endl;
+        int layerSpacing=background_.width()/(layers[i]+1);
+        std::cout<<"Layer: "<<i<<" Spacing "<<layerSpacing<<std::endl;
+        Spacings.push_back(layerSpacing);
+      }
     }
-
+    else
+    {
+      for(unsigned i=0;i<layers.size();i++)
+      {
+        std::cout<<"Layer: "<<i<<" Number of verts: "<<subLayers[i]<<std::endl;
+        int layerSpacing=background_.width()/(subLayers[i]+1);
+        std::cout<<"Layer: "<<i<<" Spacing "<<layerSpacing<<std::endl;
+        Spacings.push_back(layerSpacing);
+      }
+    }
     std::cout << "Making verts into Stickers" << std::endl;
     for (auto it = verts.begin(); it != verts.end(); ++it)
     {
@@ -426,6 +438,7 @@ int LGD::drawVertex(std::string name , unsigned int x1, unsigned int y1, cs225::
     currPos += xLim;
   }
   //oval_ now contains vertex with name Image
+
   return stickers_->addSticker(drawing, x1, y1);
 }
 int LGD::drawVertex(std::string  name, unsigned int x1, unsigned int y1)  //overload
