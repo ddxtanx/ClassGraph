@@ -35,7 +35,8 @@ BFS::Iterator & BFS::Iterator::operator++()
     {
         if(v != nullptr){
             q.push(v);
-            v->setLayer(currLayer+1);
+            if(v->getLayer()<currLayer+1)
+            {v->setLayer(currLayer+1);}
         }
     }
 
