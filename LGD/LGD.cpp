@@ -148,7 +148,7 @@ Image LGD::drawGraph()
         currentLayer = (*it)->getLayer();
         if (currentLayer > maxLayer)
           maxLayer = currentLayer;
-        ++subLayers[currentLayer-minLayer];
+        ++subLayers[currentLayer];
         ++nodeCounter;
       }
       maxLayerWidth = (unsigned int)*max_element(subLayers.begin(), subLayers.end());  
@@ -175,13 +175,15 @@ Image LGD::drawGraph()
     {
       for(unsigned i=0;i<layers.size();i++)
       {
+        std::cout<< "layer " << i << ": ";
         int layerSpacing=background_.width()/(layers[i]+1);
+        std::cout << layerSpacing << std::endl;
         Spacings.push_back(layerSpacing);
       }
     }
     else
     {
-      for(unsigned i=0;i<layers.size();i++)
+      for(unsigned i=0;i<subLayers.size();i++)
       {
         int layerSpacing=background_.width()/(subLayers[i]+1);
         Spacings.push_back(layerSpacing);
