@@ -186,7 +186,6 @@ Image LGD::drawGraph()
       (*it)->yPos = (currentLayer-minLayer)*250;
       if (!detectEND(*it))                //prevents drawing
         drawVertex(*it, (*it)->xPos, (*it)->yPos);
-      std::cout<<**it<<" , "<<(*it)->xPos<<" , "<<(*it)->yPos<<std::endl;
       ++layerCount[currentLayer];
       //++x;
     }
@@ -427,7 +426,6 @@ int LGD::drawVertex(std::string name , unsigned int x1, unsigned int y1, cs225::
     currPos += xLim;
   }
   //oval_ now contains vertex with name Image
-  std::cout<<name<<","<<x1<<","<<y1<<"asfsadfasdf"<<std::endl;
   return stickers_->addSticker(drawing, x1, y1);
 }
 int LGD::drawVertex(std::string  name, unsigned int x1, unsigned int y1)  //overload
