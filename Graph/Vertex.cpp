@@ -105,7 +105,12 @@ unsigned Vertex::getLayer() const{
 }
 
 void Vertex::setLayer(unsigned layer){
+    if(layer_!=0)
+    {
+        return;
+    }
     layer_=layer;
+    std::cout<<"Setting layer of: "<<*this<<" To: "<<layer<<std::endl;
 }
 
 size_t Vertex::getNumPointedTo(){
