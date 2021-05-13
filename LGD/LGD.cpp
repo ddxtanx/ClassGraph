@@ -118,6 +118,12 @@ Image LGD::drawGraph()
 {
        
     makeDummyVerts();                                                                       //set up graph with dummy spacers
+    BFS update(graph_, graph_->getStart());
+    for (auto it = update.begin(); it != update.end(); ++it)
+    {
+      std::cout << "test" << std::endl;
+    }
+
 
     std::vector<int> layers = graph_->getLayers();                                          //get whole file layer data
     unsigned int maxLayerWidth = (unsigned int)*max_element(layers.begin(), layers.end());  

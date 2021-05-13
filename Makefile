@@ -8,7 +8,6 @@ include Graph/graph.mk
 include Davids_Work/david.mk
 include LGD/LGD.mk
 include Stickers/Stickers.mk
-include SpanningTree/SpanningTree.mk
 include cs225/make/cs225.mk
 clean:
 	find .objs -type f -name "*.[d|o]" -exec rm {} \;

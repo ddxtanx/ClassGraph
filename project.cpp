@@ -26,6 +26,7 @@ int main(int argc, char** argv)
 {
   //Handles command line inputs
   string inputStr;
+  string outputStr
   Vertex* inputVert;
   if(argc == 2){
     filename = argv[1];
@@ -35,20 +36,24 @@ int main(int argc, char** argv)
     filename = argv[1];
     inputStr = argv[2];
   }
+  if(argc == 3){
+    filename = argv[1];
+    inputStr = argv[2];
+    outputStr = argv[3];
+  }
+
+
+
+
 
 
   ClassGraph g(filename);
   g.makeAcyclic();
-  //std::cout << g.toMathematicaForm(true) << std::endl;
-  std::cout << std::endl;
-  std::cout << std::endl;
-  std::cout << "#####################################   Welcome to the danger zone  --  (Start of main)   ######################################" << std::endl;
-  std::cout<< "# of verts in graph: " << g.getVertices().size()<<std::endl;
-  std::cout << "------------------------------------------------------" << std::endl;
-
   std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
   Vertex* start = g.getStart();
   Vertex* end = g.getEnd();
+
+
 
   //BFS TEST CODE//////////////////////////////////////////////////////////////////////////////////////////
   BFS traversal(&g, start);                    //create traversal, start at vert 0
@@ -85,16 +90,9 @@ int main(int argc, char** argv)
 
 
 
-  //LAYERED GRAPH DRAWING TEST CODE/////////////////////////////////////////////////////////////////////////
+  //LAYERED GRAPH DRAWING CODE/////////////////////////////////////////////////////////////////////////
 
-  std::cout << std::endl;
-  std::cout << std::endl;
-  std::cout << "++++++++++++++ DISCLAIMER +++++++++++++" << std::endl;
-  std::cout << "The drawGraph() meathod is not final," << std::endl;
-  std::cout << "some graphs will have graphical errors" << std::endl;
-  std::cout << "+++++++++++++++++++++++++++++++++++++++" << std::endl;
-  std::cout << std::endl;
-
+  
   LGD gLGD(&g,start);
   if(inputStr != ""){
     inputVert = g.getVertexByName(inputStr);
@@ -102,6 +100,7 @@ int main(int argc, char** argv)
     inputVert = g.getStart();
   }
   Image output;
+
   if (inputStr != "yeet")
   {
     std::cout << "Running drawgraph from " << *inputVert << std::endl;
@@ -114,6 +113,7 @@ int main(int argc, char** argv)
   }
 
   std::cout << "Writing to File" << std::endl;
+
   output.writeToFile("Outputs/Layered_Graph_Drawing.png");
 
 
