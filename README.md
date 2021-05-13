@@ -19,10 +19,14 @@ How to run our code:
     *NOTE: The course name must be in all caps, and any invalid course name will result in undefined behavior. Follow examples above and check data folder for more examples
 
 4) The output of all algorithms are stored in the ./Outputs/ folder
-    /Betweeness_Full_File           output of the betweeness centrality test on the whole graph
-    /BFS_Full_File                  output of a BFS iterator that traverses every course in the whole graph
-    /BFS_From_Course                output of a BFS iterator starting at the user defined course in command line arg
-    /Layered_Graph_Drawing.png      is the image output of the LGD algorithm
+
+        /Betweeness_Full_File           output of the betweeness centrality test on the whole graph
+
+        /BFS_Full_File                  output of a BFS iterator that traverses every course in the whole graph
+
+        /BFS_From_Course                output of a BFS iterator starting at the user defined course in command line arg
+
+        /Layered_Graph_Drawing.png      is the image output of the LGD algorithm
     
 
 
