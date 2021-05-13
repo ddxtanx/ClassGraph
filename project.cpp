@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 {
   //Handles command line inputs
   string inputStr;
-  string outputStr
+  string outputStr;
   Vertex* inputVert;
   if(argc == 2){
     filename = argv[1];
@@ -35,7 +35,7 @@ int main(int argc, char** argv)
     filename = argv[1];
     inputStr = argv[2];
   }
-  if(argc == 3){
+  if(argc == 4){
     filename = argv[1];
     inputStr = argv[2];
     outputStr = argv[3];

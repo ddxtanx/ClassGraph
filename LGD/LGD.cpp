@@ -15,7 +15,7 @@ LGD::LGD()
 
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
 }                      
-LGD::LGD(Graph & g, Vertex & v)  
+LGD::LGD(ClassGraph & g, Vertex & v)  
 : pic_(Image()), stickers_(new StickerSheet(pic_, 10u)), start_(&v), graph_(&g)
 {
     text_.readFromFile("LGD/text.png");
@@ -23,7 +23,7 @@ LGD::LGD(Graph & g, Vertex & v)
     skip_.readFromFile("LGD/skip.png");
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
 }   
-LGD::LGD(Graph * g, Vertex * v)    
+LGD::LGD(ClassGraph * g, Vertex * v)    
 : pic_(Image()), stickers_(new StickerSheet(pic_, 10u)), start_(v), graph_(g)
 {
     text_.readFromFile("LGD/text.png");
@@ -121,8 +121,9 @@ Image LGD::drawGraph()
     BFS update(graph_, graph_->getStart());
     for (auto it = update.begin(); it != update.end(); ++it)
     {
-      std::cout << "test" << std::endl;
+     // std::cout << "test" << std::endl;
     }
+    graph_->initLayers();
 
 
     std::vector<int> layers = graph_->getLayers();                                          //get whole file layer data

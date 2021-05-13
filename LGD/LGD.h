@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Graph/Graph.h"
+#include "../ClassGraph.h"
 //#include "../cs225/PNG.h"
 #include "../Stickers/StickerSheet.h"
 #include <vector>
@@ -9,9 +10,9 @@ class LGD
 {
     public:
     LGD();                          //constructors
-    LGD(Graph & g, Vertex & v);     //create by reference for easy 
+    LGD(ClassGraph & g, Vertex & v);     //create by reference for easy 
     ~LGD();                         //destructor
-    LGD(Graph * g, Vertex * v);     //create by pointer for flexibility
+    LGD(ClassGraph * g, Vertex * v);     //create by pointer for flexibility
 
     LGD(const LGD &other);          //copy constructor
     const LGD & operator= (const LGD & other);     //copy constructor overload
@@ -79,5 +80,5 @@ class LGD
     StickerSheet* stickers_; //Sticker sheet for vertex rendering
 
     Vertex * start_;        //Node to show prereq tree for
-    Graph * graph_;         //graph structure for data
+    ClassGraph * graph_;         //graph structure for data
 };
