@@ -17,6 +17,7 @@ class LGD
     LGD(const LGD &other);          //copy constructor
     const LGD & operator= (const LGD & other);     //copy constructor overload
 
+    void initializeLayers();
     void makeDummyVerts();
 
     /**  /////////////////////////////////////////////////////////////////////////////////////////////////////

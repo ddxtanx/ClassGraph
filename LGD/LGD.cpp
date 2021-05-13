@@ -113,10 +113,23 @@ void LGD::makeDummyVerts()
     //std::cout<<(graph_->getLayerCounts_()).size()<<std::endl;
 }
 
-
+void LGD::initializeLayers(){
+  Vertex* start = graph_ -> getStart();
+  BFS b(graph_, graph_ -> getStart());
+  start -> setLayer(0);
+  for(Vertex* v : b){
+    auto neighs = v -> getVerticesPointedTo();
+    auto layer = v -> getLayer();
+    for(Vertex* n : neighs){
+      if(n -> getLayer() < layer + 1){
+        n -> setLayer(layer+1);
+      }
+    }
+  }
+}
 Image LGD::drawGraph()            
 {
-       
+    initializeLayers();
     makeDummyVerts();                                                                       //set up graph with dummy spacers
     BFS update(graph_, graph_->getStart());
     for (auto it = update.begin(); it != update.end(); ++it)

@@ -27,12 +27,10 @@ BFS::Iterator & BFS::Iterator::operator++()
     visited[current->getId()] = 1;      //mark current as visited
 
     std::vector<Vertex*> adj = current->getVerticesPointedTo();                     //returns all vertecies that current points to
-    unsigned currLayer=current->getLayer();
     for (Vertex* v : adj)    //push all valid adjacent verts
     {
         if(v != nullptr){
             q.push(v);
-            v->setLayer(currLayer+1);
         }
     }
 

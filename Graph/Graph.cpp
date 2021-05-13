@@ -185,6 +185,7 @@ void Graph::addEdge(Vertex* from, Vertex* to){
 
 void Graph::initLayers()
 {
+    layerCounts_ = {};
     for(auto it=vertices_.begin();it!=vertices_.end();it++)
     {
         int currLayer=(*it)->getLayer();
@@ -205,6 +206,7 @@ void Graph::increaseLayerCount(unsigned layer)
 
 std::vector<int> Graph::getLayers()
 {
+    initLayers();
     return layerCounts_;
 }
 
