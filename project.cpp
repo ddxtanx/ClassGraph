@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "dataConvert.h"
 #include "Davids_Work/BFS.h"
 #include "Graph/Graph.h"
@@ -25,7 +26,6 @@ int main(int argc, char** argv)
 {
   //Handles command line inputs
   string inputStr;
-  string outputStr;
   Vertex* inputVert;
   if(argc == 2){
     filename = argv[1];
@@ -35,11 +35,7 @@ int main(int argc, char** argv)
     filename = argv[1];
     inputStr = argv[2];
   }
-  if(argc == 4){
-    filename = argv[1];
-    inputStr = argv[2];
-    outputStr = argv[3];
-  }
+  
 
 
 
@@ -54,21 +50,54 @@ int main(int argc, char** argv)
 
 
 
-  //BFS TEST CODE//////////////////////////////////////////////////////////////////////////////////////////
+  //BFS USER CODE//////////////////////////////////////////////////////////////////////////////////////////
   BFS traversal(&g, start);                    //create traversal, start at vert 0
   
+  ofstream BFSFile;
+  BFSFile.open ("./Outputs/BFS_Full_File.txt");
+  BFSFile << "BFS Iterator on all courses within file\n\n";
   
   for (auto it = traversal.begin(); it != traversal.end(); ++it)
   {
     Vertex v = **it;
-    std::cout << "Prerequisites of " << v << ": ";
+    BFSFile << "Prerequisites of " << v << ": ";
     for(Vertex* vp : v.getVerticesPointedTo()){
-      std::cout << *vp << ", ";
+      BFSFile << *vp << ", ";
     } 
-    std::cout << std::endl;
+    BFSFile << "\n";
+  }
+  BFSFile.close();
+
+  if(inputStr != "")
+  {
+    inputVert = g.getVertexByName(inputStr);
+
+    BFS traversal2(&g, inputVert);
+
+    ofstream BFSFile2;
+    BFSFile2.open ("./Outputs/BFS_From_Course.txt");
+    BFSFile2 << "BFS Iterator on all courses starting at user ARG2\n\n";
+
+    for (auto it = traversal2.begin(); it != traversal2.end(); ++it)
+    {
+      Vertex v = **it;
+      BFSFile2 << "Prerequisites of " << v << ": ";
+      for(Vertex* vp : v.getVerticesPointedTo()){
+        BFSFile2 << *vp << ", ";
+      } 
+      BFSFile2 << "\n";
+    }
+  BFSFile2.close();
   }
   
   //BETWEENESS CENTRALITY TEST CODE////////////////////////////////////////////////////////////////////////
+  ofstream BCFile;
+  BCFile.open ("./Outputs/Betweeness_Full_File.txt");
+  BCFile << "Betweeness Centrality on all courses within file\n\n";
+  
+
+
+
 
   g.initLayers();
   g.generateBetweennessCentrality(true, false);
@@ -77,7 +106,7 @@ int main(int argc, char** argv)
   for(std::pair<Vertex, double> betwCent : *g.getBetweennessCentrality()){
     Vertex v = betwCent.first;
     double score = betwCent.second;
-    std::cout << "The betweenness centrality of " << v << " is " << score << std::endl;
+    BCFile << "The betweenness centrality of " << v << " is " << score << "\n";
 
     if(score > maxScore){
       maxScore = score;
@@ -85,9 +114,9 @@ int main(int argc, char** argv)
     }
   }
 
-  std::cout << "The most central vertex in the graph is " << mostImportantVertex << " with a centrality of " << maxScore << std::endl;
+  BCFile << "\nThe most central vertex in the graph is " << mostImportantVertex << " with a centrality of " << maxScore << std::endl;
 
-
+  BCFile.close();
 
   //LAYERED GRAPH DRAWING CODE/////////////////////////////////////////////////////////////////////////
 

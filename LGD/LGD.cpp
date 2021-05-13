@@ -179,7 +179,11 @@ Image LGD::drawGraph()
       currentLayer = (*it)->getLayer();
       if (!detectEND(*it))                //prevents drawing
         drawVertex(*it, layerCount[currentLayer]*150, (currentLayer-minLayer)*250);
-      (*it)->xPos = layerCount[currentLayer]*150;
+
+      if (layerCount[currentLayer] > 100)
+        (*it)->xPos = 100;
+      else
+        (*it)->xPos = layerCount[currentLayer]*150;
       (*it)->yPos = (currentLayer-minLayer)*250;
       ++layerCount[currentLayer];
       //++x;
