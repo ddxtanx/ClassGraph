@@ -46,6 +46,10 @@ Parsed Data:
     
     Courses-and-prereqs/
 
+    dataConvert.h
+    
+    dataConvert.cpp
+
 Graph Structure:
     
     Graph/
@@ -68,7 +72,7 @@ BFS:
 
 Betweeness Centrality:
 
-    Graph/Graph.cpp
+    Graph/Graph.h
 
     Graph/Graph.cpp
 

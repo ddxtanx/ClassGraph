@@ -2,12 +2,6 @@
 #include <queue>
 
 
-
-//Iterator stuff
-  //std::vector<bool> visited;
-  //std::queue<* Vertex> q;
-  //Vertex * current;
-
 BFS::Iterator::Iterator()
 : current(NULL)
 {
@@ -74,14 +68,6 @@ bool BFS::Iterator::isDone() const
 }
 
 
-
-
-//traversal container stuff
-  //Graph * graph_;
-  //Vertex * root_;
-  //std::vector<Vertex> * verts_;  //private data from graph
-  //std::vector<Edge> * edges_;
-
 BFS::BFS()  //null
 : graph_(NULL), root_(NULL),verts_(NULL),edges_(NULL)
 {
@@ -107,33 +93,6 @@ BFS::Iterator BFS::end()
 {
     return BFS::Iterator(); //null
 }
-
-/*
-Graph();                                                                         //constructors
-        Graph(std::vector<Vertex> vertices);
-        Graph(std::vector<Vertex> vertices, std::vector<Edge> edges);
-
-        std::vector<Vertex> & getVertices();   //used for printing and whole graph representation
-        std::vector<Edge> & getEdges();
-        Vertex& getStart();
-
-        bool vertexInGraph(Vertex v) const;
-        
-        double getWeightBetweenVertices(Vertex from, Vertex to) const;                    //used in algorithms
-        double getWeightBetweenVertices(Edge edge) const;
-
-        //ColoredGraph minimalPrerecChainBetween(ColoredVertex from, ColoredVertex to);          //main function to use for output
-        size_t getVerticesSize() const;
-        size_t getEdgesSize() const;
-        //iterator for BFS?
-
-        void addVertex(Vertex vert);
-        void addEdge(Vertex from, Vertex to, double weight);
-        void addEdge(Edge e);
-*/
-
-
-
 
 
 
