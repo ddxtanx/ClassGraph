@@ -16,7 +16,24 @@ How to run our code:
     *note: the course name must be in all caps, and any invalid course name will result
             in undefined behavior.
 
-4) The output of all algorithms are stored in the Outputs folder, each named accordingly
+4) The output of all algorithms are stored in the ./Outputs/ folder
+    /Betweeness_Full_File           output of the betweeness centrality test on the whole graph
+    /BFS_Full_File                  output of a BFS iterator that traverses every course in the whole graph
+    /BFS_From_Course                output of a BFS iterator starting at the user defined course in command line arg
+    /Layered_Graph_Drawing.png      is the image output of the LGD algorithm
+    
+
+
+
+How to run tests:
+
+1) Open a terminal to the root directory of our repository: davidm12-gcredi2-lzefran2
+2) Type < make test > to compile the specific test code 
+3) To test our algorithms (BFS, Betweeness Centrality), type:
+        
+        ./test
+
+4) The output of all tests will be in the terminal, using CATCH
 
 
 

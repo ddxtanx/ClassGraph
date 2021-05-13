@@ -59,10 +59,7 @@ int main(int argc, char** argv)
   for (auto it = traversal.begin(); it != traversal.end(); ++it)
   {
     Vertex v = **it;
-    BFSFile << "Prerequisites of " << v << ": ";
-    for(Vertex* vp : v.getVerticesPointedTo()){
-      BFSFile << *vp << ", ";
-    } 
+    BFSFile << v;
     BFSFile << "\n";
   }
   BFSFile.close();
@@ -80,10 +77,7 @@ int main(int argc, char** argv)
     for (auto it = traversal2.begin(); it != traversal2.end(); ++it)
     {
       Vertex v = **it;
-      BFSFile2 << "Prerequisites of " << v << ": ";
-      for(Vertex* vp : v.getVerticesPointedTo()){
-        BFSFile2 << *vp << ", ";
-      } 
+      BFSFile2 << v;
       BFSFile2 << "\n";
     }
   BFSFile2.close();
@@ -140,10 +134,7 @@ int main(int argc, char** argv)
   }
 
   std::cout << "Writing to File" << std::endl;
-
   output.writeToFile("Outputs/Layered_Graph_Drawing.png");
-
-
 
 
   return 0;

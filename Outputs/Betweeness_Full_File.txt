@@ -1,0 +1,24 @@
+Betweeness Centrality on all courses within file
+
+The betweenness centrality of START is 0
+The betweenness centrality of END is 0
+The betweenness centrality of CSE 100 is 3
+The betweenness centrality of CSE 200 is 5
+The betweenness centrality of CSE 300 is 5
+The betweenness centrality of ADV 101 is 3
+The betweenness centrality of ANTH 101 is 2.83333
+The betweenness centrality of STE 100 is 2.16667
+The betweenness centrality of STE 115 is 4.33333
+The betweenness centrality of ANTH 201 is 3.66667
+The betweenness centrality of ANTH 107 is 1
+The betweenness centrality of ANTH 301 is 3
+The betweenness centrality of STE 215 is 6
+The betweenness centrality of STE 315 is 2
+The betweenness centrality of MATH 231 is 2
+The betweenness centrality of MATH 213 is 2
+The betweenness centrality of MATH 347 is 4
+The betweenness centrality of CS 225 is 6
+The betweenness centrality of MATH 412 is 1
+The betweenness centrality of CS 374 is 2
+
+The most central vertex in the graph is STE 215 with a centrality of 6
