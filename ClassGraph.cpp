@@ -93,10 +93,6 @@ ClassGraph::ClassGraph(const ClassGraph& ot) : Graph(ot){
     start_ = new Vertex(*ot.start_);
 }
 
-void ClassGraph::makeAcyclic(){
-    Graph::makeAcyclic(end_, start_, true);
-}
-
 Vertex*& ClassGraph::getVertexByName(std::string name){
     if(name == "START"){
         return start_;

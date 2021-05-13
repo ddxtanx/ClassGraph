@@ -263,13 +263,12 @@ TEST_CASE("Betweenness centrality works on test graph", "[part=2]"){
         {"STE 315", 2},
         {"MATH 231", 2},
         {"MATH 213", 2},
-        {"MATH 347", 5},
+        {"MATH 347", 4},
         {"CS 225", 6},
-        {"MATH 412", 5},
-        {"CS 374", 4}
+        {"MATH 412", 1},
+        {"CS 374", 2}
     }; 
     ClassGraph testDataGraph("./Courses-and-prereqs/TestData.dat");
-    testDataGraph.makeAcyclic();
     testDataGraph.generateBetweennessCentrality(true, false);
     auto centrality = *testDataGraph.getBetweennessCentrality();
     for(auto pair : expectedCentrality){

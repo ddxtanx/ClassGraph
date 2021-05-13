@@ -13,7 +13,6 @@ class ClassGraph : public Graph{
         Vertex*& getStart();
         Vertex*& getEnd();
         
-        void makeAcyclic();
         ClassGraph& operator=(const ClassGraph& ot);
 
         Vertex*& getVertexByName(std::string name);
