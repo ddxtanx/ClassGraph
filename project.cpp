@@ -5,7 +5,6 @@
 #include "ClassGraph.h"
 #include "LGD/LGD.h"
 #include "utils.h"
-#include "SpanningTree/SpanningTree.h"
 
 
 using namespace std;
