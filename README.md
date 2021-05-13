@@ -8,13 +8,15 @@ How to run our code:
         
         ./project   < Filepath to Data set >    < "Course name and number" >
     
-    Examples    
-    EX  ./project ./Courses-and-prereqs/STEM_courses.dat "CS 225"
-    EX2 ./project ./Courses-and-prereqs/AllPrereqs.dat "ECE 391"
-    EX3 ./project ./Courses-and-prereqs/TestData.dat "ADV 101"
+    Examples: 
+    
+            ./project ./Courses-and-prereqs/STEM_courses.dat "CS 225"
+    
+            ./project ./Courses-and-prereqs/AllPrereqs.dat "ECE 391"
+    
+            ./project ./Courses-and-prereqs/TestData.dat "ADV 101"
 
-    *note: the course name must be in all caps, and any invalid course name will result
-            in undefined behavior.
+    *NOTE: The course name must be in all caps, and any invalid course name will result in undefined behavior. Follow examples above and check data folder for more examples
 
 4) The output of all algorithms are stored in the ./Outputs/ folder
     /Betweeness_Full_File           output of the betweeness centrality test on the whole graph
@@ -41,23 +43,42 @@ How to run tests:
 Location of important code files:       (foo/  indicates the whole folder "foo" is dedicated to listed algorithm)
 
 Parsed Data:
+    
     Courses-and-prereqs/
+
 Graph Structure:
+    
     Graph/
+    
     ClassGraph.h
+    
     ClassGraph.cpp
+    
     dataConvert.h
+    
     dataConvert.cpp
+    
     utils.h
+    
     utils.cpp
+
 BFS:
+
     Davids_Work/
+
 Betweeness Centrality:
+
     Graph/Graph.cpp
+
     Graph/Graph.cpp
+
 Layered Graph Drawing:
+
     LGD/
+
     Stickers/
+
 Output Data Files:
+ 
     Outputs/
 
