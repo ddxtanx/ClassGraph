@@ -1,5 +1,9 @@
 # davidm12-gcredi2-lzefran2
 
+Note: Presentation is located in the Youtube Link in the root directory.
+
+
+
 How to run our code:
 
 1) Open a terminal to the root directory of our repository: davidm12-gcredi2-lzefran2
