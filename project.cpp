@@ -114,7 +114,7 @@ int main(int argc, char** argv)
   }
 
   std::cout << "Writing to File" << std::endl;
-  output.writeToFile("Output_PNGs/myImage.png");
+  output.writeToFile("Outputs/Layered_Graph_Drawing.png");
 
 
 
