@@ -105,15 +105,6 @@ class Graph{
         void addEdge(Edge e);
         
         /**
-         * @brief Make graph acyclic while still keeping as much of the heirarchical structure as possible
-         * 
-         * @param source Vertex to start from
-         * @param startVertex When a given vertex has no predecessor, draw an edge from startVertex to that vertex
-         * @param backwards Whether or not to remove cycles in forward or backward order (Default is false so forward)
-         */
-        void makeAcyclic(Vertex* source, Vertex* startVertex, bool backwards = false);
-        
-        /**
          * @brief Initialize the vertex layers
          * 
          */
