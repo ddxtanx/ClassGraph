@@ -14,4 +14,4 @@ BFS_From_Course.txt and BFS_Full_File.txt will show the vertices traversed durin
 
 Layered_Graph_Drawing.png will be the png of the Layered Graph Drawing of the graph.
 
-These can all be found in the ReportFiles/ Folder in the repository.
+These can all be found in the Outputs folder in the repository.
