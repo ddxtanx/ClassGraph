@@ -43,8 +43,8 @@ int main(int argc, char** argv)
 
 
   ClassGraph g(filename);
-  g.makeAcyclic();
-  //std::cout << g.toMathematicaForm() << std::endl;
+  //g.makeAcyclic();
+  std::cout << g.toMathematicaForm() << std::endl;
   std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
   Vertex* start = g.getStart();
   Vertex* end = g.getEnd();
@@ -124,7 +124,7 @@ int main(int argc, char** argv)
   }
   Image output;
 
-  if (inputStr != "yeet")
+  if (inputStr != "")
   {
     std::cout << "Running drawgraph from " << *inputVert << std::endl;
     output = gLGD.drawGraph(inputVert);

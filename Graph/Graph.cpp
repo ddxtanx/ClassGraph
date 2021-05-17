@@ -43,7 +43,7 @@ void Graph::Matrix<T>::resizeMatrix(int rows, int cols){
 
 template <typename T>
 T Graph::Matrix<T>::getVal(int row, int col) const{
-    if(getCoordinate(row,col) < getCoordinate(rows_,cols_)){
+    if(row < rows_ && col < cols_){
         return matrix_[getCoordinate(row, col)];
     } else{
         std::cout << "Bad access at (" << row << "," << col << ") Coordinate: " << getCoordinate(row,col) << std::endl;
@@ -53,7 +53,7 @@ T Graph::Matrix<T>::getVal(int row, int col) const{
 
 template <typename T>
 void Graph::Matrix<T>::setVal(int row, int col, T val){
-    if(getCoordinate(row,col) < getCoordinate(rows_,cols_)){
+    if(row < rows_ && col < cols_){
         matrix_[getCoordinate(row, col)] = val;
     } else{
         std::cout << "Bad access at (" << row << "," << col << ") Coordinate: " << getCoordinate(row,col) << std::endl;
@@ -79,13 +79,11 @@ Graph::Graph(std::vector<Vertex*> vertices){
     vertices_.assign(vertices.begin(), vertices.end());
 
     size_t numVerts = vertices_.size();
-    resizeAdjMatrix(numVerts);
 }
 
 Graph::Graph(std::vector<Vertex*> vertices, std::vector<Edge> edges){
     vertices_.assign(vertices.begin(), vertices.end());
     size_t numVerts = vertices_.size();
-    resizeAdjMatrix(numVerts);
     for(Edge e : edges_){
         addEdge(e);
     }
@@ -133,16 +131,9 @@ bool Graph::vertexInGraph(Vertex* v) const{
     return v -> getId() < getVerticesSize();
 }
 
-void Graph::resizeAdjMatrix(size_t size){ //might need to alter this, might cause problems on resize
-    std::pair<int,int> curDims = adjacencyMatrix_.getDims();
-    if(curDims.first < (int)size || curDims.second < (int)size){
-        adjacencyMatrix_.resizeMatrix(size, size);
-    }
-}
 void Graph::addVertex(Vertex* v){
     vertices_.insert(vertices_.end(), v);
-    size_t newVertsSize = vertices_.size();
-    resizeAdjMatrix(newVertsSize);
+    size_t newVertsSize = vertices_.size()+1;
 }
 
 void Graph::addEdge(Edge e){
@@ -155,13 +146,8 @@ void Graph::addEdge(Edge e){
 
     size_t fromIndex = from.getId();
     size_t toIndex = to.getId();
-    if(adjacencyMatrix_.getVal(fromIndex, toIndex) != 0){
-        return;
-    }
     from.connectTo(e.getTo());
     to.connectFrom(e.getFrom());
-
-    adjacencyMatrix_.setVal(fromIndex,toIndex,1);
 }
 
 void Graph::addEdge(Vertex* from, Vertex* to){
@@ -171,13 +157,8 @@ void Graph::addEdge(Vertex* from, Vertex* to){
     size_t fromIndex = from -> getId();
     size_t toIndex = to -> getId();
 
-    if(adjacencyMatrix_.getVal(fromIndex,toIndex) != 0){
-        return;
-    }
     from -> connectTo(to);
     to -> connectFrom(from);
-
-    adjacencyMatrix_.setVal(fromIndex,toIndex,1);
 
     Edge e(from, to);
     edges_.push_back(e);
@@ -230,7 +211,6 @@ void Graph::copy(const Graph& other){
     std::vector<Edge> newEdges;
     std::vector<Vertex*> newVertices;
     newVertices.resize(other.getVerticesSize());
-    adjacencyMatrix_ = other.adjacencyMatrix_;
 
     for(Vertex* v : other.vertices_){
         size_t id = v -> getId();
@@ -403,6 +383,5 @@ void Graph::removeEdge(Vertex* from, Vertex* to){
     Edge e(from, to);
     from -> disconnectTo(to);
     to -> disconnectFrom(from);
-    adjacencyMatrix_.setVal(from -> getId(), to -> getId(), 0);
     edges_.erase(std::remove(edges_.begin(), edges_.end(), e), edges_.end());
 }

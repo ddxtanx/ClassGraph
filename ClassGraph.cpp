@@ -33,7 +33,6 @@ ClassGraph::ClassGraph(const std::string fileName){
     int numEntries = ALL_COURSE_data.size() + 2;
     int numClassIDs = 1000*Utils::numDepts;
     vertexMap_.resize(numClassIDs);
-    resizeAdjMatrix(numEntries);
     Vertex* startVertex = new Vertex("START");
     Vertex* endVertex = new Vertex("END");
     addVertex(startVertex);
@@ -108,14 +107,17 @@ Vertex*& ClassGraph::getVertexByName(std::string name){
 void ClassGraph::makeAcyclic(){
     std::unordered_map<Vertex*, std::unordered_map<Vertex*, bool>> histories;
     std::unordered_map<Vertex*, unsigned int> heights;
-    std::queue<Vertex*> callStack;
+    std::stack<Vertex*> callStack;
     Matrix<bool> connectedTo(getVerticesSize(), getVerticesSize(), false);
+    std::unordered_map<Vertex*, bool> visited;
     callStack.push(end_);
     heights[end_] = 0;
-    std::vector<Edge> newEdges;
     while(!callStack.empty()){
-        Vertex* head = callStack.front();
-        callStack.pop();
+        Vertex* head = callStack.top();
+        if(visited[head]){
+            callStack.pop();
+            continue;
+        }
 
         auto neighs = head -> getVerticesPointedFrom();
         for(auto pair : histories[head]){
@@ -125,26 +127,29 @@ void ClassGraph::makeAcyclic(){
                 }
             }
         }
+        bool hasAnUnseenNeighbor = false;
         for(Vertex* neigh : neighs){
             if(heights[neigh] < heights[head] + 1){
                 heights[neigh] = heights[head] + 1;
             }
             histories[neigh][head] = true;
-            if(histories[head][neigh] && heights[neigh] > heights[head]){
+            if(histories[head][neigh]){
                 std::cout << "Removing edge between " << *neigh << " and " << *head << std::endl;
                 removeEdge(neigh, head);
                 makeAcyclic();
                 return;
-            } else{
+            } else if (!visited[neigh]){
+                hasAnUnseenNeighbor = true;
                 size_t nId = neigh -> getId();
                 size_t hId = head -> getId();
                 if(!connectedTo.getVal(nId, hId)){
-                    Edge e(neigh, head);
-                    newEdges.push_back(e);
                     connectedTo.setVal(nId, hId, true);
                 }
                 callStack.push(neigh);
             }
+        }
+        if(!hasAnUnseenNeighbor){
+            visited[head] = true;
         }
     }
     for(Vertex* v : vertices_){
@@ -152,5 +157,4 @@ void ClassGraph::makeAcyclic(){
             addEdge(start_, v);
         }
     }
-    edges_ = newEdges;
 }

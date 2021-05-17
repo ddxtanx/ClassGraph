@@ -210,10 +210,7 @@ class Graph{
                     int rows_;
                     int cols_;
             };          
-    private:
-        Matrix<double> adjacencyMatrix_;
     protected:
-        void resizeAdjMatrix(size_t size);
         std::vector<Vertex*> vertices_;
         std::vector<Edge> edges_;  
         std::vector<int> layerCounts_;   

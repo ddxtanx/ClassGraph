@@ -12,6 +12,7 @@ LGD::LGD()
     text_.readFromFile("LGD/text.png");
     oval_.readFromFile("LGD/Oval.png");
     skip_.readFromFile("LGD/skip.png");
+    numDummies = 0;
 
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
 }                      
@@ -21,6 +22,7 @@ LGD::LGD(ClassGraph & g, Vertex & v)
     text_.readFromFile("LGD/text.png");
     oval_.readFromFile("LGD/Oval.png");
     skip_.readFromFile("LGD/skip.png");
+    numDummies = 0;
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
 }   
 LGD::LGD(ClassGraph * g, Vertex * v)    
@@ -29,6 +31,7 @@ LGD::LGD(ClassGraph * g, Vertex * v)
     text_.readFromFile("LGD/text.png");
     oval_.readFromFile("LGD/Oval.png");
     skip_.readFromFile("LGD/skip.png");
+    numDummies = 0;
     //Image pic_();              //sticker output Image, used for edge drawing and final picture
 } 
 LGD::LGD(const LGD &other)    
@@ -40,6 +43,7 @@ LGD::LGD(const LGD &other)
     
     pic_ = other.pic_;
     background_ = other.background_;
+    numDummies = other.numDummies;
     if (other.stickers_ != NULL)
     {
       stickers_ = new StickerSheet(*other.stickers_);
@@ -70,6 +74,7 @@ const LGD & LGD::operator= (const LGD & other)
     background_ = other.background_;
     start_ = other.start_;
     graph_ = other.graph_;
+    numDummies = other.numDummies;
     return *this;
 }
 
@@ -93,7 +98,11 @@ void LGD::makeDummyVerts()
         {
           while(LayerDiff>1)
           {
-            Vertex* Dummy=new Vertex("DUMMY");
+            std::stringstream ss;
+            ss << "DUMMY " << numDummies;
+            std::string name = ss.str();
+            numDummies ++;
+            Vertex* Dummy=new Vertex(name);
             Dummy->setLayer(currLayer+1);
             graph_->addVertex(Dummy);
 
@@ -400,8 +409,8 @@ int LGD::drawVertex(std::string name , unsigned int x1, unsigned int y1, cs225::
   unsigned int position = 0;
   unsigned int xLim = 14;
 
-
-  if (name == "DUMMY")
+  std::string dummySubstr = name.substr(0, 5);
+  if (dummySubstr == "DUMMY")
   {
     //std::cout << "drawing dummy" << std::endl;
     return stickers_->addSticker(skip_, x1, y1);
@@ -462,9 +471,10 @@ bool LGD::detectEND(Vertex * v) //recursive checker to see if END node is at the
 {
 
   std::string name = v->getName();
+  std::string dummySubstr = name.substr(0, 5);
   if (name == "END")
     return true;
-  else if (name == "DUMMY")
+  else if (dummySubstr == "DUMMY")
     return detectEND(v->getVerticesPointedTo()[0]);
   else
     return false;

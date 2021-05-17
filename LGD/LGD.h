@@ -70,6 +70,7 @@ class LGD
 
 
     private:
+    size_t numDummies;
     bool detectEND(Vertex * v); //helper to drawGraph to prevent drawing extra internal graph structure for a cleaner look
 
     Image pic_;             //sticker output Image, used for edge drawing and final picture
