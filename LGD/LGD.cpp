@@ -95,16 +95,14 @@ void LGD::makeDummyVerts()
           {
             Vertex* Dummy=new Vertex("DUMMY");
             Dummy->setLayer(currLayer+1);
-            currTex->disconnectTo(*iter);
-            currTex->connectTo(Dummy);
-            Dummy->connectTo(*iter);
-            Dummy->connectFrom(currTex);
             graph_->addVertex(Dummy);
-            (*iter)->disconnectFrom(currTex);
-            (*iter)->connectFrom(Dummy);
+
+            graph_->removeEdge(currTex, *iter);
+            graph_->addEdge(Dummy, *iter);
+            graph_->addEdge(currTex, Dummy);
+
             currTex=Dummy;
             currLayer++;
-            graph_->increaseLayerCount(currLayer);
             LayerDiff--;
           }
         }
@@ -115,15 +113,19 @@ void LGD::makeDummyVerts()
 
 void LGD::initializeLayers(){
   Vertex* start = graph_ -> getStart();
-  BFS b(graph_, graph_ -> getStart());
+  std::queue<Vertex*> dfsQueue;
+  dfsQueue.push(start);
   start -> setLayer(0);
-  for(Vertex* v : b){
-    auto neighs = v -> getVerticesPointedTo();
-    auto layer = v -> getLayer();
-    for(Vertex* n : neighs){
-      if(n -> getLayer() < layer + 1){
-        n -> setLayer(layer+1);
-      }
+  while(!dfsQueue.empty()){
+    Vertex* h = dfsQueue.front();
+    dfsQueue.pop();
+
+    unsigned int layer = h -> getLayer();
+    for(Vertex* v : h -> getVerticesPointedTo()){
+        if(v -> getLayer() < layer + 1){
+          v -> setLayer(layer + 1);
+        }
+        dfsQueue.push(v);
     }
   }
 }

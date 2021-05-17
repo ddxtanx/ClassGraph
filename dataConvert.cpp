@@ -15,8 +15,7 @@ const char* const DELIMITER = ",";
 std::vector<std::vector<std::string>> DataConvert::getData(const std::string fileName)
 {
   std::vector<std::vector<std::string>> tokens;
-  ifstream fin;
-  fin.open(fileName); // open a file
+  ifstream fin(fileName);
   if (!fin.good())
   { 
     std::cout<<"FAILED TO OPEN FILE"<<std::endl;
@@ -27,7 +26,7 @@ std::vector<std::vector<std::string>> DataConvert::getData(const std::string fil
   {
     // read an entire line into memory
     std::string line = "";
-    std::getline(fin, line);
+    std::getline(fin, line, '\n');
     Utils::trim(line);
 
     // parse the line into blank-delimited tokens

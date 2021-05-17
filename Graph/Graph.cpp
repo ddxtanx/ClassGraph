@@ -398,3 +398,11 @@ std::string Graph::toMathematicaForm(bool backwards){
     ss <<"}]";
     return ss.str();
 }
+
+void Graph::removeEdge(Vertex* from, Vertex* to){
+    Edge e(from, to);
+    from -> disconnectTo(to);
+    to -> disconnectFrom(from);
+    adjacencyMatrix_.setVal(from -> getId(), to -> getId(), 0);
+    edges_.erase(std::remove(edges_.begin(), edges_.end(), e), edges_.end());
+}

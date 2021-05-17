@@ -20,9 +20,7 @@ class Vertex{
 
 
         std::vector<Vertex*> getVerticesPointedTo();             //returns all vertecies that *this points to
-        std::vector<Vertex*>& getVerticesPointedToRaw();
         std::vector<Vertex*> getVerticesPointedFrom();
-        std::vector<Vertex*>& getVerticesPointedFromRaw();
 
         size_t getNumPointedTo();
         size_t getNumPointedFrom();
@@ -49,10 +47,8 @@ class Vertex{
         unsigned int yPos = 0;
     private:
         static size_t count;
-        std::vector<Vertex*> pointsTo_;  //Collection of vertices v such that there is an edge e where e.getFrom == this and e.getTo == v
-        std::unordered_map<int, bool> pointsToIndices_;
-        std::vector<Vertex*> pointsFrom_;  //Collection of vertices v such that there is an edge e where e.getFrom == v and e.getTo == this
-        std::unordered_map<int,bool> pointsFromIndices_;
+        std::unordered_map<Vertex*, bool> pointsTo_;  
+        std::unordered_map<Vertex*,bool> pointsFrom_; //Collection of vertices v such that there is an edge e where e.getFrom == v and e.getTo == this
         unsigned layer_; //Layer
         size_t numPointsTo;
         size_t numPointsFrom;

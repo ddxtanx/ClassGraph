@@ -103,6 +103,8 @@ class Graph{
          * @param e Edge to add
          */
         void addEdge(Edge e);
+
+        void removeEdge(Vertex* from, Vertex* to);
         
         /**
          * @brief Initialize the vertex layers
@@ -162,53 +164,54 @@ class Graph{
         std::string toMathematicaForm(bool backwards = false);
 
     private:
-    /**
-     * @brief Matrix class to provide quick and efficient 2D array storage
-     * 
-     * @tparam T printable and default valuable type of matrix entries
-     */
-        template <typename T>
-        class Matrix{
-            public:
-                Matrix();
-                Matrix(int rows, int cols, T defVal = T());
-
-                T getVal(int row, int col) const;
-                void setVal(int row, int col, T val);
-
-                void resizeMatrix(int rows, int cols);
-                
-                std::pair<int, int> getDims() const;
-
-                friend std::ostream& operator<<(std::ostream& os, const Matrix& mat){
-                    auto dims = mat.getDims();
-                    int rows = dims.first;
-                    int cols = dims.second;
-                    for(int i = 0; i<rows; i++){
-                        for(int j = 0; j<cols; j++){
-                            T v = mat.getVal(i,j);
-                            os << v << ",";
-                        }
-                        os<<std::endl;
-                    }
-                    return os;
-                }
-
-                std::string toString() const;
-            private:
-                int getCoordinate(int row, int col) const;
-                std::vector<T> matrix_;
-                int rows_;
-                int cols_;
-        };          
-        
-        Matrix<double> adjacencyMatrix_;
         std::unordered_map<Vertex, double> betweennessCentrality_;
 
 
         void copy(const Graph& other);
         void clear();
 
+    protected:
+        /**
+         * @brief Matrix class to provide quick and efficient 2D array storage
+         * 
+         * @tparam T printable and default valuable type of matrix entries
+         */
+            template <typename T>
+            class Matrix{
+                public:
+                    Matrix();
+                    Matrix(int rows, int cols, T defVal = T());
+
+                    T getVal(int row, int col) const;
+                    void setVal(int row, int col, T val);
+
+                    void resizeMatrix(int rows, int cols);
+                    
+                    std::pair<int, int> getDims() const;
+
+                    friend std::ostream& operator<<(std::ostream& os, const Matrix& mat){
+                        auto dims = mat.getDims();
+                        int rows = dims.first;
+                        int cols = dims.second;
+                        for(int i = 0; i<rows; i++){
+                            for(int j = 0; j<cols; j++){
+                                T v = mat.getVal(i,j);
+                                os << v << ",";
+                            }
+                            os<<std::endl;
+                        }
+                        return os;
+                    }
+
+                    std::string toString() const;
+                private:
+                    int getCoordinate(int row, int col) const;
+                    std::vector<T> matrix_;
+                    int rows_;
+                    int cols_;
+            };          
+    private:
+        Matrix<double> adjacencyMatrix_;
     protected:
         void resizeAdjMatrix(size_t size);
         std::vector<Vertex*> vertices_;

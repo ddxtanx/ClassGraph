@@ -26,91 +26,62 @@ void Vertex::connectTo(Vertex* to){
     if(to == nullptr){
         return;
     }
-    size_t id = to -> getId();
-    pointsToIndices_[id] = true;
-    if(id >= pointsTo_.size()){
-        pointsTo_.resize(id+1, nullptr);
-    }
-    if(pointsTo_[id] == nullptr){
+    if(!pointsTo_[to]){
+        pointsTo_[to] = true;
         numPointsTo++;
     }
-    pointsTo_[id] = to;
-    
 }
 
 void Vertex::disconnectTo(Vertex* to){
     if(to == nullptr){
         return;
     }
-    size_t id = to -> getId();
-    pointsToIndices_[id] = false;
-    if(id >= pointsTo_.size()){
-        pointsTo_.resize(id+1, nullptr);
-    }
-    if(pointsTo_[id] != nullptr){
+    if(pointsTo_[to]){
+        pointsTo_[to] = false;
         numPointsTo --;
     }
-    pointsTo_[id] = nullptr;
 }
 
 void Vertex::connectFrom(Vertex* from){
     if(from == nullptr){
         return;
     }
-    size_t id = from -> getId();
-    pointsFromIndices_[id] = true;
-    if(id >= pointsFrom_.size()){
-        pointsFrom_.resize(id+1, nullptr);
-    }
-    if(pointsFrom_[id] == nullptr){
+    if(!pointsFrom_[from]){
+        pointsFrom_[from] = true;
         numPointsFrom++;
     }
-    pointsFrom_[id] = from;
-    
 }
 
 void Vertex::disconnectFrom(Vertex* from){
     if(from == nullptr){
         return;
     }
-    size_t id = from -> getId();
-    pointsFromIndices_[id] = false;
-    if(id >= pointsFrom_.size()){
-        pointsFrom_.resize(id+1, nullptr);
-    }
-    if(pointsFrom_[id] != nullptr){
+    if(pointsFrom_[from]){
+        pointsFrom_[from] = false;
         numPointsFrom --;
     }
-    pointsFrom_[id] = nullptr;
 }
 
 std::vector<Vertex*> Vertex::getVerticesPointedTo(){
     std::vector<Vertex*> nonNulls;
-    for(auto pair : pointsToIndices_){
+    for(auto pair : pointsTo_){
         if(pair.second){
-            nonNulls.push_back(pointsTo_[pair.first]);
+            nonNulls.push_back(pair.first);
         }
     }
     return nonNulls;
-}
-
-std::vector<Vertex*>& Vertex::getVerticesPointedToRaw(){
-    return pointsTo_;
 }
 
 std::vector<Vertex*> Vertex::getVerticesPointedFrom(){
     std::vector<Vertex*> nonNulls;
-    for(auto pair : pointsFromIndices_){
+    for(auto pair : pointsFrom_){
         if(pair.second){
-            nonNulls.push_back(pointsFrom_[pair.first]);
+            nonNulls.push_back(pair.first);
         }
     }
     return nonNulls;
 }
 
-std::vector<Vertex*>& Vertex::getVerticesPointedFromRaw(){
-    return pointsFrom_;
-}
 
 unsigned Vertex::getLayer() const{
     return layer_;

@@ -16,6 +16,8 @@ class ClassGraph : public Graph{
         ClassGraph& operator=(const ClassGraph& ot);
 
         Vertex*& getVertexByName(std::string name);
+
+        void makeAcyclic();
     private:
         std::vector<Vertex*> vertexMap_;
         Vertex* getOrCreateVertex(std::string courseName);

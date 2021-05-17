@@ -43,6 +43,8 @@ int main(int argc, char** argv)
 
 
   ClassGraph g(filename);
+  g.makeAcyclic();
+  //std::cout << g.toMathematicaForm() << std::endl;
   std::vector<Vertex*> & verts = g.getVertices();  //get reference to vertices
   Vertex* start = g.getStart();
   Vertex* end = g.getEnd();
