@@ -3,6 +3,7 @@
 #include "../cs225/PNG.h"
 #include "../Stickers/Image.h"
 #include <cmath>
+#include <map>
 
 using namespace cs225;
 // constructors, rule of 3
@@ -106,7 +107,8 @@ void LGD::makeDummyVerts()
             Dummy->setLayer(currLayer+1);
             graph_->addVertex(Dummy);
 
-            graph_->removeEdge(currTex, *iter);
+            //graph_->removeEdge(currTex, *iter);
+            ignoreEdge_[Edge(currTex, *iter)] = true;
             graph_->addEdge(Dummy, *iter);
             graph_->addEdge(currTex, Dummy);
 
@@ -227,7 +229,7 @@ Image LGD::drawGraph()
         continue;
       for (auto at = adj.begin(); at != adj.end(); ++at)      //loops through adjacent verts to *it
       {
-        if (detectEND(*at))                //prevents drawing
+        if (detectEND(*at) || ignoreEdge_[Edge(*it, *at)])                //prevents drawing
           continue;
         drawEdge(*it, *at);
       }
@@ -475,7 +477,7 @@ bool LGD::detectEND(Vertex * v) //recursive checker to see if END node is at the
   if (name == "END")
     return true;
   else if (dummySubstr == "DUMMY")
-    return detectEND(v->getVerticesPointedTo()[0]);
+    return detectEND(*(v->getVerticesPointedTo().begin()));
   else
     return false;
 }

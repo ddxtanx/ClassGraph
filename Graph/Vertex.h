@@ -19,8 +19,8 @@ class Vertex{
 
 
 
-        std::vector<Vertex*> getVerticesPointedTo();             //returns all vertecies that *this points to
-        std::vector<Vertex*> getVerticesPointedFrom();
+        std::vector<Vertex*> & getVerticesPointedTo();             //returns all vertecies that *this points to
+        std::vector<Vertex*> & getVerticesPointedFrom();
 
         size_t getNumPointedTo();
         size_t getNumPointedFrom();
@@ -34,7 +34,7 @@ class Vertex{
         void setLayer(unsigned layer);
 
         bool operator==(const Vertex v) const;
-
+        bool operator<(const Vertex& v) const;
         friend std::ostream& operator<<(std::ostream& os, const Vertex& v){
             os << v.getName();
             return os;
@@ -45,10 +45,16 @@ class Vertex{
 
         unsigned int xPos = 0;  //used in drawGraph
         unsigned int yPos = 0;
-    private:
         static size_t count;
-        std::unordered_map<Vertex*, bool> pointsTo_;  
-        std::unordered_map<Vertex*,bool> pointsFrom_; //Collection of vertices v such that there is an edge e where e.getFrom == v and e.getTo == this
+    private:
+        
+        std::unordered_map<Vertex*, bool> pointsToMap_;  
+        std::unordered_map<Vertex*,bool> pointsFromMap_; //Collection of vertices v such that there is an edge e where e.getFrom == v and e.getTo == this
+        
+        std::vector<Vertex*> pointsTo_;
+        std::vector<Vertex*> pointsFrom_;
+        bool regenTo_;
+        bool regenFrom_;
         unsigned layer_; //Layer
         size_t numPointsTo;
         size_t numPointsFrom;

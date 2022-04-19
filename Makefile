@@ -4,6 +4,9 @@ TEST=test
 
 EXE_OBJ=project.o
 OBJS=project.o utils.o ClassGraph.o dataConvert.o
+
+CXXFLAGS += -g -ggdb -pg
+LDFLAGS += -lprofiler -ltcmalloc
 include Graph/graph.mk
 include Davids_Work/david.mk
 include LGD/LGD.mk

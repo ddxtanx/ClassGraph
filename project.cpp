@@ -41,7 +41,7 @@ int main(int argc, char** argv)
 
 
 
-
+  std::cout << "Constructing class graph" << std::endl;
   ClassGraph g(filename);
   //g.makeAcyclic();
   //std::cout << g.toMathematicaForm() << std::endl;

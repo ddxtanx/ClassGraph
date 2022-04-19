@@ -61,6 +61,7 @@ class Edge{
          */
         bool operator==(const Edge& ot) const;
 
+        bool operator<(const Edge& ot) const;
         /**
          * @brief Inserts the edge into a string stream
          * 

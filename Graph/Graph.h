@@ -145,7 +145,7 @@ class Graph{
          * @return std::unordered_map<Vertex, double>* Pointer to the betweenness centrality map
          * @details You MUST run generateBetweennessCentrality before running this 
          */
-        std::unordered_map<Vertex, double>* getBetweennessCentrality();
+        std::map<Vertex, double>* getBetweennessCentrality();
 
         /**
          * @brief Assignment operator
@@ -164,7 +164,7 @@ class Graph{
         std::string toMathematicaForm(bool backwards = false);
 
     private:
-        std::unordered_map<Vertex, double> betweennessCentrality_;
+        std::map<Vertex, double> betweennessCentrality_;
 
 
         void copy(const Graph& other);

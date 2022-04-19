@@ -5,6 +5,7 @@
 //#include "../cs225/PNG.h"
 #include "../Stickers/StickerSheet.h"
 #include <vector>
+#include <map>
 
 class LGD
 {
@@ -83,4 +84,5 @@ class LGD
 
     Vertex * start_;        //Node to show prereq tree for
     ClassGraph * graph_;         //graph structure for data
+    std::map<Edge, bool> ignoreEdge_;
 };

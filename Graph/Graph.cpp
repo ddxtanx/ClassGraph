@@ -141,27 +141,18 @@ void Graph::addEdge(Edge e){
         return;
     }
     edges_.push_back(e);
-    Vertex from = *e.getFrom();
-    Vertex to = *e.getTo();
 
-    size_t fromIndex = from.getId();
-    size_t toIndex = to.getId();
-    from.connectTo(e.getTo());
-    to.connectFrom(e.getFrom());
-}
-
-void Graph::addEdge(Vertex* from, Vertex* to){
-    if(from == nullptr || to == nullptr){
-        return;
-    }
-    size_t fromIndex = from -> getId();
-    size_t toIndex = to -> getId();
+    Vertex* from = e.getFrom();
+    Vertex* to = e.getTo();
 
     from -> connectTo(to);
     to -> connectFrom(from);
 
+}
+
+void Graph::addEdge(Vertex* from, Vertex* to){
     Edge e(from, to);
-    edges_.push_back(e);
+    addEdge(e);
 }
 
 void Graph::initLayers()
@@ -256,9 +247,8 @@ void Graph::generateBetweennessCentrality(bool backwards, bool normalize){ //Ass
     }
     double max_centrality = std::numeric_limits<double>::min();
     double min_centrality = std::numeric_limits<double>::max();
-    std::unordered_map<Vertex, double> betwCent;
     for(Vertex* v : vertices_){
-        betwCent[*v] = 0;
+        betweennessCentrality_[*v] = 0;
     }
     size_t numVertices = getVerticesSize();
     Matrix<size_t> shortestPathNumMatrix(numVertices, numVertices, 0);
@@ -314,8 +304,8 @@ void Graph::generateBetweennessCentrality(bool backwards, bool normalize){ //Ass
                 dependencies[vId] += pathVertexShortestPathNum/curVertexShortestPathNum * (1 + dependencies[vertId]);
             }
             if(w != s){
-                betwCent[*w] += dependencies[vertId];
-                double cent = betwCent[*w];
+                double cent = betweennessCentrality_[*w] + dependencies[vertId];
+                betweennessCentrality_[*w] = cent;
                 if(cent > max_centrality){
                     max_centrality = cent;
                 }
@@ -326,13 +316,12 @@ void Graph::generateBetweennessCentrality(bool backwards, bool normalize){ //Ass
         }
     }
     if(normalize){
-        for(auto pair : betwCent){
+        for(auto pair : betweennessCentrality_){
             Vertex v = pair.first;
             double score = pair.second;
-            betwCent[v] = (score - min_centrality)/(max_centrality - min_centrality);
+            betweennessCentrality_[v] = (score - min_centrality)/(max_centrality - min_centrality);
         }
     }
-    betweennessCentrality_ = betwCent;
 }
 
 double Graph::getBetweennessCentrality(Vertex* source){
@@ -343,7 +332,7 @@ double Graph::getBetweennessCentrality(Vertex* source){
     return betweennessCentrality_[*source];
 }
 
-std::unordered_map<Vertex, double>* Graph::getBetweennessCentrality(){
+std::map<Vertex, double>* Graph::getBetweennessCentrality(){
     return &betweennessCentrality_;
 }
 
@@ -383,5 +372,5 @@ void Graph::removeEdge(Vertex* from, Vertex* to){
     Edge e(from, to);
     from -> disconnectTo(to);
     to -> disconnectFrom(from);
-    edges_.erase(std::remove(edges_.begin(), edges_.end(), e), edges_.end());
+    std::remove(edges_.begin(), edges_.end(), e);
 }

@@ -11,6 +11,8 @@ Vertex::Vertex(){
     numPointsTo = 0;
     numPointsFrom = 0;
     layer_=0;
+    regenTo_ = true;
+    regenFrom_ = true;
 }
 
 Vertex::Vertex(std::string name){
@@ -20,15 +22,19 @@ Vertex::Vertex(std::string name){
     numPointsTo = 0;
     numPointsFrom = 0;
     layer_=0;
+    regenTo_ = true;
+    regenFrom_ = true;
 }
 
 void Vertex::connectTo(Vertex* to){
     if(to == nullptr){
         return;
     }
-    if(!pointsTo_[to]){
-        pointsTo_[to] = true;
+    if(!pointsToMap_[to]){
+        pointsToMap_[to] = true;
         numPointsTo++;
+        regenTo_ = true;
+        regenFrom_ = true;
     }
 }
 
@@ -36,9 +42,11 @@ void Vertex::disconnectTo(Vertex* to){
     if(to == nullptr){
         return;
     }
-    if(pointsTo_[to]){
-        pointsTo_[to] = false;
+    if(pointsToMap_[to]){
+        pointsToMap_[to] = false;
         numPointsTo --;
+        regenTo_ = true;
+        regenFrom_ = true;
     }
 }
 
@@ -46,8 +54,10 @@ void Vertex::connectFrom(Vertex* from){
     if(from == nullptr){
         return;
     }
-    if(!pointsFrom_[from]){
-        pointsFrom_[from] = true;
+    if(!pointsFromMap_[from]){
+        pointsFromMap_[from] = true;
+        regenTo_ = true;
+        regenFrom_ = true;
         numPointsFrom++;
     }
 }
@@ -56,30 +66,38 @@ void Vertex::disconnectFrom(Vertex* from){
     if(from == nullptr){
         return;
     }
-    if(pointsFrom_[from]){
-        pointsFrom_[from] = false;
+    if(pointsFromMap_[from]){
+        pointsFromMap_[from] = false;
         numPointsFrom --;
+        regenTo_ = true;
+        regenFrom_ = true;
     }
 }
 
-std::vector<Vertex*> Vertex::getVerticesPointedTo(){
-    std::vector<Vertex*> nonNulls;
-    for(auto pair : pointsTo_){
-        if(pair.second){
-            nonNulls.push_back(pair.first);
+std::vector<Vertex*> & Vertex::getVerticesPointedTo(){
+    if(regenTo_){
+        pointsTo_.clear();
+        for(auto pair : pointsToMap_){
+            if(pair.second && pair.first != nullptr){
+                pointsTo_.push_back(pair.first);
+            }
         }
     }
-    return nonNulls;
+    regenTo_ = false;
+    return pointsTo_;
 }
 
-std::vector<Vertex*> Vertex::getVerticesPointedFrom(){
-    std::vector<Vertex*> nonNulls;
-    for(auto pair : pointsFrom_){
-        if(pair.second){
-            nonNulls.push_back(pair.first);
+std::vector<Vertex*> & Vertex::getVerticesPointedFrom(){
+    if(regenFrom_){
+        pointsFrom_.clear();
+        for(auto pair : pointsFromMap_){
+            if(pair.second && pair.first != nullptr){
+                pointsFrom_.push_back(pair.first);
+            }
         }
     }
-    return nonNulls;
+    regenFrom_ = false;
+    return pointsFrom_;
 }
 
 
@@ -109,6 +127,10 @@ size_t Vertex::getId() const{
 
 bool Vertex::operator==(const Vertex v) const{
     return (name_ == v.name_);
+}
+
+bool Vertex::operator<(const Vertex& v) const{
+    return (id_ < v.id_);
 }
 
 void Vertex::setId(size_t id){

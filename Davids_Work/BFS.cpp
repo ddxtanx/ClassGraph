@@ -1,7 +1,6 @@
 #include "BFS.h"
 #include <queue>
 
-
 BFS::Iterator::Iterator()
 : current(NULL)
 {

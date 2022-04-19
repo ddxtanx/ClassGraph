@@ -48,6 +48,7 @@ ClassGraph::ClassGraph(const std::string fileName){
         }
         std::string baseCourseName = firstTok[0]; //Course name
         Vertex* currVertex = getOrCreateVertex(baseCourseName);
+        if(currVertex == nullptr) continue;
         bool hasPrereqs = false;
         for(unsigned i=1;i<firstTok.size();i++)
         {
@@ -56,16 +57,30 @@ ClassGraph::ClassGraph(const std::string fileName){
             if(!prereqCourseName.empty()){  
                 hasPrereqs = true;
                 Vertex* toVer = getOrCreateVertex(prereqCourseName);
-                addEdge(currVertex, toVer);  //Class points to its prerequisite
+                if(toVer == nullptr) continue;
+                currVertex -> connectTo(toVer);
+                toVer -> connectFrom(currVertex);
+                Edge e(currVertex, toVer);
+                edges_.push_back(e);
+                //addEdge(currVertex, toVer);  //Class points to its prerequisite
             }
         }
         if(!hasPrereqs){
-            addEdge(currVertex, end_);
+            Edge e(currVertex, end_);
+            currVertex -> connectTo(end_);
+            end_ -> connectFrom(currVertex);
+            edges_.push_back(e);
+            //addEdge(currVertex, end_);
         }
     }
     for(Vertex* v: vertices_){
         if(v->getNumPointedFrom() == 0 && v != startVertex && v != endVertex){
-            addEdge(startVertex, v); //Start points to ultimate classes (classes that are not prereqs for other classes)
+            Edge e(startVertex, v);
+
+            startVertex -> connectTo(v);
+            v -> connectFrom(startVertex);
+            edges_.push_back(e);
+            //addEdge(startVertex, v); //Start points to ultimate classes (classes that are not prereqs for other classes)
         }
     }
 }
@@ -104,7 +119,7 @@ Vertex*& ClassGraph::getVertexByName(std::string name){
     return vertexMap_[hash];
 }
 
-void ClassGraph::makeAcyclic(){
+/*void ClassGraph::makeAcyclic(){
     std::unordered_map<Vertex*, std::unordered_map<Vertex*, bool>> histories;
     std::unordered_map<Vertex*, unsigned int> heights;
     std::stack<Vertex*> callStack;
@@ -157,4 +172,4 @@ void ClassGraph::makeAcyclic(){
             addEdge(start_, v);
         }
     }
-}
+}*/
